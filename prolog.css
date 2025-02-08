@@ -1,0 +1,205 @@
+.top_menubar{
+    
+    font-size: 12px;
+    float: right;
+    margin-right:150px;
+}
+
+.login_btn{
+    background-color: white;
+    border: 0.5px solid gray;
+    padding: 1px;
+}
+
+.itemtitlefont{
+    font-style: normal;
+    font-weight: bold;
+    font-size:large;
+    margin-left:140px;
+}
+
+hr{
+    border:2px solid green;
+    width: 1250px;
+}
+
+ul{
+    list-style: none;
+}
+
+li {
+    list-style: none;
+    display: inline-block; 
+} 
+
+.border{
+    position: relative;
+    margin-left:120px;
+}
+
+.menu1{
+    font-size:14px;
+}
+
+.p_title_t{
+    font-weight: normal;
+    color: green;
+    font-size: 18px;
+}
+
+.num_comments{
+    font-weight: normal;
+    color: gray;
+    font-size: 15px;
+}
+
+.pcol_contents{
+    font-size: 13px;
+    color: gray;
+    font-weight: lighter;
+}
+
+.p_date{
+    font-size: 13px;
+    color: gainsboro;
+    font-weight: lighter;
+}
+
+.pro_sy1{
+    width: 250px;
+    float: left;
+    position: relative;
+    left: 390px;
+}
+
+.pro_sy2{
+    width: 300px;
+    position: absolute;
+    left : 900px;
+    display: inline-block;
+    margin-left: 30px;
+}
+
+.bg-body{
+    position: absolute;
+    left: 145px;
+    border: 0.3px solid green;
+    padding : 15px;
+}
+
+.p_img{
+    position: relative;
+    left : 50px;
+}
+
+.p_img2{
+    position: absolute;
+    left : 330px;
+}
+
+
+.itemfont_col{
+    font-size: 13px;
+    color: gray;
+    font-weight: lighter;
+
+}
+
+.col_sub{
+    font-size: 11px;
+    color: gray;
+    font-weight: lighter;
+}
+
+.btn_area{
+    background-color: white;
+    border: 0.5px solid gray;
+    text-align: center;
+    padding:10px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+
+
+.post_list{
+    background-color: white;
+    border: 0.5px solid gray;
+    position: relative;
+    left : 350px;
+    width:1030px;
+    margin-bottom: 10px;
+}
+
+.post_list_title{
+    padding: 20px;
+    font-size : 13px;
+}
+
+.list_open{
+    float: right;
+}
+
+.post_content{
+    background-color: white;
+    border: 0.5px solid gray;
+    position: relative;
+    left : 350px;
+    width:1030px;
+    padding-bottom: 30px;
+}
+
+.post_title_content{
+    padding: 30px;
+}
+
+.post_category{
+    font-size: 15px;
+    color: gray;
+    font-weight:normal; 
+}
+
+.post_title{
+    font-size: 30px;
+    color: green;
+    font-weight: normal; 
+    padding-top: 20px;
+}
+
+.post_writer_list{
+    padding-top: 20px;
+    font-size: 15px;
+    color: gray;
+}
+
+.neighbor_insert{
+    border: 0.5px solid black;
+    padding: 3px;
+    color: black;
+    float:right;
+}
+
+.post_hr{
+    margin-top: 20px ;
+    border:0.5px solid gray;
+    width:960px;
+}
+
+.post_contents{
+    padding: 30px;
+    padding-top: 5px;
+}
+
+.heart_list{
+    margin-left: 30px;
+    padding: 5px;
+    background-color: white;
+    border: 0.5px solid gray;
+}
+
+.comment_list{
+    margin-left: 5px;
+    padding: 5px;
+    background-color: white;
+    border: 0.5px solid gray;
+}
