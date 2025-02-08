@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>네이버 블로그 글 작성</title>
+
+    <!-- Google Fonts 추가 -->
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Serif+KR&family=Gaegu&family=Nanum+Pen+Script&family=Black+And+White+Picture&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nanum Gothic', sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        /* 상단 헤더 */
+        .header {
+            position: fixed;
+            top: 1px;
+            width: 100%;
+            background-color: white;
+            padding: 13px 25px;
+            color: #00c73c;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .header .logo {
+            display: flex;
+            align-items: center;
+            font-size: 27px;
+            font-weight: 1000;
+        }
+
+        .header .buttons {
+            display: flex;
+            gap: 18px;
+        }
+
+        .header button {
+            background-color: #00c73c;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .header button:hover {
+            background-color: green;
+        }
+
+        /* 도구 모음 */
+        .toolbar {
+            position: fixed;
+            top: 62px;
+            width: 100%;
+            background-color: white;
+            padding: 13px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            border-bottom: 1px solid #ddd;
+            z-index: 999;
+        }
+
+        .toolbar button {
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 5px 7px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .toolbar button:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* 글꼴, 크기 설정 바 */
+        .topbar {
+            position: fixed;
+            top: 120px;
+            width: 100%;
+            background-color: white;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            z-index: 998;
+        }
+
+        .topbar select {
+            padding: 5px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
+
+        /* 에디터 전체 */
+        .editor-container {
+            flex: 1;
+            display: flex;
+            padding: 20px;
+            margin-top: 140px;
+        }
+
+        /* 글 작성 영역 */
+        .editor {
+            flex: 1;
+            background-color: white;
+            padding: 30px;
+        }
+
+        .editor .title, .editor .content {
+            color: #aaa;
+        }
+
+        .editor .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            outline: none;
+        }
+
+        .editor .content {
+            font-size: 16px;
+            min-height: 400px;
+            outline: none;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: white;
+        }
+
+        .editor img, .editor video {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+
+        /* 숨겨진 파일 선택 버튼 */
+        #imageInput, #videoInput {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 상단 헤더 -->
+    <div class="header">
+        <div class="logo">N Blog</div>
+        <div class="buttons">
+            <button>임시 저장</button>
+            <button>발행</button>
+        </div>
+    </div>
+
+    <!-- 도구 모음 -->
+    <div class="toolbar">
+        <button onclick="openImageUploader()">사진</button>
+        <input type="file" id="imageInput" accept="image/*" onchange="insertImage(event)">
+        
+        <button onclick="openVideoUploader()">동영상</button>
+        <input type="file" id="videoInput" accept="video/*" onchange="insertVideo(event)">
+    </div>
+
+    <!-- 글꼴 및 크기 설정 바 -->
+    <div class="topbar">
+        <select id="fontSelect">
+            <option value="'Nanum Gothic', sans-serif">나눔고딕</option>
+            <option value="'Noto Serif KR', serif">Noto Serif</option>
+            <option value="'Gaegu', cursive">Gaegu</option>
+            <option value="'Nanum Pen Script', cursive">나눔펜</option>
+            <option value="'Black And White Picture', cursive">Black & White</option>
+        </select>
+
+        <select id="fontSizeSelect">
+            <option value="11px">11</option>
+            <option value="13px">13</option>
+            <option value="15px">15</option>
+            <option value="16px">16</option>
+            <option value="19px">19</option>
+            <option value="24px">24</option>
+            <option value="28px">28</option>
+            <option value="30px">30</option>
+            <option value="34px">34</option>
+            <option value="38px">38</option>
+        </select>
+    </div>
+
+    <!-- 글 작성 컨테이너 -->
+    <div class="editor-container">
+        <div class="editor">
+            <div contenteditable="true" class="title" id="titleField">제목</div>
+            <div contenteditable="true" class="content" id="contentField">본문을 입력하세요...</div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("fontSelect").addEventListener("change", function() {
+            let selectedFont = this.value;
+            document.getElementById("contentField").style.fontFamily = selectedFont;
+            document.getElementById("titleField").style.fontFamily = selectedFont;
+        });
+
+        document.getElementById("fontSizeSelect").addEventListener("change", function() {
+            let selectedSize = this.value;
+            document.getElementById("contentField").style.fontSize = selectedSize;
+            document.getElementById("titleField").style.fontSize = selectedSize;
+        });
+
+        function openImageUploader() {
+            document.getElementById('imageInput').click();
+        }
+
+        function openVideoUploader() {
+            document.getElementById('videoInput').click();
+        }
+
+        document.getElementById("titleField").addEventListener("focus", function() {
+            if (this.textContent === "제목") {
+                this.textContent = "";
+                this.style.color = "black";
+            }
+        });
+
+        document.getElementById("titleField").addEventListener("blur", function() {
+            if (this.textContent.trim() === "") {
+                this.textContent = "제목";
+                this.style.color = "#aaa";
+            }
+        });
+
+        document.getElementById("contentField").addEventListener("focus", function() {
+            if (this.textContent === "본문을 입력하세요...") {
+                this.textContent = "";
+                this.style.color = "black";
+            }
+        });
+
+        document.getElementById("contentField").addEventListener("blur", function() {
+            if (this.textContent.trim() === "") {
+                this.textContent = "본문을 입력하세요...";
+                this.style.color = "#aaa";
+            }
+        });
+    </script>
+
+</body>
+</html>

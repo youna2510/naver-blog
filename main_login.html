@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naver Blog Project</title>
+    <style>
+
+        html, body {
+            min-width:1280px;
+            overflow-y:auto;
+            overflow-x: auto;
+        }
+
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        
+/*헤더 부분*/        
+        .header {
+            display: flex;
+            justify-content: space-between; /* 좌우로 균등 배치 */
+            align-items: center; /* 세로 중앙 정렬 */
+            padding: 5px 17%; /* 좌우 패딩 설정 */
+            background-color: #03c75a;
+            color: white;
+        }
+
+        .header .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .header .logo img {
+            height: 49px; /* 고정된 로고 크기 */
+            width: auto; /* 비율 유지 */
+            margin: 1px; /* margin (이미지를 둘러싸는 여백의 폭) 제거 */
+            margin-left:5%;
+            transition: margin-left 0.3s ease;
+        }
+
+        .header .search {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        .header .search input {
+            width: 60%; /* 검색창 너비 */
+            padding: 12px;
+            border: none;
+            border-radius: 0px;
+            margin-right: 300px;
+            border-color: #04ab4f;
+
+        }
+
+        .header .search button { /*윗줄 검색 버튼*/
+            padding: 11px 13px;
+            border: none;
+            background-color: #03b150;
+            border-color: #04ab4f;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left:-193px;
+        }
+        
+        .header .search button:hover {
+            background-color: #028a43;
+        }
+
+        .header .menu {
+            display: flex;
+        }
+
+        .header .menu button {
+            background-color: #03b150;
+            color: #fff;
+            border: none;
+            padding: 11px 16px;
+            border-radius:2px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .header .menu button:hover {
+            background-color: #028a43;
+        }
+
+        .search select {
+            width:100%;
+            padding:11.8px;
+            border: 0.05px solid;
+            border-color: #04ab4f;
+            margin-right:20px;
+        }
+        
+        .main-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px;
+        }
+
+/*헤더 부분 오른쪽 계정 이름 부분*/
+        .header-profile img{
+            width:38px;
+            border-radius:50px;
+        }
+
+        .header-profile {
+            display:flex;
+            flex-direction:row;
+            font-size:15px;
+        }
+
+        .header-profile-name{
+            margin-left:8px;
+            margin-top:10px;
+        }
+
+
+/*왼쪽 게시글 부분*/
+        .post {
+            display: flex;
+            gap: 35px; /*게시글 간 간격*/
+            padding: 20px 7px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .post:last-child {
+            border-bottom: none;
+        }
+
+        .post img { /*게시글 썸네일*/
+            width: 110px;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .post-content {
+            flex: 1;
+        }
+
+        .post-author {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .post-author img { /*게시글 작성자 프로필 사진*/
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            margin-right: 4px;
+        }
+
+        .post-title { /*게시글 제목*/
+            font-size: 17px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            margin-top:16px;
+        }
+
+        .post-text {
+            font-size: 14px;
+            color: #666;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .post-actions { /*게시글에서 좋아요, 댓글 등 */
+            font-size: 12px;
+            color: #777;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .post-actions span {
+            margin-right: 8px;
+        }
+
+        .post-actions img {
+            width: 16px;
+            height: 16px;
+        }
+
+
+/*왼쪽 부분*/
+        .left-column {
+            width: 80%;
+            padding: 25px;
+        }
+
+/* 이웃새글 메시지 스타일 */
+        .new-posts {
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .new-posts p {
+            font-size: 25px;
+            color: #666;
+            font-weight: 530;
+            margin: 4px;
+        }
+
+/*게시글 작성자 관련*/
+        .post-author {
+            display: flex;
+            align-items: center; /* 세로 정렬 유지 */
+            gap: 8px; /* 프로필 사진, 이름, 날짜 사이 간격 */
+        }
+
+        .author-info {
+            display: flex;
+            flex-direction: column; 
+        }
+
+        .author-name {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .time {
+            font-size: 12px;
+            color: gray;
+            margin-top:3px;
+        }
+
+
+/*좋아요*/
+        .heart {
+            font-size: 16px;
+            cursor: pointer;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .heart.active {
+                color: red; /* 채워진 하트 색상 */
+        }
+
+
+/*게시글 본문 부분*/       
+        .post-text {
+            max-width: 900px; /* 원하는 최대 가로 너비 설정 */
+            word-wrap: break-word; /* 긴 단어도 줄바꿈되도록 설정 */
+            overflow-wrap: break-word; /* 텍스트가 박스를 넘으면 자동 줄바꿈 */
+            white-space: normal; /* 기본적으로 줄바꿈 허용 */
+            line-height: 1.7; /* 줄 간격 조절 */
+        }
+
+
+/*오른쪽*/
+        .right-sidebar {
+            width: 400px;
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 프로필 영역 */
+        .profile {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .profile-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .profile-status {
+            font-size: 12px;
+            color: gray;
+        }
+
+        .logout-btn {
+            background-color: white;
+            border: 1px solid lightgray;
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* 메뉴 */
+        .menu {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .menu button {
+            flex: 1;
+            padding: 12px;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .menu button:hover {
+            background-color: #028a43;
+        }
+
+        .menu .active {
+            background-color: #03c75a;
+            color: white;
+        }
+
+        /* 알림 탭 (내 소식, 내 활동, 이웃 목록)*/
+        .notification-tabs {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 8px;
+            margin-bottom: 13px;
+        }
+
+        .notification-tabs div {
+            flex: 1;
+            text-align: center;
+            padding: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .notification-tabs .active {
+            border-bottom: 1.5px solid black;
+        }
+
+        /* 알림 리스트 */
+        .notifications {
+            margin-bottom: 18px;
+        }
+
+        .notification-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-user {
+            font-weight: bold;
+            color: #2c8f3b;
+        }
+
+        .notification-time {
+            font-size: 12px;
+            color: gray;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: gray;
+            cursor: pointer;
+            font-size: 16px;
+            margin-left:5px;
+        }
+
+        .delete-btn:hover {
+            color: black;
+        }
+
+        /* 모두 삭제 버튼 */
+        .delete-all {
+            text-align: center;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border-top: 1px solid #ddd;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .delete-all:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* 좋아요(하트) 기능 */
+        .heart {
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .liked {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <!-- 로고 -->
+        <div class="logo">
+            <img src="assets/bloglogo.png" alt="Logo">
+        </div>
+
+        <!-- 검색 영역 -->
+        <div class="search">
+            <div class="search-select">
+                <label for="search-type" class="visually-hidden"></label>
+                <select id="search-type" name="type">
+                    <option value="geul">글</option>
+                    <option value="blog">블로그</option>
+                    <option value="id">별명, 아이디</option>
+                </select>
+            </div>
+
+            <div class="search-input">
+                <label for="search-input" class="visually-hidden"></label>
+                <input id="search-input" type="text" placeholder="검색어를 입력하세요">
+            </div>
+
+            <button class="search-button">검색</button>
+        </div>
+
+        <!-- 메뉴 버튼 -->
+        <div class="header-profile">
+            <img src="assets/profile.png">
+            <span class="header-profile-name">고유나</span>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="left-column">
+            <!-- 이웃새글 메시지 -->
+            <div class="new-posts">
+                <p>이웃새글</p>
+            </div>
+ 
+        
+            <!-- 전체 공개된 글 목록 -->
+            <div class="post">
+                <div class="post-content">
+                    <div class="post-author">
+                        <img src="assets/profile.png" alt="프로필">
+                        <div class="author-info">
+                            <span class="author-name">와 여름이다</span>
+                            <span class="time">3시간 전</span>
+                        </div>
+                    </div>
+                    <div class="post-title">23살 시작</div>
+                    <div class="post-text">01월 01일 다들 일출을 봤죠?! 전 새해 첫 일몰을 담아보았습니다...</div>
+                    <div class="post-actions">
+                        <span class="heart" onclick="toggleHeart(this)">🤍</span>
+                        <span class="heart-count">8</span>
+                        <span>💬 14</span>
+                    </div>
+                </div>
+                <img src="assets/profile.png" alt="포스트 이미지">
+            </div>
+
+            <div class="post">
+                <div class="post-content">
+                    <div class="post-author">
+                        <img src="assets/profile.png" alt="프로필">
+                        <div class="author-info">
+                            <span class="author-name">내 소원은</span>
+                            <span class="time">9시간 전</span>
+                        </div>
+                    </div>
+                    <div class="post-title">1월</div>
+                    <div class="post-text">올해도 유익하게 마셔보자...ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</div>
+                    <div class="post-actions">
+                        <span class="heart" onclick="toggleHeart(this)">🤍</span>
+                        <span class="heart-count">9</span>
+                        <span>💬 14</span>
+                    </div>
+                </div>
+                <img src="assets/profile.png" alt="포스트 이미지">
+            </div>
+
+            <div class="post">
+                <div class="post-content">
+                    <div class="post-author">
+                        <img src="assets/profile.png" alt="프로필">
+                        <div class="author-info">
+                            <span class="author-name">보리</span>
+                            <span class="time">2025.01.02</span>
+                        </div>
+                    </div>
+                    
+                    <div class="post-title">착한데 나쁜 아이</div>
+                    <div class="post-text">반가워 2025년도...</div>
+                    <div class="post-actions">
+                        <span class="heart" onclick="toggleHeart(this)">🤍</span>
+                        <span class="heart-count">8</span>
+                        <span>💬 14</span>
+                    </div>
+                </div>
+                <img src="assets/profile.png" alt="포스트 이미지">
+            </div>
+            
+        </div>
+
+        
+        
+        
+
+        <div class="right-sidebar">
+            <!-- 프로필 정보 -->
+            <div class="profile">
+                <div class="profile-left">
+                    <img src="assets/profile.png" alt="프로필">
+                    <div class="profile-info">
+                        <div class="profile-name">유나</div>
+                        <div class="profile-status">오늘 6명 방문</div>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="location.href='main.html'">로그아웃</button>
+            </div>
+    
+            <!-- 메뉴 -->
+            <div class="menu">
+                <button class="active">내 블로그</button>
+                <button onclick="location.href='write.html'">✏ 글쓰기</button>
+            </div>
+    
+            <!-- 알림 탭 -->
+            <div class="notification-tabs">
+                <div class="active">내 소식</div>
+                <div>내 활동</div>
+                <div>이웃 목록</div>
+            </div>
+    
+            <!-- 알림 리스트 -->
+            <div class="notifications">
+                <div class="notification-item">
+                    <div class="notification-content">
+                        💬 <span class="notification-user">쏘사진님</span>이 <b>쭈도 일상</b> 글에 댓글을 남겼습니다.
+                        <div class="notification-time">1시간 전</div>
+                    </div>
+                    <button class="delete-btn">✖</button>
+                </div>
+    
+                <div class="notification-item">
+                    <div class="notification-content">
+                        <span class="heart" onclick="toggleHeart(this)">❤️</span>
+                        <span class="notification-user">쏘사진님</span>이 <b>쭈도 일상</b> 글을 좋아합니다.
+                        <div class="notification-time">1시간 전</div>
+                    </div>
+                    <button class="delete-btn">✖</button>
+                </div>
+    
+                <div class="notification-item">
+                    <div class="notification-content">
+                        ↩ <span class="notification-user">와 여름이다님</span>이 23살 시작 글에 답글을 남겼습니다.
+                        <div class="notification-time">15시간 전</div>
+                    </div>
+                    <button class="delete-btn">✖</button>
+                </div>
+    
+                <div class="notification-item">
+                    <div class="notification-content">
+                        ↩ <span class="notification-user">내 소원은님</span>이 1월 글에 답글을 남겼습니다.
+                        <div class="notification-time">2025.2.2. 12:04</div>
+                    </div>
+                    <button class="delete-btn">✖</button>
+                </div>
+            </div>
+    
+            <!-- 모두 삭제 -->
+            <div class="delete-all">모두 삭제</div>
+        </div>
+    
+
+
+    <script>
+        function toggleHeart(element) {
+            let heartCount = element.nextElementSibling; // 바로 다음 요소 (heart-count)
+            let count = parseInt(heartCount.innerText); // 현재 숫자 가져오기
+        
+            if (element.innerText === "🤍") {
+                element.innerText = "❤️"; // 채워진 하트로 변경
+                element.classList.add("active");
+                heartCount.innerText = count + 1; // 숫자 증가
+            } else {
+                element.innerText = "🤍"; // 다시 비어있는 하트로 변경
+                element.classList.remove("active");
+                heartCount.innerText = count - 1; // 숫자 감소
+            }
+        }
+        </script>
+        
+</body>
+</html>
