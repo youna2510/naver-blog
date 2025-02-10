@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>네이버 블로그 관리</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Serif+KR&family=Gaegu&family=Nanum+Pen+Script&family=Black+And+White+Picture&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Nanum Gothic', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .header {
+            background-color: #00c73c;
+            padding: 15px 25px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .header .menu {
+            display: flex;
+            gap: 10px;
+            font-size:15px;
+            font-weight:500;
+        }
+
+        .header .menu a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .header .menu a:hover {
+            background-color: #009a2c;
+        }
+
+        .container {
+            display: flex;
+            margin-top: 1px;
+            padding: 15px;
+        }
+
+        .sidebar {
+            width: 230px;
+            background-color: white;
+            padding: 20px;
+            border-right: 1px solid #ddd;
+        }
+
+        .sidebar h3 {
+            font-size: 16px;
+            margin-bottom: 13px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            padding: 10px 0;
+            font-size: 14px;
+            cursor: pointer;
+            color: #555;
+        }
+
+        .sidebar ul li:hover {
+            color: #00c73c;
+            font-weight: bold;
+        }
+
+        .content {
+            flex: 1;
+            padding: 25px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .content h2 {
+            font-size: 22px;
+            margin-bottom: 26px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 80%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-top:6px;
+        }
+
+        .form-group textarea {
+            height: 80px;
+            resize: none;
+        }
+
+        .form-group button {
+            background-color: #00c73c;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-bottom:25px;
+        }
+
+        .form-group button:hover {
+            background-color: #009a2c;
+        }
+
+        /* 이미지 미리보기 스타일 */
+        .image-preview {
+            margin-top: 10px;
+            width: 120px;
+            height: 120px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            display: none;
+            object-fit: cover;
+        }
+
+        /* 수정 완료 버튼 */
+        .save-button {
+            width: 80%;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .save-button button {
+            background-color: #00c73c;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 200px;
+        }
+
+        .save-button button:hover {
+            background-color: #009a2c;
+        }
+
+        /* 저장 완료 메시지 */
+        .success-message {
+            display: none;
+            text-align: center;
+            color: green;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>N Blog 관리</div>
+        <div class="menu">
+            <a href="#">내 블로그</a>
+            <a href="#">이웃블로그</a>
+            <a href="#">블로그 홈</a>
+            <a href="#">내 메뉴</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <aside class="sidebar">
+            <h3>기본 설정</h3>
+            <ul>
+                <li>블로그 정보</li>
+                <li>사생활 보호</li>
+                <li>스팸 차단</li>
+                <li>이웃 관리</li>
+
+            </ul>
+        </aside>
+        <section class="content">
+            <h2>블로그 정보</h2>
+
+            <div class="form-group">
+                <label>블로그 이름</label>
+                <input type="text" id="blogName" placeholder="블로그명 입력">
+            </div>
+            <div class="form-group">
+                <label>별명</label>
+                <input type="text" id="nickname" placeholder="사용자 닉네임">
+            </div>
+            <div class="form-group">
+                <label>소개글</label>
+                <textarea id="description" placeholder="블로그 프로필 영역의 프로필 이미지 아래에 표시됩니다."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>블로그 프로필 이미지</label>
+                <input type="file" id="profileImageInput" accept="image/*">
+                <img id="profilePreview" class="image-preview" alt="프로필 미리보기">
+            </div>
+
+            <div class="form-group">
+                <label>모바일앱 커버 이미지</label>
+                <input type="file" id="mobileCoverInput" accept="image/*">
+                <img id="mobileCoverPreview" class="image-preview" alt="모바일앱 커버 미리보기">
+            </div>
+
+            <div class="save-button">
+                <button onclick="saveChanges()">수정 완료</button>
+                <p id="successMessage" class="success-message">변경 사항이 저장되었습니다!</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function previewImage(inputId, previewId) {
+            document.getElementById(inputId).addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const preview = document.getElementById(previewId);
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // 프로필 사진 및 모바일 커버 미리보기 기능 적용
+        previewImage('profileImageInput', 'profilePreview');
+        previewImage('mobileCoverInput', 'mobileCoverPreview');
+
+        function saveChanges() {
+            const blogName = document.getElementById("blogName").value;
+            const nickname = document.getElementById("nickname").value;
+            const description = document.getElementById("description").value;
+
+            console.log("📌 블로그명:", blogName);
+            console.log("📌 별명:", nickname);
+            console.log("📌 소개글:", description);
+
+            // 저장 완료 메시지 표시
+            const successMessage = document.getElementById("successMessage");
+            successMessage.style.display = "block";
+
+            // 2초 후 메시지 사라지기
+            setTimeout(() => {
+                successMessage.style.display = "none";
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

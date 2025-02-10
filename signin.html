@@ -77,31 +77,7 @@
             outline: none;
         }
 
-        /* 로그인 상태유지 */
-        .login-options {
-            display: flex;
-            font-size: 12px;
-            color: #555;
-            margin-bottom: 20px;
-        }
 
-        .login-options label {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            white-space: nowrap;
-            margin-left: 5px;
-            margin-top: 10px;
-        }
-
-        .login-options input {
-            margin-right: 5px;
-        }
-
-        .login-options input[type="checkbox"] {
-            margin-right: 10px;
-            margin-top: 11px;
-        }
 
         /* 로그인 버튼 */
         .login-btn {
@@ -169,29 +145,25 @@
     <div class="login-container">
         <!-- 탭 네비게이션 -->
         <div class="login-tabs">
-            <div class="active">ID/전화번호</div>
-            <div>일회용 번호</div>
-            <div>QR코드</div>
+            <div class="active">회원가입</div>
         </div>
 
         <!-- 로그인 입력 폼 -->
         <div class="login-form">
-            <input type="text" id="username" placeholder="아이디">
+            <input type="text" id="username" placeholder="아이디 입력">
             <input type="password" id="password" placeholder="비밀번호">
+            <input type="password" id="password" placeholder="비밀번호 확인">
 
-            <div class="login-options">
-                <label><input type="checkbox"> 로그인 상태 유지</label>
-            </div>
 
-            <button class="login-btn" onclick="login()">로그인</button>
-            <p id="error-message" class="error-message">아이디 또는 비밀번호가 틀렸습니다.</p>
+
+            <button class="login-btn" onclick="login()">회원가입</button>
         </div>
 
         <!-- 추가 옵션 -->
         <div class="extra-options">
             <a href="#">비밀번호 찾기</a>
             <a href="#">아이디 찾기</a>
-            <a href="signin.html">회원가입</a>
+            <a href="login.html">로그인</a>
         </div>
     </div>
 
@@ -205,20 +177,7 @@
     </div>
 
     <script>
-        function login() {
-            const adminUsername = "test";  // 관리자 계정
-            const adminPassword = "test123";  // 관리자 비밀번호
 
-            const username = document.getElementById("username").value;
-            const password = document.getElementById("password").value;
-            const errorMessage = document.getElementById("error-message");
-
-            if (username === adminUsername && password === adminPassword) {
-                window.location.href = "main_login.html";  // 로그인 성공 시 main.html로 이동
-            } else {
-                errorMessage.style.display = "block";  // 로그인 실패 메시지 표시
-            }
-        }
     </script>
 
 </body>

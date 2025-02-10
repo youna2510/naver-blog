@@ -127,7 +127,29 @@
         .header-profile-name{
             margin-left:8px;
             margin-top:10px;
+            margin-right:80px;
         }
+
+
+
+        .header-profile button { /*윗줄 검색 버튼*/
+            padding: 5px 10px;
+            border: none;
+            background-color: #03b150;
+            border-color: #04ab4f;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            font-size:14px;
+            margin-top:5px;
+            margin-right:-150px;
+        }
+        
+        .header-profile button:hover {
+            background-color: #028a43;
+        }
+
+
 
 
 /*왼쪽 게시글 부분*/
@@ -469,6 +491,7 @@
         <div class="header-profile">
             <img src="assets/profile.png">
             <span class="header-profile-name">고유나</span>
+            <button class="header-profile-setting" onclick="location.href='profile.html'">프로필 수정</button>
         </div>
     </header>
 
