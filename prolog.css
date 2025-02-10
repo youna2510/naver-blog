@@ -1,8 +1,8 @@
 .top_menubar{
-    
+    width:300px;
     font-size: 12px;
-    float: right;
-    margin-right:150px;
+    position: absolute;
+    margin-left:1150px;
 }
 
 .login_btn{
@@ -219,6 +219,10 @@ li {
     border: 0.5px solid gray;
 }
 
+.post_last_list{
+    padding-bottom: 15px;
+}
+
 .post_list_hr{
     border:0.2px solid #bcbcbc;
     width:970px;
@@ -287,12 +291,12 @@ li {
     position: relative;
     left : 350px;
     width:1030px;
-    margin-bottom: 50px;
+    margin-bottom: 500px;
 }
 
 .comments{
     background-color: #F7F2D5;
-    margin-top:25px;
+    margin-top:10px;
     padding-top: 10px;
     padding-bottom: 60px;    
 }
@@ -338,4 +342,30 @@ li {
 .cmt_writer_nickname{
     font-size: 14px;
     margin: 10px;
+}
+
+.bg-neighbor{
+    width: 190px;
+    background-color: #eeeeee;
+    border: 0.5px solid gray;
+    position: absolute;
+    margin-left: 138px;
+    margin-top: 540px;
+    padding-bottom: 15px;
+}
+
+.neighbor-profile{
+    margin:15px;
+    font-size: 13px;
+}
+
+.find_neighbor{
+    background-color: #eeeeee;
+    border: 0.25px solid gray;
+    padding: 3.8px;    
+}
+
+.all_neighborhood{
+    margin: 10px;
+    font-size: 13px;
 }
