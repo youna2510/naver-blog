@@ -1,0 +1,54 @@
+.nr_title{
+    font-size: 25px;
+    padding: 10px;
+}
+
+.nr_ment{
+    padding: 15px;
+    background-color: #eeeeee;
+    border: 0.25px solid gray;
+    width: 400px;
+    margin: 10px;
+
+}
+
+.btn_cancel{
+    padding: 7px 18px;
+    background-color: white;
+    border: 0.25px solid gray;
+    text-decoration-line: none;
+
+}
+
+.btn_next{
+    padding: 7px 18px;
+    background-color: #55cc00;
+    border: 0.25px solid gray;
+    color:white;
+    text-decoration-line: none;
+
+}
+
+.btns{
+    position: relative;
+    padding-top: 20px;
+    padding-left: 290px;
+}
+
+input[type='radio']{
+    appearance: none;
+    border: 0.25px solid gray;
+    width:15px;
+    height: 15px;
+    border-radius: 50%;
+}
+
+
+input[type='radio']:checked{
+    appearance: none;
+    border: 5px solid green;
+    width:15px;
+    height: 15px;
+    border-radius: 50%;
+
+}
