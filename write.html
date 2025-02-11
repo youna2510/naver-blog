@@ -144,7 +144,7 @@
             background-color: white;
         }
 
-        .editor img, .editor video {
+        .editor img {
             max-width: 100%;
             height: auto;
             margin-top: 10px;
@@ -152,9 +152,10 @@
         }
 
         /* 숨겨진 파일 선택 버튼 */
-        #imageInput, #videoInput {
+        #imageInput {
             display: none;
         }
+
     </style>
 </head>
 <body>
@@ -177,7 +178,7 @@
 
     <!-- 글꼴 및 크기 설정 바 -->
     <div class="topbar">
-        <select id="fontSelect">
+        <select id="fontSelect" onchange="changeFontFamily()">
             <option value="'Nanum Gothic', sans-serif">나눔고딕</option>
             <option value="'Noto Serif KR', serif">Noto Serif</option>
             <option value="'Gaegu', cursive">Gaegu</option>
@@ -185,17 +186,17 @@
             <option value="'Black And White Picture', cursive">Black & White</option>
         </select>
 
-        <select id="fontSizeSelect">
-            <option value="11px">11</option>
-            <option value="13px">13</option>
-            <option value="15px">15</option>
-            <option value="16px">16</option>
-            <option value="19px">19</option>
-            <option value="24px">24</option>
-            <option value="28px">28</option>
-            <option value="30px">30</option>
-            <option value="34px">34</option>
-            <option value="38px">38</option>
+        <select id="fontSizeSelect" onchange="changeFontSize()">
+            <option value="1">11</option>
+            <option value="2">13</option>
+            <option value="3">15</option>
+            <option value="4">16</option>
+            <option value="5">19</option>
+            <option value="6">24</option>
+            <option value="7">28</option>
+            <option value="8">30</option>
+            <option value="9">34</option>
+            <option value="10">38</option>
         </select>
     </div>
 
@@ -206,7 +207,9 @@
             <div contenteditable="true" class="content" id="contentField">본문을 입력하세요...</div>
         </div>
     </div>
+
     <script>
+
         document.getElementById("fontSelect").addEventListener("change", function() {
             let selectedFont = this.value;
             document.getElementById("contentField").style.fontFamily = selectedFont;
@@ -223,28 +226,71 @@
             document.getElementById('imageInput').click();
         }
     
-        // ✅ 이미지 삽입 기능 (캡션 포함)
+        
+
+
+
+
+
+
+
         function insertImage(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-    
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const imgHtml = `
-                    <figure style="text-align: center; margin: 15px 0;">
-                        <img src="${e.target.result}" 
-                             style="max-width: 300px; height: auto; margin-top: 10px; border-radius: 5px;">
-                        <figcaption contenteditable="true" 
-                                    style="font-size: 14px; color: gray; margin-top: 5px; cursor: text;">
-                            이미지 설명을 입력하세요...
-                        </figcaption>
-                    </figure><br>`;
-    
-                // 🔥 현재 커서 위치 유지하면서 이미지+캡션 삽입
-                insertAtCursor(imgHtml);
-            };
-            reader.readAsDataURL(file);
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const imgHtml = `
+            <figure style="text-align: center; margin: 15px 0;">
+                <img src="${e.target.result}" 
+                     style="max-width: 300px; height: auto; margin-top: 10px; border-radius: 5px;">
+                <figcaption contenteditable="true" 
+                            class="image-caption"
+                            style="font-size: 14px; margin-top: 5px; cursor: text; color: gray;">
+                    이미지 설명을 입력하세요...
+                </figcaption>
+            </figure><br>`;
+
+        insertAtCursor(imgHtml);
+    };
+    reader.readAsDataURL(file);
+}
+
+
+
+
+
+document.addEventListener("focusin", function(event) {
+    if (event.target.classList.contains("image-caption")) {
+        if (event.target.textContent.trim() === "이미지 설명을 입력하세요...") {
+            event.target.textContent = ""; // ✅ 클릭 시 placeholder 제거
+            event.target.style.color = "gray"; // ✅ 기본 회색 유지
         }
+    }
+});
+
+document.addEventListener("input", function(event) {
+    if (event.target.classList.contains("image-caption")) {
+        if (event.target.textContent.trim() !== "") {
+            event.target.style.color = "gray"; // ✅ 입력 중에도 회색 유지
+        }
+    }
+});
+
+document.addEventListener("focusout", function(event) {
+    if (event.target.classList.contains("image-caption")) {
+        if (event.target.textContent.trim() === "") {
+            event.target.textContent = "이미지 설명을 입력하세요..."; // ✅ 빈 상태일 때 placeholder 복구
+            event.target.style.color = "gray"; // ✅ 회색으로 설정
+        }
+    }
+});
+
+
+
+
+
+
     
         // 🔥 현재 커서 위치를 유지하며 이미지 삽입하는 함수
         function insertAtCursor(html) {
@@ -305,6 +351,18 @@
                 this.style.color = "#aaa";
             }
         });
+
+
+        function changeFontFamily() {
+            let selectedFont = document.getElementById("fontSelect").value;
+            document.execCommand("fontName", false, selectedFont);
+        }
+
+        function changeFontSize() {
+            let selectedSize = document.getElementById("fontSizeSelect").value;
+            document.execCommand("fontSize", false, selectedSize);
+        }
+
     </script>
     
 </body>

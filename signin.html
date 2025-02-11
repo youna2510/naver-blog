@@ -25,7 +25,7 @@
         .naver-logo {
             font-size: 50px;
             font-weight: 1000;
-            color: #03c75a;
+            color: #da9d9c;
             margin-bottom: 20px;
         }
 
@@ -49,7 +49,7 @@
         }
 
         .signup-container {
-            color: #03c75a;
+            color: #da9d9c;
             padding-bottom: 30px;
         }
 
@@ -64,7 +64,7 @@
         }
 
         .signup-form input:focus {
-            border-color: #03c75a;
+            border-color: #da9d9c;
             outline: none;
         }
 
@@ -83,7 +83,7 @@
         }
 
         .signup-btn:hover {
-            background-color: #03c75a;
+            background-color: #861f1c;
             color: white;
         }
 
@@ -192,7 +192,6 @@
         return;
     }
 
-
     const signupData = {
         id: username,
         password: password,
@@ -215,25 +214,32 @@
             result = { message: "서버 응답을 처리할 수 없습니다." };
         }
 
-        if (response.status === 400) {
-    // 서버에서 반환된 메시지가 배열일 경우 처리
-    if (Array.isArray(result.message)) {
-        errorMessage.textContent = result.message.join(" ");  // 배열을 문자열로 결합
-    } else {
-        errorMessage.textContent = result.message || "회원가입 실패";
-    }
-    errorMessage.style.display = "block";
-}
+        console.log("서버 응답:", result); // 백엔드에서 어떤 응답을 주는지 콘솔 확인
 
-
-
-
+        if (response.ok) {
+            alert(result.message || "회원가입이 완료되었습니다!");
+            window.location.href = "login.html";  // 회원가입 후 로그인 페이지로 이동
+        } else if (response.status === 400) {
+            if (typeof result.message === "string") {
+                errorMessage.textContent = result.message;
+            } else if (Array.isArray(result.message)) {
+                errorMessage.textContent = result.message.join(" ");  // 배열이면 공백으로 연결
+            } else {
+                errorMessage.textContent = "회원가입 실패. 입력값을 확인하세요.";
+            }
+            errorMessage.style.display = "block";
+        } else {
+            errorMessage.textContent = "회원가입에 실패했습니다. 다시 시도해주세요.";
+            errorMessage.style.display = "block";
+        }
 
     } catch (error) {
+        console.error("서버 요청 실패:", error);
         errorMessage.textContent = "서버 연결에 실패했습니다.";
         errorMessage.style.display = "block";
     }
 }
+
 
     </script>
     
