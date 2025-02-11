@@ -1,3 +1,7 @@
+* {
+    font-family: Arial, sans-serif;
+}
+
 .nr_title{
     font-size: 25px;
     padding: 10px;
@@ -22,7 +26,7 @@
 
 .btn_next{
     padding: 7px 18px;
-    background-color: #55cc00;
+    background-color:#da9d9c;
     border: 0.25px solid gray;
     color:white;
     text-decoration-line: none;
@@ -35,20 +39,9 @@
     padding-left: 290px;
 }
 
-input[type='radio']{
-    appearance: none;
-    border: 0.25px solid gray;
-    width:15px;
-    height: 15px;
-    border-radius: 50%;
-}
 
-
-input[type='radio']:checked{
-    appearance: none;
-    border: 5px solid green;
-    width:15px;
-    height: 15px;
-    border-radius: 50%;
-
+.writing_message{
+    margin-top: 10px;
+    width:100%;
+    height: 50px;
 }
