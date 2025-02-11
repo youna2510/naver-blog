@@ -128,13 +128,25 @@
                     <a class="accept_btn">수락</a> <a class="denied_btn">거절</a>
                 </div>
                 <div class="table_title">
-                    <a>신청한 사람</a> <a style="margin-left: 200px; margin-right: 120px;">메시지</a><a>신청일</a><a>관리</a>
+                    <input style="margin-left: 20px;" type="checkbox" id="selectall">
+                    <a>신청한 사람</a> <a style="margin-left: 200px; margin-right: 135px;">메시지</a><a>신청일</a><a>관리</a>
                 </div>
                 <div>
-                    <a class="empty_ment"><strong>새로 들어온 이웃 신청이 없습니다</strong></a>
+                    <a style="display: none;" class="empty_ment"><strong>새로 들어온 이웃 신청이 없습니다</strong></a>
+                    <div class="visible_neighbor">
+                        <input type="checkbox" id="neighbor">
+                        <div style="margin-left:60px; display: inline-block;"><strong>이름</strong></div>
+                        <div style="margin-left:150px; display: inline-block;">우리 서로이웃해요~</div>
+                        <div style="margin-left:190px; display: inline-block;"><strong>25.02.11</strong></div>
+                        <a style=" display: inline-block;">
+                            <a class="accept_btn">수락</a> <a class="denied_btn">거절</a><a class="report_btn">신고</a>
+                        </a>
+                        <div style="margin-left:80px;">nameid</div>
+                    </div>
                 </div>
-                <hr style="margin-top: 50px;">
+                <hr style="margin-top: 30px;">
                 <div>
+                    <input style="margin-left: 20px;" type="checkbox" id="selectall">
                     <a class="select_all">전체선택</a><a class="accept_btn">수락</a> <a class="denied_btn">거절</a>
                 </div>
             </div>

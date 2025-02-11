@@ -37,17 +37,26 @@ hr{
     margin-top: 2px;
 }
 
+.report_btn{
+    font-size: 14px;
+    padding: 4px;
+    border: 0.25px solid gray;
+    margin-top: 2px;
+    margin-left: 4px;
+
+}
+
 .table_title{
     background-color: #eeeeee;
     padding: 10px;
     margin-top: 20px;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
     border-top: 1px solid gray;
 }
 
 .table_title a{
     position: relative;
-    margin-left: 80px;
+    margin-left: 60px;
     width: 750px;
 }
 
@@ -58,5 +67,9 @@ hr{
 
 .select_all{
     font-size: 14px;
-    margin-left: 30px;
+    margin-left: 10px;
+}
+
+.visible_neighbor{
+    margin-left:30px;
 }
