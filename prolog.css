@@ -21,7 +21,7 @@
 }
 
 hr{
-    border:2px solid green;
+    border:2px solid #da9d9c;
     width: 1250px;
 }
 
@@ -45,7 +45,7 @@ li {
 
 .p_title_t{
     font-weight: normal;
-    color: green;
+    color: #861f1c;
     font-size: 18px;
 }
 
@@ -85,7 +85,7 @@ li {
 .bg-body{
     position: absolute;
     left: 145px;
-    border: 0.3px solid green;
+    border: 0.3px solid #da9d9c;
     padding : 15px;
 }
 
@@ -178,7 +178,7 @@ li {
 
 .post_title{
     font-size: 30px;
-    color: green;
+    color: #861f1c;
     font-weight: normal; 
     padding-top: 20px;
 }
