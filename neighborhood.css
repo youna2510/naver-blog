@@ -1,0 +1,62 @@
+hr{
+    margin: 13px;
+}
+
+.show_btn{
+    background-color: white;
+    border-bottom: solid 1px gray;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.show_btn a{
+    background-color: #eeeeee;
+    border: 0.25px solid gray;
+    padding: 10px;    
+}
+
+
+.show_btn a:hover{
+    background-color: white;
+    padding: 10px;
+    color:green;
+}
+
+.accept_btn{
+    font-size: 14px;
+    padding: 4px;
+    border: 0.25px solid gray;
+    margin-top: 2px;
+    margin-left: 20px;
+}
+
+.denied_btn{
+    font-size: 14px;
+    padding: 4px;
+    border: 0.25px solid gray;
+    margin-top: 2px;
+}
+
+.table_title{
+    background-color: #eeeeee;
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+    border-top: 1px solid gray;
+}
+
+.table_title a{
+    position: relative;
+    margin-left: 80px;
+    width: 750px;
+}
+
+.empty_ment{
+    margin: 180px;
+    flex-shrink: 0;
+}
+
+.select_all{
+    font-size: 14px;
+    margin-left: 30px;
+}

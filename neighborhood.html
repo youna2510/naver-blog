@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>네이버 블로그 관리</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Serif+KR&family=Gaegu&family=Nanum+Pen+Script&family=Black+And+White+Picture&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="neighborhood.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Nanum Gothic', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .header {
+            background-color: #00c73c;
+            padding: 15px 25px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .header .menu {
+            display: flex;
+            gap: 10px;
+            font-size:15px;
+            font-weight:500;
+        }
+
+        .header .menu a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .header .menu a:hover {
+            background-color: #009a2c;
+        }
+
+        .container {
+            display: flex;
+            margin-top: 1px;
+            padding: 15px;
+        }
+
+        .sidebar {
+            width: 230px;
+            background-color: white;
+            padding: 20px;
+            border-right: 1px solid #ddd;
+        }
+
+        .sidebar h3 {
+            font-size: 16px;
+            margin-bottom: 13px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            padding: 10px 0;
+            font-size: 14px;
+            cursor: pointer;
+            color: #555;
+        }
+
+        .sidebar ul li:hover {
+            color: #00c73c;
+            font-weight: bold;
+        }
+
+        .content {
+            flex: 1;
+            padding: 25px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .content h2 {
+            font-size: 22px;
+            margin-bottom: 26px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>N Blog 관리</div>
+        <div class="menu">
+            <a href="#">내 블로그</a>
+            <a href="#">이웃블로그</a>
+            <a href="#">블로그 홈</a>
+            <a href="#">내 메뉴</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <aside class="sidebar">
+            <h3>기본 설정</h3>
+            <ul>
+                <a style="text-decoration-line: none;" href="./profile.html"><li>블로그 정보</li></a>
+                <li>사생활 보호</li>
+                <li>스팸 차단</li>
+                <a style="text-decoration-line: none;" href="./neighborhood.html"><li>이웃 관리</li></a>
+
+            </ul>
+        </aside>
+        <section class="content">
+            <h2>이웃 관리</h2>
+            <hr>
+            <div class="table">
+                <div class="show_btn">
+                    <a>받은신청</a><a>보낸신청</a>
+                </div>
+                <div >
+                    <a class="accept_btn">수락</a> <a class="denied_btn">거절</a>
+                </div>
+                <div class="table_title">
+                    <a>신청한 사람</a> <a style="margin-left: 200px; margin-right: 120px;">메시지</a><a>신청일</a><a>관리</a>
+                </div>
+                <div>
+                    <a class="empty_ment"><strong>새로 들어온 이웃 신청이 없습니다</strong></a>
+                </div>
+                <hr style="margin-top: 50px;">
+                <div>
+                    <a class="select_all">전체선택</a><a class="accept_btn">수락</a> <a class="denied_btn">거절</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</body>
+</html>
