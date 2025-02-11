@@ -26,7 +26,7 @@
         .naver-logo {
             font-size: 50px;
             font-weight: 1000;
-            color: #03c75a;
+            color: #da9d9c;
             margin-bottom: 20px;
         }
 
@@ -57,8 +57,8 @@
         }
 
         .login-tabs div.active {
-            color: #03c75a;
-            border-bottom: 3px solid #03c75a;
+            color: #861f1c;
+            border-bottom: 3px solid #861f1c;
             padding-bottom: 5px;
         }
 
@@ -73,7 +73,7 @@
         }
 
         .login-form input:focus {
-            border-color: #03c75a;
+            border-color: #861f1c;  
             outline: none;
         }
 
@@ -118,7 +118,7 @@
         }
 
         .login-btn:hover {
-            background-color: #03c75a;
+            background-color: #861f1c;            ;
             color: white;
         }
 
@@ -163,7 +163,7 @@
 <body>
 
     <!-- 네이버 로고 -->
-    <div class="naver-logo">NAVER</div>
+    <div class="naver-logo">SG BLOG</div>
 
     <!-- 로그인 컨테이너 -->
     <div class="login-container">
@@ -205,21 +205,66 @@
     </div>
 
     <script>
-        function login() {
-            const adminUsername = "test";  // 관리자 계정
-            const adminPassword = "test123";  // 관리자 비밀번호
+        async function login() {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        const errorMessage = document.getElementById("error-message");
 
-            const username = document.getElementById("username").value;
-            const password = document.getElementById("password").value;
-            const errorMessage = document.getElementById("error-message");
+        // 에러 메시지를 숨김
+        errorMessage.style.display = "none";
 
-            if (username === adminUsername && password === adminPassword) {
-                window.location.href = "main_login.html";  // 로그인 성공 시 main.html로 이동
-            } else {
-                errorMessage.style.display = "block";  // 로그인 실패 메시지 표시
-            }
+        // 입력 필드가 비어 있는지 확인
+        if (!username || !password) {
+            errorMessage.textContent = "아이디와 비밀번호를 입력해주세요.";
+            errorMessage.style.display = "block";
+            return;
         }
+
+        const loginData = {
+            id: username,
+            password: password
+        };
+
+        try {
+            // 로그인 API 호출
+            const response = await fetch("http://127.0.0.1:8000/login/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(loginData)  // 백엔드에서 JSON 데이터로 처리하도록 전달
+            });
+
+            const result = await response.json();
+
+            if (response.status === 200) {
+                // 로그인 성공
+                alert(result.message || "로그인 성공");
+
+                // JWT 토큰을 로컬 스토리지에 저장
+                localStorage.setItem("access_token", result.access);
+                localStorage.setItem("refresh_token", result.refresh);
+
+                // 로그인 성공 시 메인 페이지로 이동
+                window.location.href = "main_login.html";  
+            } else if (response.status === 401) {
+                // 로그인 실패
+                errorMessage.textContent = result.error || "아이디 또는 비밀번호가 틀렸습니다.";
+                errorMessage.style.display = "block";
+            } else {
+                errorMessage.textContent = "로그인에 실패했습니다.";
+                errorMessage.style.display = "block";
+            }
+        } catch (error) {
+            // 서버 연결 실패
+            errorMessage.textContent = "서버 연결에 실패했습니다.";
+            errorMessage.style.display = "block";
+        }
+    }
+</script>
+
     </script>
+    
 
 </body>
 </html>

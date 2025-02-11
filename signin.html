@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NAVER 로그인</title>
+    <title>NAVER 회원가입</title>
     <style>
-        /* 기본 스타일 설정 */
         * {
             margin: 0;
             padding: 0;
@@ -22,7 +21,7 @@
             height: 100vh;
         }
 
-        /* 네이버 로고 (h1) */
+        /* 네이버 로고 */
         .naver-logo {
             font-size: 50px;
             font-weight: 1000;
@@ -30,8 +29,8 @@
             margin-bottom: 20px;
         }
 
-        /* 로그인 컨테이너 */
-        .login-container {
+        /* 회원가입 컨테이너 */
+        .signup-container {
             background-color: white;
             width: 450px;
             padding: 40px;
@@ -40,30 +39,22 @@
             text-align: center;
         }
 
-        /* 탭 네비게이션 */
-        .login-tabs {
-            display: flex;
-            justify-content: space-around;
-            border-bottom: 2px solid #ddd;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-
-        .login-tabs div {
-            font-size: 14px;
+        .signup-container h2{
+            font-size: 21px;
             color: #333;
             cursor: pointer;
-            font-weight: bold;
+            padding:15px;
+            margin-top:-15px;
+            margin-bottom:15px;
         }
 
-        .login-tabs div.active {
+        .signup-container {
             color: #03c75a;
-            border-bottom: 3px solid #03c75a;
-            padding-bottom: 5px;
+            padding-bottom: 30px;
         }
 
-        /* 로그인 입력 필드 */
-        .login-form input {
+        /* 입력 필드 */
+        .signup-form input {
             width: 100%;
             padding: 12px;
             margin-bottom: 10px;
@@ -72,15 +63,13 @@
             font-size: 14px;
         }
 
-        .login-form input:focus {
+        .signup-form input:focus {
             border-color: #03c75a;
             outline: none;
         }
 
-
-
-        /* 로그인 버튼 */
-        .login-btn {
+        /* 회원가입 버튼 */
+        .signup-btn {
             width: 100%;
             padding: 12px;
             background-color: lightgray;
@@ -93,18 +82,18 @@
             margin-bottom: 10px;
         }
 
-        .login-btn:hover {
+        .signup-btn:hover {
             background-color: #03c75a;
             color: white;
         }
 
-        /* 로그인 실패 메시지 */
+        /* 에러 메시지 */
         .error-message {
             color: red;
             font-size: 14px;
             margin-top: 10px;
-            margin-bottom:20px;
-            display: none; /* 초기에는 숨김 */
+            margin-bottom: 20px;
+            display: none;
         }
 
         /* 추가 옵션 */
@@ -115,6 +104,15 @@
             justify-content: center;
             gap: 15px;
             margin-top: 15px;
+        }
+
+        .extra-options a {
+            color: gray;
+            text-decoration: none;
+        }
+
+        .extra-options a:hover {
+            text-decoration: underline;
         }
 
         /* 하단 정보 */
@@ -141,22 +139,19 @@
     <!-- 네이버 로고 -->
     <div class="naver-logo">NAVER</div>
 
-    <!-- 로그인 컨테이너 -->
-    <div class="login-container">
-        <!-- 탭 네비게이션 -->
-        <div class="login-tabs">
-            <div class="active">회원가입</div>
-        </div>
+    <!-- 회원가입 컨테이너 -->
+    <div class="signup-container">
+        <h2>회원가입</h2>
 
-        <!-- 로그인 입력 폼 -->
-        <div class="login-form">
+        <!-- 회원가입 입력 폼 -->
+        <div class="signup-form">
             <input type="text" id="username" placeholder="아이디 입력">
-            <input type="password" id="password" placeholder="비밀번호">
-            <input type="password" id="password" placeholder="비밀번호 확인">
+            <input type="password" id="password" placeholder="비밀번호 입력">
+            <input type="password" id="password_confirm" placeholder="비밀번호 확인">
 
+            <p class="error-message" id="errorMessage"></p>
 
-
-            <button class="login-btn" onclick="login()">회원가입</button>
+            <button class="signup-btn" onclick="signup()">회원가입</button>
         </div>
 
         <!-- 추가 옵션 -->
@@ -177,8 +172,73 @@
     </div>
 
     <script>
+        async function signup() {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const password_confirm = document.getElementById("password_confirm").value;
+    const errorMessage = document.getElementById("errorMessage");
+
+    errorMessage.style.display = "none";
+
+    if (!username || !password || !password_confirm) {
+        errorMessage.textContent = "모든 항목을 입력해주세요.";
+        errorMessage.style.display = "block";
+        return;
+    }
+
+    if (password !== password_confirm) {
+        errorMessage.textContent = "비밀번호가 일치하지 않습니다.";
+        errorMessage.style.display = "block";
+        return;
+    }
+
+
+    const signupData = {
+        id: username,
+        password: password,
+        password_confirm: password_confirm
+    };
+
+    try {
+        const response = await fetch("http://127.0.0.1:8000/signup/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(signupData)
+        });
+
+        let result;
+        try {
+            result = await response.json();
+        } catch (error) {
+            result = { message: "서버 응답을 처리할 수 없습니다." };
+        }
+
+        if (response.status === 400) {
+    // 서버에서 반환된 메시지가 배열일 경우 처리
+    if (Array.isArray(result.message)) {
+        errorMessage.textContent = result.message.join(" ");  // 배열을 문자열로 결합
+    } else {
+        errorMessage.textContent = result.message || "회원가입 실패";
+    }
+    errorMessage.style.display = "block";
+}
+
+
+
+
+
+    } catch (error) {
+        errorMessage.textContent = "서버 연결에 실패했습니다.";
+        errorMessage.style.display = "block";
+    }
+}
 
     </script>
-
+    
+    
+    
+    
 </body>
 </html>
