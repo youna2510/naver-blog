@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="request.css">
     <title>Document</title>
+    
+    <script>
+        function close_popup(){
+          window.close();
+        }
+    </script>
+
 </head>
 <body>
     <!--이웃추가/서이추 선택-->
@@ -16,8 +23,8 @@
         </div>
     </div>
 
-    <div class="btns">
-        <a class="btn_cancel">취소</a> <a href="./neighbor_request_fin.html" class="btn_next">다음</a>
+    <div class="btns" >
+        <a class="btn_cancel" onclick="close_popup()">취소</a> <a href="./neighbor_request_fin.html" class="btn_next">다음</a>
     </div>
 </body>
 </html>

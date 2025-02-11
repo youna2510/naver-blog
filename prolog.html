@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="prolog.css">
     <title>Document</title>
+
+    <script>
+        function popup(){
+            var url = "./neighbor_request.html";
+            var name = "_blank";
+            var option = "width = 480, height = 300, top = 100, left = 200, location = no"
+            window.open(url, name, option);
+        }
+    </script>
 </head>
 <body>
     <div class="top_menubar">
@@ -74,9 +83,9 @@
             <a class="col_sub">프로필</a>
         </p> 
         <div class="btn_area"> 
-            <a class="btn btn_add_nb _addBuddyPop _rosRestrictAll _returnFalse"> 
-            <span class="blind">이웃추가</span> 
-        </a> 
+            <a onclick="popup()"> 
+                <span class="blind">이웃추가</span> 
+            </a> 
         </div> 
     </div> 
 </div>
