@@ -318,7 +318,7 @@
             align-items: center;
         }
 
-        .profile img {
+        .user-profilepicture {
             width: 50px;
             height: 50px;
             border-radius: 50%;
@@ -495,8 +495,7 @@
 
         <!-- 메뉴 버튼 -->
         <div class="header-profile">
-            <img src="assets/profile.png">
-            <span class="header-profile-name">고유나</span>
+
             <button class="header-profile-setting" onclick="location.href='profile.html'">프로필 수정</button>
         </div>
     </header>
@@ -581,18 +580,19 @@
             <!-- 프로필 정보 -->
             <div class="profile">
                 <div class="profile-left">
-                    <img src="assets/profile.png" alt="프로필">
+                    <img class="user-profilepicture" src="assets/profile.png" alt="프로필 이미지">
                     <div class="profile-info">
-                        <div class="profile-name">유나</div>
-                        <div class="profile-status">오늘 6명 방문</div>
+                        <span class="profile-name user-nickname">유나</span>
+                      <!--  <div class="profile-status">오늘 6명 방문</div>  -->
                     </div>
                 </div>
                 <button class="logout-btn" onclick="location.href='main.html'">로그아웃</button>
             </div>
     
             <!-- 메뉴 -->
+            
             <div class="menu">
-                <button class="active">내 블로그</button>
+                <button class="active" onclick="location.href='myprolog.html'">내 블로그</button>
                 <button onclick="location.href='write.html'">✏ 글쓰기</button>
             </div>
     
@@ -645,7 +645,55 @@
     
 
 
-    <script>
+        <script>
+            document.addEventListener("DOMContentLoaded", async function () {
+                const accessToken = localStorage.getItem("access_token");
+                if (!accessToken) {
+                    alert("로그인이 필요합니다.");
+                    window.location.href = "login.html";
+                    return;
+                }
+            
+                try {
+                    const response = await fetch("http://127.0.0.1:8000/profile/me/", {
+                        method: "GET",
+                        headers: {
+                            "Authorization": `Bearer ${accessToken}`,
+                            "Content-Type": "application/json"
+                        }
+                    });
+            
+                    if (response.status === 200) {
+                        const data = await response.json();
+                        const nickname = data.username || "유나"; // 닉네임 가져오기
+                        const profilePic = data.user_pic || "assets/profile.png"; // 프로필 사진 가져오기
+            
+                        // 🔥 닉네임 변경
+                        document.querySelectorAll(".user-nickname").forEach(el => {
+                            el.innerText = nickname;
+                        });
+            
+                        // 🔥 프로필 사진 변경
+                        document.querySelectorAll(".user-profilepicture").forEach(img => {
+                            img.src = profilePic;
+                        });
+
+                        document.querySelectorAll(".itemtitlefont").forEach(e2 => {
+                                e2.innerText = blogname;
+                            });
+            
+                    } else {
+                        alert("사용자 정보를 불러올 수 없습니다.");
+                        console.log("❌ 응답 상태 코드:", response.status);
+                    }
+                } catch (error) {
+                    console.error("❌ 서버 연결 오류:", error);
+                    alert("서버 연결에 실패했습니다.");
+                }
+            });
+            
+
+
         function toggleHeart(element) {
             let heartCount = element.nextElementSibling; // 바로 다음 요소 (heart-count)
             let count = parseInt(heartCount.innerText); // 현재 숫자 가져오기

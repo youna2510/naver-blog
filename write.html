@@ -288,6 +288,7 @@ document.addEventListener("selectionchange", function() {
 
 
 
+
     
         // 🔥 현재 커서 위치를 유지하며 이미지 삽입하는 함수
         function insertAtCursor(html) {
@@ -389,7 +390,7 @@ function changeFontSize() {
         document.addEventListener("focusin", function(event) {
     if (event.target.classList.contains("image-caption")) {
         if (event.target.textContent.trim() === "이미지 설명을 입력하세요...") {
-            event.target.textContent = "";
+            event.target.textContent = ""; // ✅ 클릭 시 빈 공간으로 변경
             event.target.style.color = "black";
         }
     }
@@ -403,6 +404,118 @@ document.addEventListener("focusout", function(event) {
         }
     }
 });
+
+
+
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    let selectedImage = null; // 현재 선택된 대표사진
+
+    function insertImage(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const figure = document.createElement("figure");
+            figure.style.textAlign = "center";
+            figure.style.margin = "15px 0";
+            figure.style.position = "relative"; // 버튼을 위한 position 설정
+
+            const img = document.createElement("img");
+            img.src = e.target.result;
+            img.style.maxWidth = "300px";
+            img.style.height = "auto";
+            img.style.marginTop = "10px";
+            img.style.borderRadius = "5px";
+            img.style.cursor = "pointer";
+            img.classList.add("editable-image"); // 이미지에 클래스 추가
+
+            const caption = document.createElement("figcaption");
+            caption.contentEditable = "true";
+            caption.classList.add("image-caption");
+            caption.style.fontSize = "14px";
+            caption.style.marginTop = "5px";
+            caption.style.cursor = "text";
+            caption.style.color = "gray";
+            caption.innerHTML = "이미지 설명을 입력하세요...";
+
+            const selectButton = document.createElement("button");
+            selectButton.innerText = "대표사진 선택";
+            selectButton.style.position = "absolute";
+            selectButton.style.bottom = "10px";
+            selectButton.style.left = "50%";
+            selectButton.style.transform = "translateX(-50%)";
+            selectButton.style.padding = "5px 10px";
+            selectButton.style.fontSize = "12px";
+            selectButton.style.border = "none";
+            selectButton.style.borderRadius = "5px";
+            selectButton.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+            selectButton.style.color = "white";
+            selectButton.style.cursor = "pointer";
+            selectButton.style.display = "none"; // 기본적으로 숨김
+
+            // 이미지에 마우스를 올리면 버튼 표시
+            figure.addEventListener("mouseenter", function () {
+                selectButton.style.display = "block";
+            });
+
+            // 이미지에서 마우스가 벗어나면 버튼 숨김
+            figure.addEventListener("mouseleave", function () {
+                selectButton.style.display = "none";
+            });
+
+            // 버튼 클릭 시 대표사진으로 선택
+            selectButton.addEventListener("click", function (event) {
+                event.stopPropagation(); // 부모 figure의 클릭 이벤트 방지
+
+                if (selectedImage) {
+                    selectedImage.style.outline = "none"; // 이전 대표사진 테두리 제거
+                }
+
+                selectedImage = img;
+                img.style.outline = "4px solid #861f1c"; // 대표사진 윤곽선 표시
+            });
+
+            figure.appendChild(img);
+            figure.appendChild(selectButton);
+            figure.appendChild(caption);
+
+            insertAtCursor(figure);
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function insertAtCursor(element) {
+        const contentField = document.getElementById("contentField");
+        contentField.focus();
+
+        const selection = window.getSelection();
+        if (!selection.rangeCount) {
+            contentField.appendChild(element);
+            return;
+        }
+
+        const range = selection.getRangeAt(0);
+        range.deleteContents();
+        range.insertNode(element);
+
+        range.setStartAfter(element);
+        range.collapse(true);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+
+    document.getElementById("imageInput").addEventListener("change", insertImage);
+});
+
+
 
     </script>
     

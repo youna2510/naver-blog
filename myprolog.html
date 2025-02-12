@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="prolog.css">
+    <title>SG Blog</title>
+    <style>
+        .user-profilepicture {
+            width:135px;
+        }
+
+        .buttons {
+            padding-top:20px;
+        }
+
+
+    </style>
+
+    <script>
+        function popup(){
+            var url = "./neighbor_request.html";
+            var name = "_blank";
+            var option = "width = 480, height = 300, top = 100, left = 200, location = no"
+            window.open(url, name, option);
+        }
+
+
+
+    </script>
+</head>
+<body>
+    <div class="top_menubar">
+        <a style="margin-left:50px;">이웃 블로그</a>
+        <a style="color: gray;"> | </a>
+        <a style="color:black; text-decoration-line: none;" href="./main_login.html">블로그 홈</a>
+        <a style="color: gray;"> | </a>
+        <a href="./main.html" class="login_btn">로그아웃</a>
+    </div>
+    <div id="top-area">
+        <div id="blog-title">
+        <table role="presentation">
+            <tbody>
+                <tr>
+                    <td id="blogTitleText">
+                        <h1><a id="blog-title-anchor" >
+                            <span id="blogTitleName" class="itemtitlefont">블로그 제목</span>
+                        </a></h1>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+        
+        <div id="blog-menu">
+            <div class="border">
+                    <table>
+                        <tbody><tr><td nowrap="nowrap" class="menu1">
+                            <ul>
+                                <li>                        
+                                    <a style="color:#861f1c; font-weight: bold;">프롤로그</a>
+                                </li>
+                                <li> | </li>
+                                <li>                       
+                                    <a href="./myblog.html" style="color : black; text-decoration-line: none;">블로그</a>
+                                </li>      
+                            </ul>
+                        </td></tr></tbody>
+                    </table>
+            </div>
+        </div>
+        <hr style="margin-left: 140px;">
+    </div>
+
+    
+<!--프로필-->
+<div class="bg-body"> 
+    <div class="con"> 
+        <p class="image"> 
+            <a href="#" >
+                <img class="user-profilepicture" src="assets/profile.png" alt="프로필 이미지">
+            </a> 
+        </p> 
+    </div> 
+    <div class="name align"> 
+        <div class="user-nickname"> <strong class="itemfont col" id="nickNameArea">사용자본인</strong>
+                <br> <span class="itemfont col">
+                    <span class="blog_domain col"> </span> </span> 
+                
+            </div> 
+        </div> <p class="caption align"> 
+            <span class="itemfont_col">프로필 소개</span>
+            </p>
+                <p class="more align"> <span class="m1">
+        </p> 
+        <div class="buttons">
+            <button class="write" onclick="location.href='write.html'">글쓰기</button>
+            <button class="settings" onclick="location.href='profile.html'">프로필 관리</button>
+        </div>
+            
+    </div> 
+</div>
+
+<!--서로이웃-->
+<div style="top: 30px;" class="bg-neighbor"> 
+    <div class="neighbor-profile">
+        <div class="user-nickname" style="font-size: 15px;"><strong>본인</strong></div>
+        <div>이웃 커넥트</div>
+    </div>
+    <div class="neighbor-list"> 
+        <div class="all_neighborhood">
+            <a>전체 이웃</a><a style="margin-left: 80px;">57</a><a>명</a>
+            <hr style="width:95%; border: 0.25px solid gray;">
+
+        </div>  
+        <div style="display:inline-block;">
+            <div class="neighbor_img"><img></div>
+            <a class="neighbor_nickname">이웃별명</a>
+        </div>
+        <div style="display:inline-block;">
+            <div class="neighbor_img"><img></div>
+            <a class="neighbor_nickname">이웃별명</a>
+        </div>
+        <div style="display:inline-block;">
+            <div class="neighbor_img"><img></div>
+            <a class="neighbor_nickname">이웃별명</a>
+        </div>  
+        <br>   
+
+        <div>
+            <hr style="width:80%; border: 0.25px solid gray;">
+            <a class="user-nickname" style="margin-left:10px; font-size: 13px; color:gray"><strong>본인</strong>님 이웃의 새글보기 ></a>
+        </div>
+    </div> 
+</div>
+
+
+
+<div class="pro_posts">
+    <!--글1 -->
+
+    <div class="pro_sy1">
+        <p class="p_img">            
+            <a href="https://blog.naver.com/PostView.naver?blogId=men_mena&amp;logNo=223724607681&amp;redirect=Dlog">
+                <img src="https://blogthumb.pstatic.net/MjAyNDA3MzFfMjk3/MDAxNzIyNDEwNDQwNDIx.m_AaNJZuA2mOl3Rvw8Rj8ZcwgsF6AXJJR8Icfgvs_M8g.TOWdhE3DcF4SP6m9dUq24BMgt-f_YwpvUw5V_FeOnLEg.JPEG/20240730%25A3%25DF075525.jpg?type=s2" width="183" height="185" title="[CampOn] 2024 삼시세끼 in 가평 멘토 참여 후기" alt="[CampOn] 2024 삼시세끼 in 가평 멘토 참여 후기" onerror="this.onerror=null;this.src='https://blogimgs.pstatic.net/nblog/prologue/thumb_183_185.gif'">
+            </a>
+        </p>
+        <ul>
+            <li class="p_title">
+                <a class="p_title_t">[CampOn] 2024 삼...</a>
+                <span class="num_comments">[2]</span>
+            </li>
+            <li class="p_con">
+                <a class="pcol_contents">
+                안녕하세요, 멘아입니다! 이번에는 올해 방학 때 다녀온 2024 삼시세끼 in 가평 참여 후기를 써볼까해요~! 동아리원들과 제대로...
+                </a>
+            </li>
+            <li class="p_date">
+                <span class="pcol2 itemfont fil5">2025. 1. 13.</span>
+                
+            </li>
+        </ul>
+    </div>
+
+    <!--글2 -->
+    <div class="pro_sy1">
+        <p class="p_img">            
+            <a href="https://blog.naver.com/PostView.naver?blogId=men_mena&amp;logNo=223724607681&amp;redirect=Dlog">
+                <img src="https://blogthumb.pstatic.net/MjAyNDA3MzFfMjk3/MDAxNzIyNDEwNDQwNDIx.m_AaNJZuA2mOl3Rvw8Rj8ZcwgsF6AXJJR8Icfgvs_M8g.TOWdhE3DcF4SP6m9dUq24BMgt-f_YwpvUw5V_FeOnLEg.JPEG/20240730%25A3%25DF075525.jpg?type=s2" width="183" height="185">
+
+            </a>
+        </p>
+        <ul>
+            <li class="p_title">
+                <a class="p_title_t">[CampOn] 2024 삼...</a>
+                <span class="num_comments">[2]</span>
+            </li>
+            <li class="p_con">
+                <a class="pcol_contents">
+                안녕하세요, 멘아입니다! 이번에는 올해 방학 때 다녀온 2024 삼시세끼 in 가평 참여 후기를 써볼까해요~! 동아리원들과 제대로...
+                </a>
+            </li>
+            <li class="p_date">
+                <span class="pcol2 itemfont fil5">2025. 1. 13.</span>
+                
+            </li>
+        </ul>
+    </div>
+
+    
+    
+    <div class="pro_sy2">
+        <div class="clear">
+                <p class="p_img2">
+                    <a href="https://blog.naver.com/PostView.naver?blogId=men_mena&amp;logNo=223705422469&amp;redirect=Dlog"><img src="https://blogthumb.pstatic.net/MjAyNDA5MjNfMTA2/MDAxNzI3MDUxOTA5OTk5.rWhn4IGQ_zkYWYScdKu4yUzwkissZCDMjvyK7zmggkIg.l3_biO24DMNqb-UosVsDsbobMJLetRGBLbrgg3xdHRgg.JPEG/20240921%25A3%25DF230958.jpg?type=s1" width="90" height="90" title="[일상] 다시 개강한 대학생의 9월기" alt="[일상] 다시 개강한 대학생의 9월기" onerror="this.onerror=null;this.src='https://blogimgs.pstatic.net/nblog/prologue/thumb_90_90.jpg'">                    
+                    </a>
+                </p>
+            <ul>
+                <li class="p_title">
+                    <a class="p_title_t">[CampOn] 2024 삼...</a>
+                    <span class="num_comments">[2]</span>
+                </li>
+                <li class="p_con">
+                    <a class="pcol_contents">
+                    안녕하세요, 멘아입니다! 이번에는 올해 방학 때 다녀온 2024 삼시세끼 in 가평 참여 후기를 써볼까해요~! 동아리원들과 제대로...
+                    </a>
+                </li>
+                <li class="p_date">
+                    <span class="pcol2 itemfont fil5">2025. 1. 13.</span>
+                    
+                </li>
+            </ul>
+        </div>
+
+        <div class="clear">
+            <p class="p_img2">
+                <a href="https://blog.naver.com/PostView.naver?blogId=men_mena&amp;logNo=223705422469&amp;redirect=Dlog"><img src="https://blogthumb.pstatic.net/MjAyNDA5MjNfMTA2/MDAxNzI3MDUxOTA5OTk5.rWhn4IGQ_zkYWYScdKu4yUzwkissZCDMjvyK7zmggkIg.l3_biO24DMNqb-UosVsDsbobMJLetRGBLbrgg3xdHRgg.JPEG/20240921%25A3%25DF230958.jpg?type=s1" width="90" height="90" title="[일상] 다시 개강한 대학생의 9월기" alt="[일상] 다시 개강한 대학생의 9월기" onerror="this.onerror=null;this.src='https://blogimgs.pstatic.net/nblog/prologue/thumb_90_90.jpg'">                    
+                </a>
+            </p>
+        <ul>
+            <li class="p_title">
+                <a class="p_title_t">[CampOn] 2024 삼...</a>
+                <span class="num_comments">[2]</span>
+            </li>
+            <li class="p_con">
+                <a class="pcol_contents">
+                안녕하세요, 멘아입니다! 이번에는 올해 방학 때 다녀온 2024 삼시세끼 in 가평 참여 후기를 써볼까해요~! 동아리원들과 제대로...
+                </a>
+            </li>
+            <li class="p_date">
+                <span class="pcol2 itemfont fil5">2025. 1. 13.</span>
+                
+            </li>
+        </ul>
+        </div>
+
+        <div class="clear">
+            <p class="p_img2">
+                <a href="https://blog.naver.com/PostView.naver?blogId=men_mena&amp;logNo=223705422469&amp;redirect=Dlog"><img src="https://blogthumb.pstatic.net/MjAyNDA5MjNfMTA2/MDAxNzI3MDUxOTA5OTk5.rWhn4IGQ_zkYWYScdKu4yUzwkissZCDMjvyK7zmggkIg.l3_biO24DMNqb-UosVsDsbobMJLetRGBLbrgg3xdHRgg.JPEG/20240921%25A3%25DF230958.jpg?type=s1" width="90" height="90" title="[일상] 다시 개강한 대학생의 9월기" alt="[일상] 다시 개강한 대학생의 9월기" onerror="this.onerror=null;this.src='https://blogimgs.pstatic.net/nblog/prologue/thumb_90_90.jpg'">                    
+                </a>
+            </p>
+        <ul>
+            <li class="p_title">
+                <a class="p_title_t">[CampOn] 2024 삼...</a>
+                <span class="num_comments">[2]</span>
+            </li>
+            <li class="p_con">
+                <a class="pcol_contents">
+                안녕하세요, 멘아입니다! 이번에는 올해 방학 때 다녀온 2024 삼시세끼 in 가평 참여 후기를 써볼까해요~! 동아리원들과 제대로...
+                </a>
+            </li>
+            <li class="p_date">
+                <span class="pcol2 itemfont fil5">2025. 1. 13.</span>
+                
+            </li>
+        </ul>
+        </div>        
+
+    </div>    
+</div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", async function () {
+                const accessToken = localStorage.getItem("access_token");
+                if (!accessToken) {
+                    alert("로그인이 필요합니다.");
+                    window.location.href = "login.html";
+                    return;
+                }
+            
+                try {
+                    const response = await fetch("http://127.0.0.1:8000/profile/me/", {
+                        method: "GET",
+                        headers: {
+                            "Authorization": `Bearer ${accessToken}`,
+                            "Content-Type": "application/json"
+                        }
+                    });
+            
+                    if (response.status === 200) {
+                        const data = await response.json();
+                        const nickname = data.username || "익명"; // 닉네임 가져오기
+                        const profilePic = data.user_pic || "assets/profile.png"; // 프로필 사진 가져오기\
+                        const blogname = data.blog_name || "블로그 제목";
+                        const intro = data.intro || "프로필 소개글";
+            
+                        // 🔥 닉네임 변경
+                        document.querySelectorAll(".user-nickname").forEach(el => {
+                            el.innerText = nickname;
+                        });
+            
+                        // 🔥 프로필 사진 변경
+                        document.querySelectorAll(".user-profilepicture").forEach(img => {
+                            img.src = profilePic;
+                        });
+
+                        document.querySelectorAll(".itemtitlefont").forEach(e2 => {
+                            e2.innerText = blogname;
+                        });
+
+                        document.querySelectorAll(".itemfont_col").forEach(e3 => {
+                            e3.innerText = intro;
+                        });
+            
+                    } else {
+                        alert("사용자 정보를 불러올 수 없습니다.");
+                        console.log("❌ 응답 상태 코드:", response.status);
+                    }
+                } catch (error) {
+                    console.error("❌ 서버 연결 오류:", error);
+                    alert("서버 연결에 실패했습니다.");
+                }
+            });
+
+
+
+
+
+
+</script>
+</body>
+</html>

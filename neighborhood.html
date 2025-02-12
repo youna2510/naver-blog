@@ -18,7 +18,7 @@
         }
 
         .header {
-            background-color: #00c73c;
+            background-color: #da9d9c;
             padding: 15px 25px;
             color: white;
             display: flex;
@@ -43,7 +43,7 @@
         }
 
         .header .menu a:hover {
-            background-color: #009a2c;
+            background-color: #861f1c;
         }
 
         .container {
@@ -76,7 +76,7 @@
         }
 
         .sidebar ul li:hover {
-            color: #00c73c;
+            color: #861f1c;
             font-weight: bold;
         }
 
@@ -93,16 +93,30 @@
             margin-bottom: 26px;
         }
 
+        .received_requests_btn, .sent_requests_btn {
+    padding: 8px 16px;
+    border: 1px solid #da9d9c;
+    cursor: pointer;
+    background-color: white;
+    transition: background-color 0.3s ease;
+}
+
+.received_requests_btn.active, .sent_requests_btn.active {
+    background-color: #da9d9c;
+    font-weight: bold;
+}
+
+
     </style>
 </head>
 <body>
     <div class="header">
-        <div>N Blog 관리</div>
+        <div>SG Blog 관리</div>
         <div class="menu">
-            <a href="#">내 블로그</a>
-            <a href="#">이웃블로그</a>
-            <a href="#">블로그 홈</a>
-            <a href="#">내 메뉴</a>
+            <a href="main_login.html">블로그 홈</a>
+            <a href="myprolog.html">내 블로그</a>
+            <a href="main_login.html">이웃블로그</a>
+            <a href="main.html">로그아웃</a>
         </div>
     </div>
 
@@ -111,8 +125,7 @@
             <h3>기본 설정</h3>
             <ul>
                 <a style="text-decoration-line: none;" href="./profile.html"><li>블로그 정보</li></a>
-                <li>사생활 보호</li>
-                <li>스팸 차단</li>
+
                 <a style="text-decoration-line: none;" href="./neighborhood.html"><li>이웃 관리</li></a>
 
             </ul>
@@ -122,11 +135,11 @@
             <hr>
             <div class="table">
                 <div class="show_btn">
-                    <a>받은신청</a><a>보낸신청</a>
+                    <a class="received_requests_btn active" onclick="setActiveButton('received')">받은 신청</a>
+                    <a class="sent_requests_btn" onclick="setActiveButton('sent')">보낸 신청</a>
                 </div>
-                <div >
-                    <a class="accept_btn">수락</a> <a class="denied_btn">거절</a>
-                </div>
+                
+
                 <div class="table_title">
                     <input style="margin-left: 20px;" type="checkbox" id="selectall">
                     <a>신청한 사람</a> <a style="margin-left: 200px; margin-right: 135px;">메시지</a><a>신청일</a><a>관리</a>
@@ -152,6 +165,157 @@
             </div>
         </section>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async function () {
+            const accessToken = localStorage.getItem("access_token");
+            if (!accessToken) {
+                alert("로그인이 필요합니다.");
+                window.location.href = "login.html";
+                return;
+            }
+        
+            // 초기 데이터 로드
+            loadReceivedRequests();
+            setActiveButton("received");
+        });
+        
+        // ✅ 버튼 클릭 시 UI 변경 함수
+        function setActiveButton(type) {
+            const receivedBtn = document.querySelector(".received_requests_btn");
+            const sentBtn = document.querySelector(".sent_requests_btn");
+            const receivedList = document.querySelector(".received_neighbor_list");
+            const sentList = document.querySelector(".sent_neighbor_list");
+        
+            if (type === "received") {
+                receivedBtn.style.backgroundColor = "#ccc";
+                receivedBtn.style.fontWeight = "bold";
+                sentBtn.style.backgroundColor = "#fff";
+                sentBtn.style.fontWeight = "normal";
+        
+                receivedList.style.display = "block";
+                sentList.style.display = "none";
+        
+                loadReceivedRequests(); // 받은 신청 목록 로드
+            } else {
+                receivedBtn.style.backgroundColor = "#fff";
+                receivedBtn.style.fontWeight = "normal";
+                sentBtn.style.backgroundColor = "#ccc";
+                sentBtn.style.fontWeight = "bold";
+        
+                receivedList.style.display = "none";
+                sentList.style.display = "block";
+        
+                loadSentRequests(); // 보낸 신청 목록 로드
+            }
+        }
+        
+        // ✅ 받은 이웃 신청 목록 가져오기
+        async function loadReceivedRequests() {
+            try {
+                const response = await fetch("http://127.0.0.1:8000/neighbors/requests/me/", {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+                        "Content-Type": "application/json"
+                    }
+                });
+        
+                if (response.status === 200) {
+                    const data = await response.json();
+                    const requestList = document.querySelector(".received_neighbor_list");
+        
+                    if (data.requests.length === 0) {
+                        requestList.innerHTML = "<p>새로 들어온 이웃 신청이 없습니다.</p>";
+                        return;
+                    }
+        
+                    let requestHTML = "";
+                    data.requests.forEach(request => {
+                        const username = request.from_username || "알 수 없음";
+                        const userPic = request.from_user_pic || "assets/default_profile.png";
+                        const requestMessage = request.request_message || "메시지가 없습니다.";
+                        const requestDate = new Date(request.created_at).toLocaleDateString();
+        
+                        requestHTML += `
+                        <div class="neighbor_request">
+                            <input type="checkbox">
+                            <div style="margin-left:60px; display: inline-block;">
+                                <img src="${userPic}" alt="이웃 프로필" width="50" height="50">
+                                <strong>${username}</strong>
+                            </div>
+                            <div style="margin-left:150px; display: inline-block;">${requestMessage}</div>
+                            <div style="margin-left:190px; display: inline-block;"><strong>${requestDate}</strong></div>
+                            <div style="display: inline-block;">
+                                <a class="accept_btn" onclick="handleNeighborAction('${request.id}', 'accept')">수락</a>
+                                <a class="denied_btn" onclick="handleNeighborAction('${request.id}', 'deny')">거절</a>
+                                <a class="report_btn" onclick="handleNeighborAction('${request.id}', 'report')">신고</a>
+                            </div>
+                        </div>`;
+                    });
+        
+                    requestList.innerHTML = requestHTML;
+                } else {
+                    console.error("❌ 받은 이웃 신청 목록을 불러올 수 없음:", response.status);
+                }
+            } catch (error) {
+                console.error("❌ 받은 이웃 목록 요청 실패:", error);
+            }
+        }
+        
+        // ✅ 보낸 이웃 신청 목록 가져오기
+        async function loadSentRequests() {
+            try {
+                const response = await fetch("http://127.0.0.1:8000/neighbors/requests/sent/", {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+                        "Content-Type": "application/json"
+                    }
+                });
+        
+                if (response.status === 200) {
+                    const data = await response.json();
+                    const sentList = document.querySelector(".sent_neighbor_list");
+        
+                    if (data.requests.length === 0) {
+                        sentList.innerHTML = "<p>보낸 이웃 신청이 없습니다.</p>";
+                        return;
+                    }
+        
+                    let sentHTML = "";
+                    data.requests.forEach(request => {
+                        const username = request.to_username || "알 수 없음";
+                        const userPic = request.to_user_pic || "assets/default_profile.png";
+                        const requestMessage = request.request_message || "메시지가 없습니다.";
+                        const requestDate = new Date(request.created_at).toLocaleDateString();
+        
+                        sentHTML += `
+                        <div class="neighbor_request">
+                            <input type="checkbox">
+                            <div style="margin-left:60px; display: inline-block;">
+                                <img src="${userPic}" alt="이웃 프로필" width="50" height="50">
+                                <strong>${username}</strong>
+                            </div>
+                            <div style="margin-left:150px; display: inline-block;">${requestMessage}</div>
+                            <div style="margin-left:190px; display: inline-block;"><strong>${requestDate}</strong></div>
+                            <div style="display: inline-block;">
+                                <a class="cancel_btn" onclick="handleNeighborAction('${request.id}', 'cancel')">신청 취소</a>
+                            </div>
+                        </div>`;
+                    });
+        
+                    sentList.innerHTML = sentHTML;
+                } else {
+                    console.error("❌ 보낸 이웃 신청 목록을 불러올 수 없음:", response.status);
+                }
+            } catch (error) {
+                console.error("❌ 보낸 이웃 목록 요청 실패:", error);
+            }
+        }
+        </script>
+        
+        
 
 </body>
 </html>
