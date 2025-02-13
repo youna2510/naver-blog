@@ -147,153 +147,147 @@
                     <a class="received_requests_btn active" onclick="setActiveButton('received')">받은 신청</a>
                     <a class="sent_requests_btn" onclick="setActiveButton('sent')">보낸 신청</a>
                 </div>
-                
 
                 <div class="table_title">
                     <input style="margin-left: 20px;" type="checkbox" id="selectall">
-                    <a>신청한 사람</a> <a style="margin-left: 200px; margin-right: 135px;">메시지</a><a>관리</a>
+                    <span>신청한 사람</span> <span style="margin-left: 200px; margin-right: 135px;">메시지</span><span>관리</span>
                 </div>
+
                 <div>
-                    <a style="display: none;" class="empty_ment"><strong>새로 들어온 이웃 신청이 없습니다</strong></a>
-
-                    <div class="received_neighbor_list">
-                        <!-- 여기에 동적으로 리스트가 추가될 예정 -->
-                    </div>
-                                        <div class="visible_neighbor">
-                        <input type="checkbox" id="neighbor">
-                        <div style="margin-left:60px; display: inline-block;"><strong>이름</strong></div>
-                        <div style="margin-left:150px; display: inline-block;">우리 서로이웃해요~</div>
-                        <a style=" display: inline-block;">
-                            <a class="accept_btn" style="margin-left:160px;">수락</a> <a class="denied_btn">거절</a><a class="report_btn">신고</a>
-                        </a>
-                        <div style="margin-left:80px;">nameid</div>
-                        <img class="profile" src="assets/profile.png">
-
-                        
-                    </div>
+                    <p style="display: none; text-align: center;" class="empty_ment"><strong>새로 들어온 이웃 신청이 없습니다</strong></p>
+                    <div class="received_neighbor_list"></div>
                 </div>
+
                 <hr style="margin-top: 30px;">
                 <div>
                     <input style="margin-left: 20px;" type="checkbox" id="selectall">
-                    <a class="select_all">전체선택</a><a class="accept_btn">수락</a> <a class="denied_btn">거절</a>
+                    <a class="select_all">전체선택</a>
+                    <a class="accept_btn">수락</a>
+                    <a class="denied_btn">거절</a>
                 </div>
             </div>
         </section>
     </div>
 
     <script>
+        
         document.addEventListener("DOMContentLoaded", async function () {
-            const accessToken = localStorage.getItem("access_token");
-            if (!accessToken) {
-                alert("로그인이 필요합니다.");
-                window.location.href = "login.html";
-                return;
-            }
-        
-            // 초기 데이터 로드
-            loadReceivedRequests();
-            setActiveButton("received");
-        });
-        
-        // ✅ 버튼 클릭 시 UI 변경 함수
-        function setActiveButton(type) {
-            const receivedBtn = document.querySelector(".received_requests_btn");
-            const sentBtn = document.querySelector(".sent_requests_btn");
-            const receivedList = document.querySelector(".received_neighbor_list");
-            const sentList = document.querySelector(".sent_neighbor_list");
-        
-            if (type === "received") {
-                receivedBtn.style.backgroundColor = "#ccc";
-                receivedBtn.style.fontWeight = "bold";
-                sentBtn.style.backgroundColor = "#fff";
-                sentBtn.style.fontWeight = "normal";
-        
-                receivedList.style.display = "block";
-                sentList.style.display = "none";
-        
-                loadReceivedRequests(); // 받은 신청 목록 로드
-            } else {
-                receivedBtn.style.backgroundColor = "#fff";
-                receivedBtn.style.fontWeight = "normal";
-                sentBtn.style.backgroundColor = "#ccc";
-                sentBtn.style.fontWeight = "bold";
-        
-                receivedList.style.display = "none";
-                sentList.style.display = "block";
-        
-                loadSentRequests(); // 보낸 신청 목록 로드
-            }
-        }
+    const accessToken = localStorage.getItem("access_token");
+    if (!accessToken) {
+        alert("로그인이 필요합니다.");
+        window.location.href = "login.html";
+        return;
+    }
 
+    // UI 요소 존재 여부 확인 후 실행
+    const receivedBtn = document.querySelector(".received_requests_btn");
+    const sentBtn = document.querySelector(".sent_requests_btn");
 
+    if (receivedBtn && sentBtn) {
+        setActiveButton("received"); // 기본값: 받은 신청
+    } else {
+        console.error("❌ 버튼 요소를 찾을 수 없습니다. HTML을 확인하세요.");
+    }
 
+    // ✅ 페이지가 로드될 때 자동으로 받은 신청 목록 불러오기
+    await loadReceivedRequests();
+});
 
-        
-        // ✅ 받은 이웃 신청 목록 가져오기
-        async function loadReceivedRequests() {
+function setActiveButton(type) {
+    const receivedBtn = document.querySelector(".received_requests_btn");
+    const sentBtn = document.querySelector(".sent_requests_btn");
+    const receivedList = document.querySelector(".received_neighbor_list");
+
+    if (!receivedBtn || !sentBtn || !receivedList) {
+        console.error("❌ setActiveButton: 필수 요소를 찾을 수 없습니다.");
+        return;
+    }
+
+    if (type === "received") {
+        receivedBtn.classList.add("active");
+        sentBtn.classList.remove("active");
+
+        receivedList.style.display = "block";
+        loadReceivedRequests(); // 받은 신청 목록 불러오기
+    } else {
+        receivedBtn.classList.remove("active");
+        sentBtn.classList.add("active");
+
+        receivedList.style.display = "none";
+        loadSentRequests(); // 보낸 신청 목록 불러오기
+    }
+}
+
+async function loadReceivedRequests() {
     try {
         const response = await fetch("http://127.0.0.1:8000/neighbors/requests/me/", {
             method: "GET",
             headers: {
-                "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+                "Authorization": `Bearer ${accessToken}`,
                 "Content-Type": "application/json"
             }
         });
 
-        if (response.status === 200) {
-            const data = await response.json();
-            const requestList = document.querySelector(".received_neighbor_list");
-            const emptyMessage = document.querySelector(".empty_ment");
+        const requestList = document.querySelector(".received_neighbor_list");
+        const emptyMessage = document.querySelector(".empty_ment");
 
-            // 기존 내용 지우기
-            requestList.innerHTML = "";
-
-            if (data.requests.length === 0) {
-                emptyMessage.style.display = "block"; // 신청이 없으면 메시지 표시
-                return;
-            }
-
-            emptyMessage.style.display = "none"; // 신청이 있으면 메시지 숨김
-
-            // 받은 신청 목록을 동적으로 생성
-            data.requests.forEach(request => {
-                const username = request.from_username || "알 수 없음";
-                let userPic = request.from_user_pic ? `http://127.0.0.1:8000${request.from_user_pic}` : "assets/default_profile.png";
-                const requestMessage = request.request_message || "메시지가 없습니다.";
-
-                // 새로운 div 요소 생성
-                const requestItem = document.createElement("div");
-                requestItem.classList.add("neighbor_request");
-
-                requestItem.innerHTML = `
-                    <input type="checkbox">
-                    <div style="margin-left:60px; display: inline-block;">
-                        <img src="${userPic}" alt="이웃 프로필" width="50" height="50" style="border-radius: 50%;">
-                        <strong>${username}</strong>
-                    </div>
-                    <div style="margin-left:150px; display: inline-block;">${requestMessage}</div>
-                    <div style="display: inline-block;">
-                        <a class="accept_btn" onclick="handleNeighborAction('${request.id}', 'accept')">수락</a>
-                        <a class="denied_btn" onclick="handleNeighborAction('${request.id}', 'deny')">거절</a>
-                        <a class="report_btn" onclick="handleNeighborAction('${request.id}', 'report')">신고</a>
-                    </div>
-                `;
-
-                // 리스트에 추가
-                requestList.appendChild(requestItem);
-            });
-        } else {
-            console.error("❌ 받은 이웃 신청 목록을 불러올 수 없음:", response.status);
+        if (!requestList || !emptyMessage) {
+            console.error("❌ loadReceivedRequests: 필수 요소가 없습니다.");
+            return;
         }
+
+        // 기존 내용 지우기
+        requestList.innerHTML = "";
+
+        if (response.status === 404) {
+            console.error("❌ 요청 실패: 404 Not Found");
+            emptyMessage.style.display = "block";
+            return;
+        }
+
+        if (response.status !== 200) {
+            console.error(`❌ 받은 이웃 신청 목록을 불러올 수 없음: ${response.status}`);
+            return;
+        }
+
+        const data = await response.json();
+
+        if (!data.requests || data.requests.length === 0) {
+            emptyMessage.style.display = "block"; // ✅ 신청이 없으면 문구 표시
+            return;
+        }
+
+        emptyMessage.style.display = "none"; // ✅ 신청이 있으면 문구 숨김
+
+        data.requests.forEach(request => {
+            const username = request.from_username || "알 수 없음";
+            let userPic = request.from_user_pic ? `http://127.0.0.1:8000${request.from_user_pic}` : "assets/default_profile.png";
+            const requestMessage = request.request_message || "메시지가 없습니다.";
+
+            const requestItem = document.createElement("div");
+            requestItem.classList.add("neighbor_request");
+
+            requestItem.innerHTML = `
+                <input type="checkbox">
+                <div style="margin-left:60px; display: inline-block;">
+                    <img src="${userPic}" alt="이웃 프로필" width="50" height="50" style="border-radius: 50%;">
+                    <strong>${username}</strong>
+                </div>
+                <div style="margin-left:150px; display: inline-block;">${requestMessage}</div>
+                <div style="display: inline-block;">
+                    <a class="accept_btn" onclick="handleNeighborAction('${request.id}', 'accept')">수락</a>
+                    <a class="denied_btn" onclick="handleNeighborAction('${request.id}', 'deny')">거절</a>
+                    <a class="report_btn" onclick="handleNeighborAction('${request.id}', 'report')">신고</a>
+                </div>
+            `;
+
+            requestList.appendChild(requestItem);
+        });
     } catch (error) {
         console.error("❌ 받은 이웃 목록 요청 실패:", error);
     }
 }
 
-
-        </script>
-        
-        
-
+    </script>
 </body>
 </html>
