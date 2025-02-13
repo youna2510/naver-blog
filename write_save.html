@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="write_save.css">
+
+</head>
+<body>
+    <div class="block">
+        <a class="subtitle">카테고리</a>
+        <a class="cat_select">
+            <form action="#">
+                <select name="categories" id="cat">
+                <option value="life">일상</option>
+                <option value="travel">여행</option>
+                <option value="b_ch">블챌</option>
+                </select>
+            </form> 
+        </a>   
+    </div>
+    <div class="block">
+        <a class="subtitle">주제</a>
+        <a href="./write_topic.html" class="topic">일상 생각 > </a>
+    </div>
+    <div class="block">
+        <a class="subtitle">공개 설정</a>
+        <input type='radio' name='open' value='all' checked/>전체공개
+        <input type='radio' name='open' value='neighbor' />이웃공개
+        <input type='radio' name='open' value='none' />비공개
+    </div>
+    <hr>
+    <div class="submit_btn">발행</div>
+
+</body>
+</html>
