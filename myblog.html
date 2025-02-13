@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="prolog.css">
+    <title>SG Blog</title>
+    <style>
+        .user-profilepicture {
+            width:135px;
+            margin-top:-5px;
+
+        }
+
+        .buttons {
+            padding-top:20px;
+        }
+
+    </style>
+
+    <script>
+        function popup(){
+            var url = "./neighbor_request.html";
+            var name = "_blank";
+            var option = "width = 480, height = 300, top = 100, left = 200, location = no"
+            window.open(url, name, option);
+        }
+    </script>
+</head>
+<body>
+    
+    <div id="top-area">
+        <div class="top_menubar">
+            <a style="margin-left:50px;">이웃 블로그</a>
+            <a style="color: gray;"> | </a>
+            <a style="color:black; text-decoration-line: none;" href="./main_login.html">블로그 홈</a>
+            <a style="color: gray;"> | </a>
+            <a href="./main.html" class="login_btn">로그아웃</a>
+        </div>
+        <div id="blog-title">
+        <table role="presentation">
+            <tbody>
+                <tr>
+                    <td id="blogTitleText">
+                        <h1><a id="blog-title-anchor" >
+                            <span id="blogTitleName" class="itemtitlefont">블로그 제목</span>
+                        </a></h1>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+        
+        <div id="blog-menu">
+            <div class="border">
+                    <table>
+                        <tbody><tr><td nowrap="nowrap" class="menu1">
+                            <ul>
+                                <li>                        
+                                    <a href="./myprolog.html" style="color : black; text-decoration-line: none;">프롤로그</a>
+                                </li>
+                                <li> | </li>
+                                <li>                       
+                                    <a style="color:#861f1c; font-weight: bold;">블로그</a>
+                                </li>      
+                            </ul>
+                        </td></tr></tbody>
+                    </table>
+            </div>
+        </div>
+        <hr style="margin-left: 140px;">
+    </div>
+
+    
+<!--프로필-->
+<div class="bg-body"> 
+    <div class="con"> 
+        <p class="image"> 
+            <a href="#" >
+                <img class="user-profilepicture" src="assets/profile.png" alt="프로필 이미지">
+            </a> 
+        </p> 
+    </div> 
+    <div class="name align"> 
+        <div class="user-nickname"> <strong class="itemfont col" id="nickNameArea">사용자본인</strong>
+            <br> <span class="itemfont col">
+                    <span class="blog_domain col"> </span> </span> 
+                
+            </div> 
+        </div> <p class="caption align"> 
+            <span class="itemfont_col">프로필 소개</span>
+            </p>
+                <p class="more align"> <span class="m1">
+        </p> 
+        <div class="buttons">
+            <button class="write" onclick="location.href='write.html'">글쓰기</button>
+            <button class="settings" onclick="location.href='profile.html'">프로필 관리</button>
+        </div>
+    </div> 
+</div>
+
+
+<!--카테고리-->
+<div class="bg-category"> 
+    <div class="category-list"> 
+        <div>전체보기</div>
+        <div>게시판1</div>
+        <div>게시판2</div>
+        <div>게시판3</div>
+
+    </div> 
+</div>
+
+<!--서로이웃-->
+<div class="bg-neighbor"> 
+    <div class="neighbor-profile">
+        <div class="user-nickname" style="font-size: 15px;"><strong>본인</strong></div>
+        <div>이웃 커넥트</div>
+        <hr style="width:100%; border: 0.25px solid gray;">
+    </div>
+    <div class="neighbor-list"> 
+        <div style="display: none;">
+            <a class="find_neighbor">내가 추가한</a><a class="find_neighbor">나를 추가한</a>
+        </div>
+        <div class="all_neighborhood">
+            <a>전체 이웃</a><a style="margin-left: 80px;">57</a><a>명</a>
+        </div>   
+        <div style="display:inline-block;">
+            <div class="neighbor_img"><img></div>
+            <a class="neighbor_nickname">이웃별명</a>
+        </div>
+        <div style="display:inline-block;">
+            <div class="neighbor_img"><img></div>
+            <a class="neighbor_nickname">이웃별명</a>
+        </div>
+        <div style="display:inline-block;">
+            <div class="neighbor_img"><img></div>
+            <a class="neighbor_nickname">이웃별명</a>
+        </div>
+        <br>     
+        <div>
+            <hr style="width:80%; border: 0.25px solid gray;">
+            <a class="user-nickname" style="margin-left:10px; font-size: 13px; color:gray"><strong>본인</strong>님 이웃의 새글보기 ></a>
+        </div>
+    </div> 
+</div>
+
+
+
+
+<!--포스트 목록-->
+<div class="pro_posts">
+    <div class="post_list">
+        <div class="post_list_title">
+            <strong>전체보기</strong> <a>5개의 글</a>
+            <a class="list_open"> 목록 열기 </a>
+        </div>
+        <div style="display:none;" class="post_list_contents">
+            <div class="post_list_content_title">
+                <a>글 제목</a><a style="float:right;">작성일</a>
+            </div>
+            <hr class="post_list_hr">
+            <div class="post_list_contents_list">
+                <div>
+                    <a>글 제목1</a><a style="float:right;">2024.02.10</a>
+                    <hr class="post_list_contents_hr">
+                </div>
+                <div>
+                    <a>글 제목2</a><a style="float:right;">2024.02.10</a>
+                    <hr class="post_list_contents_hr">
+                </div>
+                <div>
+                    <a>글 제목3</a><a style="float:right;">2024.02.10</a>
+                    <hr class="post_list_contents_hr">
+                </div>
+                <div>
+                    <a>글 제목4</a><a style="float:right;">2024.02.10</a>
+                    <hr class="post_list_contents_hr">
+                </div>
+                <div>
+                    <a>글 제목5</a><a style="float:right;">2024.02.10</a>
+                    <hr class="post_list_contents_hr">
+                </div>
+                <div class="post_list_page">
+                    <ul class="pagination">
+                        <li><a href="#" class="left"> <이전 </a></li>
+                        <li><a href="#" class="active num">1</a></li>
+                        <li><a href="#" class="num">2</a></li>
+                        <li><a href="#" class="num">3</a></li>
+                        <li><a href="#" class="num">4</a></li>
+                        <li><a href="#" class="num">5</a></li>
+                        <li><a href="#" class="num">6</a></li>
+                        <li><a href="#" class="num">7</a></li>
+                        <li><a href="#" class="num">8</a></li>
+                        <li><a href="#" class="right">다음></a></li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post_content">
+        <div class="post_title_content">
+            <div class="post_category">[블첼] 일상 포토덤프</div>
+            <div class="post_title"> 글 제목 </div>
+            <div class="post_writer_list">
+                <strong class="user-nickname" style="color: black;">멘아</strong>&nbsp;<a>2024. 9. 24. 23:21</a>
+                <a class="neighbor_insert">+이웃추가</a><a style="float:right; padding-right: 10px;">URL 복사</a>
+            </div>
+            <hr class="post_hr">
+        </div>
+        <div class="post_contents">
+            글글글
+        </div>
+        <div class="post_last_list">
+            <a class="heart_list">공감 4</a>
+            <a class="comment_list">댓글 쓰기</a>
+        </div>
+        <div class="comments">
+            <div class="writed_comments">
+                <a class="cmt_writer_nickname"><strong>닉네임1</strong></a>
+                <div class="writing_comment">글 좋아요~</div>
+                <div style="margin-left: 5px; margin-top: 10px;" class="comment_btns">
+                    <a class="another_cmts"><strong>답글</strong></a>
+                </div>
+                <hr style="margin-top:20px; margin-left:20px; width:95%; border: solid 0.25px gray;">
+            </div>
+            <div class="writed_comments">
+                <a class="cmt_writer_nickname"><strong>닉네임1</strong></a>
+                <div class="writing_comment">글 좋아요~</div>
+                <div style="margin-left: 5px; margin-top: 10px;" class="comment_btns">
+                    <a class="another_cmts"><strong>답글</strong></a>
+                </div>
+                <hr style="margin-top:20px; margin-left:20px; width:95%; border: solid 0.25px gray;">
+            </div>
+
+            <div style="margin-left: 45%;" >
+                <ul class="pagination">
+                    <li><a href="#" class="active num">1</a></li>
+                    <li><a href="#" class="num">2</a></li>
+                </ul>
+            </div>
+
+            <div class="comment_write">
+                <a class="cmt_writer_nickname"><strong>닉네임</strong></a>
+                <div class="writing_comment">
+                    <textarea class="writing_comment_input" type="text" id="comment" name="comment" placeholder="블로그가 더 훈훈해지는 댓글 부탁드립니다. 불쾌감을 주는 욕설과 악플은 삭제될 수 있습니다."></textarea>
+                </div>
+                <hr class="comment_hr">
+                <div class="comment_btns">
+                    <a>스티커</a><a>사진</a><a>비밀댓글</a>
+                    <a class="submit_cmt"><strong>등록</strong></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="list_page">
+        <ul class="pagination">
+            <li><a href="#" class="left"> <이전 </a></li>
+            <li><a href="#" class="active num">1</a></li>
+            <li><a href="#" class="num">2</a></li>
+            <li><a href="#" class="num">3</a></li>
+            <li><a href="#" class="num">4</a></li>
+            <li><a href="#" class="num">5</a></li>
+            <li><a href="#" class="num">6</a></li>
+            <li><a href="#" class="num">7</a></li>
+            <li><a href="#" class="num">8</a></li>
+            <li><a href="#" class="right">다음></a></li>
+    
+        </ul>
+    </div>
+    
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", async function () {
+                    const accessToken = localStorage.getItem("access_token");
+                    if (!accessToken) {
+                        alert("로그인이 필요합니다.");
+                        window.location.href = "login.html";
+                        return;
+                    }
+                
+                    try {
+                        const response = await fetch("http://127.0.0.1:8000/profile/me/", {
+                            method: "GET",
+                            headers: {
+                                "Authorization": `Bearer ${accessToken}`,
+                                "Content-Type": "application/json"
+                            }
+                        });
+                
+                        if (response.status === 200) {
+                            const data = await response.json();
+                            const nickname = data.username || "익명"; // 닉네임 가져오기
+                            const profilePic = data.user_pic || "assets/profile.png"; // 프로필 사진 가져오기\
+                            const blogname = data.blog_name || "블로그 제목";
+                            const intro = data.intro || "프로필 소개글";
+
+                
+                            // 🔥 닉네임 변경
+                            document.querySelectorAll(".user-nickname").forEach(el => {
+                                el.innerText = nickname;
+                            });
+                
+                            // 🔥 프로필 사진 변경
+                            document.querySelectorAll(".user-profilepicture").forEach(img => {
+                                img.src = profilePic;
+                            });
+    
+                            document.querySelectorAll(".itemtitlefont").forEach(e2 => {
+                                e2.innerText = blogname;
+                            });
+
+                            document.querySelectorAll(".itemfont_col").forEach(e3 => {
+                            e3.innerText = intro;
+                        });
+                
+                        } else {
+                            alert("사용자 정보를 불러올 수 없습니다.");
+                            console.log("❌ 응답 상태 코드:", response.status);
+                        }
+                    } catch (error) {
+                        console.error("❌ 서버 연결 오류:", error);
+                        alert("서버 연결에 실패했습니다.");
+                    }
+                });
+    
+    
+    
+    
+    
+    
+    </script>
+    </body>
+    </html>
