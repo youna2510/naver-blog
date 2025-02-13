@@ -6,6 +6,11 @@
     <title>Document</title>
     <link rel="stylesheet" href="write_save.css">
 
+    <script>
+        function write_save(){
+            window.close();
+        }
+    </script>
 </head>
 <body>
     <div class="block">
@@ -31,7 +36,7 @@
         <input type='radio' name='open' value='none' />비공개
     </div>
     <hr>
-    <div class="submit_btn">발행</div>
+    <div class="submit_btn" onclick="write_save()">발행</div>
 
 </body>
 </html>
