@@ -289,7 +289,7 @@ document.addEventListener("selectionchange", function() {
                         <figcaption contenteditable="true" 
                                     class="image-caption"
                                     style="font-size: 14px; margin-top: 5px; cursor: text; color: gray;">
-                            이미지 설명을 입력하세요...
+                            <input type="text" placeholder="이미지 설명을 입력하세요...">"
                         </figcaption>
                     </figure><br>`;
                 insertAtCursor(imgHtml);
@@ -340,7 +340,7 @@ document.addEventListener("selectionchange", function() {
 function changeFontSize() {
     let selectedSize = document.getElementById("fontSizeSelect").value;
     document.execCommand("styleWithCSS", false, true);
-    document.execCommand("fontSize", false, "7"); // 임시 크기 설정
+    document.execCommand("fontSize", false, selectedSize); // 임시 크기 설정
 
     // 선택된 텍스트에 적용된 font-size를 변경
     let fontElements = document.querySelectorAll("font[size='7']");
@@ -423,7 +423,7 @@ document.addEventListener("DOMContentLoaded", function () {
             caption.style.marginTop = "5px";
             caption.style.cursor = "text";
             caption.style.color = "gray";
-            caption.innerHTML = "이미지 설명을 입력하세요...";
+           // caption.innerHTML = "이미지 설명을 입력하세요...";
 
             const selectButton = document.createElement("button");
             selectButton.innerText = "대표사진 선택";
