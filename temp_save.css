@@ -1,0 +1,26 @@
+.edit_btn{
+    background-color: white;
+    border: solid 1px gray;
+    padding: 3px 8px;
+    margin-bottom: 10px;
+    margin-left: 300px;
+}
+
+.temp_writing{
+    margin-top: 15px;
+    margin-left:50px;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.temp_date{
+    color: gray;
+    font-size: 12px;
+}
+
+.close{
+    position: absolute;
+    margin-left: 400px;
+    font-size: 20px;
+    margin-top:-10px;
+}
