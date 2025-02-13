@@ -1,26 +1,44 @@
+.temp_top{
+    margin-left: 10px;
+}
+
 .edit_btn{
     background-color: white;
     border: solid 1px gray;
     padding: 3px 8px;
-    margin-bottom: 10px;
-    margin-left: 300px;
+    margin-bottom: 20px;
+    margin-left: 330px;
+}
+
+hr{
+    margin: 0px;
 }
 
 .temp_writing{
-    margin-top: 15px;
-    margin-left:50px;
-    margin-bottom: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
     font-size: 14px;
 }
 
+.temp_writing:hover{
+    background-color: #eeeeee;
+
+}
+
+.temp_title{
+    margin-left:50px;
+
+}
+
 .temp_date{
+    margin-left:50px;
     color: gray;
     font-size: 12px;
 }
 
 .close{
     position: absolute;
-    margin-left: 400px;
+    margin-left: 430px;
     font-size: 20px;
     margin-top:-10px;
 }

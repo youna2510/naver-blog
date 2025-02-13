@@ -6,16 +6,22 @@
     <link rel="stylesheet" href="temp_save.css">
 
     <title>Document</title>
+    
+    <script>
+        function close_popup(){
+          window.close();
+        }
+    </script>
 </head>
 <body>
-    <div>
-        <div class="close">X</div>
+    <div class="temp_top">
+        <div class="close" onclick="close_popup()">X</div>
         <div>
             <h2>임시저장 글</h2>
         </div>
         <a>총 </a><a style="color:#da9d9c">22</a><a>개</a> <a class="edit_btn">편집</a>
     </div>
-    <hr>
+    <hr style="margin-top:10px;">
     <div class="temp_writing">
         <div class="temp_title">임시저장 글 제목</div>
         <div class="temp_date">2025.02.12 00:17</div>
