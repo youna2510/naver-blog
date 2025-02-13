@@ -181,6 +181,13 @@
             var option = "width = 480, height = 300, top = 100, left = 200, location = no"
             window.open(url, name, option);
         }
+
+        function pop_save(){
+            var url = "./write_save.html";
+            var name = "_blank";
+            var option = "width = 700, height = 500, top = 100, left = 200, location = no"
+            window.open(url, name, option);
+        }
     </script>
 </head>
 <body>
@@ -190,7 +197,7 @@
         <div class="logo">SG Blog</div>
         <div class="buttons">
             <button onclick="popup()">임시 저장</button>
-            <button>발행</button>
+            <button onclick="pop_save()">발행</button>
         </div>
     </div>
 
