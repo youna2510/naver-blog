@@ -102,7 +102,7 @@
 }
 
 .received_requests_btn.active, .sent_requests_btn.active {
-    background-color: #da9d9c;
+    background-color: lightgray;
     font-weight: bold;
 }
 
@@ -147,6 +147,7 @@
                     <a class="received_requests_btn active" onclick="setActiveButton('received')">받은 신청</a>
                     <a class="sent_requests_btn" onclick="setActiveButton('sent')">보낸 신청</a>
                 </div>
+                
 
                 <div class="table_title">
                     <div style="margin-left: 20px;" type="checkbox" id="selectall"></div>
@@ -281,7 +282,7 @@ async function loadReceivedRequests(accessToken) {
 
 
 
-// ✅ 서로이웃 수락 처리 함수
+// ✅ 서로이웃 수락 및 거절 처리 함수
 async function handleNeighborAction(username, action) {
     const accessToken = localStorage.getItem("access_token");
 
@@ -291,8 +292,13 @@ async function handleNeighborAction(username, action) {
         return;
     }
 
-    let apiUrl = `http://127.0.0.1:8000/neighbors/accept/${username}/`;
-    let method = "PUT";
+    let apiUrl = `http://127.0.0.1:8000/neighbors/accept/${username}/`;  // 기본 수락 URL
+    let method = "PUT";  // 수락에 대한 기본 메서드
+
+    if (action === "deny") {
+        apiUrl = `http://127.0.0.1:8000/neighbors/reject/${username}/`;  // 거절을 위한 URL
+        method = "DELETE";  // 거절 시 DELETE 요청
+    }
 
     try {
         // ✅ 먼저 UI에서 해당 항목을 즉시 제거
@@ -302,7 +308,7 @@ async function handleNeighborAction(username, action) {
             setTimeout(() => requestItem.remove(), 500);  // 0.5초 후 제거
         }
 
-        // ✅ API 요청 실행 (서로이웃 수락)
+        // ✅ API 요청 실행 (수락 또는 거절)
         const response = await fetch(apiUrl, {
             method: method,
             headers: {
@@ -313,7 +319,7 @@ async function handleNeighborAction(username, action) {
 
         if (response.status === 200) {
             console.log(`${username}의 요청이 성공적으로 처리되었습니다.`);
-            alert(`${username}의 이웃 신청을 수락했습니다.`);
+            alert(`${username}의 이웃 신청을 ${action === "accept" ? "수락" : "거절"}했습니다.`);
 
             // ✅ 서버에서 최신 데이터 다시 가져오기
             await loadReceivedRequests(accessToken);
@@ -324,6 +330,23 @@ async function handleNeighborAction(username, action) {
     } catch (error) {
         console.error(`❌ 요청 중 오류 발생:`, error);
         alert("❌ 서버에 요청하는 동안 오류가 발생했습니다.");
+    }
+}
+
+
+
+function setActiveButton(type) {
+    const receivedBtn = document.querySelector(".received_requests_btn");
+    const sentBtn = document.querySelector(".sent_requests_btn");
+
+    if (type === 'received') {
+        // 받은 신청 버튼을 활성화
+        receivedBtn.classList.add("active");
+        sentBtn.classList.remove("active");
+    } else if (type === 'sent') {
+        // 보낸 신청 버튼을 활성화
+        sentBtn.classList.add("active");
+        receivedBtn.classList.remove("active");
     }
 }
 
