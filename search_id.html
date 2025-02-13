@@ -125,83 +125,15 @@
 
         
 
-
-
-
-/*오른쪽 로그인 박스부분*/
-        .right-column {
-            width: 350px; /* 로그인 박스 너비 */
-            height:180px;
-            background-color: #fff;
-            padding: 27px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        .login-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .login-text {
-            font-size: 14px;
-            color: gray;
-            text-align: center;
-        }
-
-        .naver-login-btn {
-            width: 100%;
-            padding: 15px;
-            background-color: #da9d9c;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .naver-login-btn:hover {
-            background-color: #861f1c;
-        }
-
-        .login-links {
-            font-size: 12.5px;
-            color: #666;
-        }
-
-        .login-links a {
-            color: #666;
-            text-decoration: none;
-        }
-
-        .login-links a:hover {
-            text-decoration: underline;
-        }
-
-
+ 
 
 /*왼쪽 부분*/
         .left-column {
-            width: 80%;
+            width: 100%;
             padding: 20px;
         }
 
-/* 로그아웃 메시지 스타일 */
-        .logout-message {
-            text-align: center;
-            margin-bottom: 50px;
-        }
 
-        .logout-message p {
-            font-size: 18px;
-            color: #666;
-            font-weight: bold;
-            margin: 5px;
-        }
 
 /* 카테고리 네비게이션 */
         .category-nav {
@@ -335,7 +267,7 @@
                 <label for="search-input" class="visually-hidden"></label>
                 <input id="search-input" type="text" placeholder="검색어를 입력하세요">
             </div>
-        
+
             <button class="search-button">검색</button>
         </div>
 
@@ -347,23 +279,14 @@
 
     <div class="main-container">
         <div class="left-column">
-            <!-- 로그아웃 메시지 -->
-            <div class="logout-message">
-                <p>로그아웃 상태입니다.</p>
-                <p>로그인하여 이웃새글을 확인해보세요.</p>
-            </div>
+ 
         
             <!-- 카테고리 네비게이션 -->
             <nav class="category-nav">
                 <ul>
-                    <li><a href="main.html" class="active">전체</a></li>
-                    <li><a href="main1.html">상품리뷰</a></li>
-                    <li><a href="main2.html">문학 · 책</a></li>
-                    <li><a href="main3.html">사진</a></li>
-                    <li><a href="main4.html">음악</a></li>
-                    <li><a href="main5.html">취미</a></li>
-                    <li><a href="main6.html">국내여행</a></li>
-                    <li><a href="main7.html">세계여행</a></li>
+                    <li><a href="search_guel.html">글</a></li>
+                    <li><a href="search_blog.html">블로그</a></li>
+                    <li><a href="search_id.html" class="active">별명 · 아이디</a></li>
                 </ul>
             </nav>
         
@@ -410,25 +333,12 @@
                 </div>
             </div>
         </div>
-        
-        
-        
 
-        <div class="right-column">
-            <div class="login-box">
-                <p class="login-text">네이버를 보다 편리하고 안전하게 이용하세요.</p>
-                <button class="naver-login-btn"  onclick="location.href='login.html'">NAVER 로그인</button>
-                <div class="login-links">
-                    <a href="#">아이디 찾기</a> · <a href="#">비밀번호 찾기</a> · <a href="signin.html">회원가입</a>
-                </div>
-            </div>
-        </div>
-        
     </div>
 
-
     <script>
-document.querySelector('.search-button').addEventListener('click', function() {
+        // 검색 버튼 클릭 시 실행되는 함수
+document.querySelector('.search-button').addEventListener('click', async function() {
     const searchQuery = document.getElementById('search-input').value.trim();
     const searchType = document.getElementById('search-type').value;
     
@@ -437,14 +347,136 @@ document.querySelector('.search-button').addEventListener('click', function() {
         return;
     }
 
-    if (searchType === 'id') {
-        // `search_id.html` 페이지로 이동하며 검색어 전달
-        window.location.href = `search_id.html?q=${encodeURIComponent(searchQuery)}`;
-    } else {
-        alert('현재 지원되지 않는 검색 유형입니다.');
+    try {
+        // API 요청 URL 설정
+        const response = await fetch(`http://127.0.0.1:8000/search/global-nickandid/?q=${encodeURIComponent(searchQuery)}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (response.status === 200) {
+            const data = await response.json();
+            renderSearchResults(data);
+        } else {
+            console.error('검색 오류 발생');
+            alert('검색 결과를 불러오는데 실패했습니다.');
+        }
+    } catch (error) {
+        console.error('검색 중 에러 발생:', error);
+        alert('검색 중 에러가 발생했습니다.');
     }
 });
 
+// 검색 결과 렌더링 함수
+function renderSearchResults(data) {
+    const resultContainer = document.querySelector('.post-list');
+    resultContainer.innerHTML = ''; // 이전 결과 지우기
+
+    if (data.users.length === 0) {
+        resultContainer.innerHTML = '<p>검색 결과가 없습니다.</p>';
+        return;
+    }
+
+    // 사용자 정보를 렌더링
+    data.users.forEach(user => {
+        const userPost = document.createElement('div');
+        userPost.classList.add('post');
+
+        userPost.innerHTML = `
+            <div class="post-author">
+                <img src="http://127.0.0.1:8000${user.user_pic}" alt="프로필" width="40" height="40">
+                <div>
+                    <div class="author-name">${user.username}</div>
+                    <div class="time">사용자 ID: ${user.urlname}</div>
+                </div>
+            </div>
+            <div class="post-content">
+                <div class="post-text">
+                    <h3>${user.blog_name}</h3>
+                    <p>${user.intro}</p>
+                </div>
+            </div>
+        `;
+
+        resultContainer.appendChild(userPost);
+    });
+}
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", async function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get("q");
+
+    if (searchQuery) {
+        document.getElementById('search-input').value = searchQuery; // 입력창에도 유지
+        await searchUsers(searchQuery); // 검색 함수 호출
+    }
+});
+
+async function searchUsers(query) {
+    try {
+        const accessToken = localStorage.getItem("access_token");
+        if (!accessToken) {
+            alert("로그인이 필요합니다.");
+            return;
+        }
+
+        const response = await fetch(`http://127.0.0.1:8000/search/global-nickandid/?q=${encodeURIComponent(query)}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${accessToken}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("검색 결과를 불러오는데 실패했습니다.");
+        }
+
+        const data = await response.json();
+        displaySearchResults(data.users);
+    } catch (error) {
+        console.error("❌ 검색 요청 실패:", error);
+        alert("검색 중 오류가 발생했습니다.");
+    }
+}
+
+function displaySearchResults(users) {
+    const resultsContainer = document.querySelector(".post-list");
+    resultsContainer.innerHTML = ""; // 기존 검색 결과 초기화
+
+    if (!users.length) {
+        resultsContainer.innerHTML = "<p>검색 결과가 없습니다.</p>";
+        return;
+    }
+
+    users.forEach(user => {
+        const userItem = document.createElement("div");
+        userItem.classList.add("post");
+        userItem.innerHTML = `
+            <div class="post-author">
+                <img src="${user.user_pic || 'assets/profile.png'}" alt="프로필">
+                <div>
+                    <div class="author-name">${user.username}</div>
+                    <div class="time">${user.blog_name || "블로그 이름 없음"}</div>
+                </div>
+            </div>
+            <div class="post-content">
+                <div class="post-text">
+                    <h3>${user.username}의 블로그</h3>
+                    <p>${user.intro || "소개 없음"}</p>
+                </div>
+            </div>
+        `;
+        resultsContainer.appendChild(userItem);
+    });
+}
 
 
     </script>
