@@ -11,6 +11,34 @@
         function close_popup(){
           window.close();
         }
+
+        function edit(){
+            document.getElementById("edit_btn").textContent = "완료";
+            document.getElementById("ment").textContent = "개 선택됨";
+            document.getElementById("edit_btn").style.marginLeft = '80px';
+            document.getElementById("delete_all").style.visibility = 'visible';
+            document.getElementById("select_delete").style.visibility = 'visible';
+            const checkboxes = document.getElementsByName('temp_writes');
+            for(let i = 0; i< checkboxes.length; i++){
+                checkboxes[i].style.visibility = 'visible';
+            }
+            document.getElementById("edit_btn").setAttribute("onClick","finish()");
+
+        }
+
+        function finish(){
+            document.getElementById("edit_btn").textContent = "편집";
+            document.getElementById("ment").textContent = "개";
+            document.getElementById("edit_btn").style.marginLeft = '134px';
+            document.getElementById("delete_all").style.visibility = 'hidden';
+            document.getElementById("select_delete").style.visibility = 'hidden';
+            const checkboxes = document.getElementsByName('temp_writes');
+            for(let i = 0; i< checkboxes.length; i++){
+                checkboxes[i].style.visibility = 'hidden';
+            }
+            document.getElementById("edit_btn").setAttribute("onClick","edit()");
+
+        }
     </script>
 </head>
 <body>
@@ -19,15 +47,21 @@
         <div>
             <h2>임시저장 글</h2>
         </div>
-        <a>총 </a><a style="color:#da9d9c">22</a><a>개</a> <a class="edit_btn">편집</a>
+        <a>총 </a><a style="color:#da9d9c">22</a><a id = "ment">개</a> 
+        <div style="display: inline-block;">
+            <div id="delete_all" class="all_del_btn">전체 삭제</div> <div id="select_delete" class="sel_del_btn">선택 삭제</div>
+            <div id= "edit_btn" class="edit_btn" onclick="edit()">편집</div>
+        </div>
     </div>
     <hr style="margin-top:10px;">
     <div class="temp_writing">
+        <input type="checkbox" class="check" name="temp_writes">
         <div class="temp_title">임시저장 글 제목</div>
         <div class="temp_date">2025.02.12 00:17</div>
     </div>
     <hr>
     <div class="temp_writing">
+        <input type="checkbox" class="check" name="temp_writes">
         <div class="temp_title">임시저장 글 제목</div>
         <div class="temp_date">2025.02.12 00:17</div>
     </div>

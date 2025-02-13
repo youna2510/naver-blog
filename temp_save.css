@@ -2,12 +2,42 @@
     margin-left: 10px;
 }
 
+.all_del_btn{
+    background-color: white;
+    border: solid 1px gray;
+    padding: 3px 8px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+    display: inline-block;
+    visibility: hidden;    
+}
+
+.sel_del_btn{
+    background-color: white;
+    border: solid 1px gray;
+    padding: 3px 8px;
+    margin-bottom: 20px;
+    margin-left: 3px;
+    display: inline-block;
+    visibility: hidden;    
+}
+
+
 .edit_btn{
     background-color: white;
     border: solid 1px gray;
     padding: 3px 8px;
     margin-bottom: 20px;
-    margin-left: 330px;
+    margin-left: 134px;
+    display: inline-block;
+}
+
+
+.check{
+    position: absolute;
+    margin-top:10px;
+    margin-left:20px;
+    visibility: hidden;
 }
 
 hr{
