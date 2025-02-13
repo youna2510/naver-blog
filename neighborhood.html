@@ -149,8 +149,8 @@
                 </div>
 
                 <div class="table_title">
-                    <input style="margin-left: 20px;" type="checkbox" id="selectall">
-                    <span style="margin-left:15px">신청한 사람</span> <span style="margin-left: 180px; margin-right: 935px;">메시지</span><span>관리</span>
+                    <div style="margin-left: 20px;" type="checkbox" id="selectall"></div>
+                    <span style="margin-left:50px">신청한 사람</span> <span style="margin-left: 125px; margin-right: 995px;">메시지</span><span>관리</span>
                 </div>
 
                 <div>
@@ -162,8 +162,8 @@
                 <div>
                     <input style="margin-left: 20px;" type="checkbox" id="selectall">
                     <a class="select_all">전체선택</a>
-                    <a class="accept_btn">수락</a>
-                    <a class="denied_btn">거절</a>
+                    <a class="accept_btn" style="cursor:pointer;">수락</a>
+                    <a class="denied_btn" style="cursor:pointer;">거절</a>
                 </div>
             </div>
         </section>
@@ -262,8 +262,8 @@ async function loadReceivedRequests(accessToken) {
     </div>
 
     <div style="display: flex; gap: 10px;">
-        <a class="accept_btn" onclick="handleNeighborAction('${username}', 'accept')">수락</a>
-        <a class="denied_btn" onclick="handleNeighborAction('${username}', 'deny')">거절</a>
+        <a class="accept_btn" style="cursor:pointer;" onclick="handleNeighborAction('${username}', 'accept')">수락</a>
+        <a class="denied_btn" style="cursor:pointer;" onclick="handleNeighborAction('${username}', 'deny')">거절</a>
     </div>
 </div>
 
@@ -274,6 +274,60 @@ async function loadReceivedRequests(accessToken) {
         console.error("❌ 받은 이웃 목록 요청 실패:", error);
     }
 }
+
+
+
+
+
+
+
+// ✅ 서로이웃 수락 처리 함수
+async function handleNeighborAction(username, action) {
+    const accessToken = localStorage.getItem("access_token");
+
+    if (!accessToken) {
+        alert("로그인이 필요합니다.");
+        window.location.href = "login.html";
+        return;
+    }
+
+    let apiUrl = `http://127.0.0.1:8000/neighbors/accept/${username}/`;
+    let method = "PUT";
+
+    try {
+        // ✅ 먼저 UI에서 해당 항목을 즉시 제거
+        const requestItem = document.getElementById(`neighbor-${username}`);
+        if (requestItem) {
+            requestItem.style.opacity = "0.5";  // UI에서 변화가 보이도록 스타일 변경
+            setTimeout(() => requestItem.remove(), 500);  // 0.5초 후 제거
+        }
+
+        // ✅ API 요청 실행 (서로이웃 수락)
+        const response = await fetch(apiUrl, {
+            method: method,
+            headers: {
+                "Authorization": `Bearer ${accessToken}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (response.status === 200) {
+            console.log(`${username}의 요청이 성공적으로 처리되었습니다.`);
+            alert(`${username}의 이웃 신청을 수락했습니다.`);
+
+            // ✅ 서버에서 최신 데이터 다시 가져오기
+            await loadReceivedRequests(accessToken);
+        } else {
+            console.error(`❌ ${username}의 요청을 처리하는 데 실패했습니다. 상태 코드: ${response.status}`);
+            alert(`❌ 요청 처리 실패: ${response.status}`);
+        }
+    } catch (error) {
+        console.error(`❌ 요청 중 오류 발생:`, error);
+        alert("❌ 서버에 요청하는 동안 오류가 발생했습니다.");
+    }
+}
+
+
 
 
 
