@@ -337,150 +337,197 @@
     </div>
 
     <script>
-document.querySelector('.search-button').addEventListener('click', async function() {
-    const searchQuery = document.getElementById('search-input').value.trim();
-    const searchType = document.getElementById('search-type').value;
-    
-    if (!searchQuery) {
-        alert('검색어를 입력해주세요!');
+        document.querySelector('.search-button').addEventListener('click', async function () {
+            const searchQuery = document.getElementById('search-input').value.trim();
+            const searchType = document.getElementById('search-type').value;
+        
+            if (!searchQuery) {
+                alert('검색어를 입력해주세요!');
+                return;
+            }
+        
+            // 🟢 검색어 길이 검사 (2글자 이상)
+            if (searchQuery.length < 2) {
+        alert("검색어는 2글자 이상 입력해주세요.");
         return;
     }
-
-    // 카테고리 활성화 업데이트 함수 호출
-    updateActiveCategory(searchType);
-
-    try {
-        const response = await fetch(`http://127.0.0.1:8000/search/global-nickandid/?q=${encodeURIComponent(searchQuery)}`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
-                "Content-Type": "application/json",
-            },
+        
+            // 🟢 카테고리 활성화 업데이트 (nav에서 active 변경)
+            updateActiveCategory(searchType);
+        
+            try {
+                let response, data;
+                if (searchType === "geul") {
+                    // 블로그 글 검색 API 요청
+                    response = await fetch(`http://127.0.0.1:8000/search/global-post/?q=${encodeURIComponent(searchQuery)}`, {
+                        method: "GET",
+                        headers: {
+                            "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+                            "Content-Type": "application/json",
+                        },
+                    });
+                } else if (searchType === "blog") {
+                    // 블로그 검색 API 요청
+                    response = await fetch(`http://127.0.0.1:8000/search/global-blog/?q=${encodeURIComponent(searchQuery)}`, {
+                        method: "GET",
+                        headers: {
+                            "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+                            "Content-Type": "application/json",
+                        },
+                    });
+                } else {
+                    // 별명/아이디 검색 API 요청
+                    response = await fetch(`http://127.0.0.1:8000/search/global-nickandid/?q=${encodeURIComponent(searchQuery)}`, {
+                        method: "GET",
+                        headers: {
+                            "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+                            "Content-Type": "application/json",
+                        },
+                    });
+                }
+        
+                if (response.status === 200) {
+                    data = await response.json();
+                    renderSearchResults(searchType, data);
+                } else {
+                    console.error('검색 오류 발생');
+                    alert('검색 결과를 불러오는데 실패했습니다.');
+                }
+            } catch (error) {
+                console.error('검색 중 에러 발생:', error);
+                alert('검색 중 에러가 발생했습니다.');
+            }
         });
-
-        if (response.status === 200) {
-            const data = await response.json();
-            renderSearchResults(data);
-        } else {
-            console.error('검색 오류 발생');
-            alert('검색 결과를 불러오는데 실패했습니다.');
+        
+        
+        // 🟢 카테고리 활성화 업데이트 (nav에서 active 변경)
+        function updateActiveCategory(selectedType) {
+            document.querySelectorAll('.category-nav a').forEach(link => link.classList.remove('active'));
+        
+            let targetIndex = 0;
+            if (selectedType === "geul") {
+                targetIndex = 0; // 글
+            } else if (selectedType === "blog") {
+                targetIndex = 1; // 블로그
+            } else if (selectedType === "id") {
+                targetIndex = 2; // 별명 · 아이디
+            }
+        
+            // 해당 index의 <a> 태그에 active 클래스 추가
+            document.querySelectorAll('.category-nav li a')[targetIndex].classList.add("active");
         }
-    } catch (error) {
-        console.error('검색 중 에러 발생:', error);
-        alert('검색 중 에러가 발생했습니다.');
-    }
-});
+        
+        // 🟢 검색 결과 렌더링 함수
+        function renderSearchResults(searchType, data) {
+            const resultContainer = document.querySelector('.post-list');
+            resultContainer.innerHTML = ''; // 이전 검색 결과 지우기
+        
+            if ((searchType === "geul" && data.posts.length === 0) ||
+                (searchType === "blog" && data.blogs.length === 0) ||
+                (searchType === "id" && data.users.length === 0)) {
+                resultContainer.innerHTML = '<p>검색 결과가 없습니다.</p>';
+                return;
+            }
+        
+            if (searchType === "geul") {
+    // 🔹 "everyone"인 게시글만 필터링
+    const filteredPosts = data.posts.filter(post => post.visibility === "everyone");
 
-// 🟢 카테고리 활성화 업데이트 함수
-function updateActiveCategory(selectedType) {
-    // 모든 카테고리에서 active 클래스 제거
-    document.querySelectorAll('.category-nav a').forEach(link => {
-        link.classList.remove('active');
-    });
-
-    // 선택된 타입에 맞는 링크에 active 클래스 추가
-    let targetSelector = "";
-    if (selectedType === "geul") {
-        targetSelector = 'a[href="search_guel.html"]';
-    } else if (selectedType === "blog") {
-        targetSelector = 'a[href="search_blog.html"]';
-    } else if (selectedType === "id") {
-        targetSelector = 'a[href="search_id.html"]';
-    }
-
-    const targetElement = document.querySelector(targetSelector);
-    if (targetElement) {
-        targetElement.classList.add("active");
-    }
-}
-
-// 🔹 페이지 로드 시 URL 파라미터에 따라 활성화 상태 설정
-document.addEventListener("DOMContentLoaded", function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const searchType = urlParams.get("type"); // URL에서 검색 타입 가져오기
-
-    if (searchType) {
-        updateActiveCategory(searchType); // 검색 타입에 맞게 active 적용
-    }
-});
-
-// 검색 결과 렌더링 함수
-function renderSearchResults(data) {
-    const resultContainer = document.querySelector('.post-list');
-    resultContainer.innerHTML = ''; // 이전 결과 지우기
-
-    if (data.users.length === 0) {
-        resultContainer.innerHTML = '<p>검색 결과가 없습니다.</p>';
+    // 🔹 검색 결과가 없으면 메시지 표시
+    if (filteredPosts.length === 0) {
+        resultContainer.innerHTML = "<p>검색 결과가 없습니다.</p>";
         return;
     }
 
-    // 사용자 정보를 렌더링
-    data.users.forEach(user => {
-        const userPost = document.createElement('div');
-        userPost.classList.add('post');
+    // 🔹 필터링된 게시글을 렌더링
+    filteredPosts.forEach(post => {
+        const postElement = document.createElement('div');
+        postElement.classList.add('post');
 
-        userPost.innerHTML = `
-            <div class="post-author">
-                <img src="http://127.0.0.1:8000${user.user_pic}" alt="프로필" width="40" height="40">
-                <div>
-                    <div class="author-name">${user.username}</div>
-                    <div class="time">사용자 ID: ${user.urlname}</div>
-                </div>
-            </div>
+        postElement.innerHTML = `
             <div class="post-content">
                 <div class="post-text">
-                    <h3>${user.blog_name}</h3>
-                    <p>${user.intro}</p>
+                    <h3>${post.title}</h3>
+                    <p>${post.content || "내용 미리보기가 없습니다."}</p>
+                    <div class="post-meta">
+                        <span>작성자: ${post.username}</span> · <span>게시일: ${post.created_at}</span>
+                    </div>
                 </div>
             </div>
         `;
 
-        resultContainer.appendChild(userPost);
+        resultContainer.appendChild(postElement);
     });
-}
 
 
+        
+            } else if (searchType === "blog") {
+                // 블로그 검색 결과 렌더링
+                data.blogs.forEach(blog => {
+                    const blogPost = document.createElement('div');
+                    blogPost.classList.add('post');
+        
+                    blogPost.innerHTML = `
+                    <div class="post-content">
+                            <div class="post-text">
+                                <h3>${blog.blog_name}</h3>
+                                <p style="margin-bottom:15px;">${blog.intro}</p>
+                            </div>
+                        </div>
+                    
+                    <div class="post-author">
+
+                            <img src="http://127.0.0.1:8000${blog.user_pic}" alt="프로필" width="40" height="40">
+                            <div class="author-name">${blog.urlname}</div>
+                        </div>
+
+                    `;
 
 
-
-document.addEventListener("DOMContentLoaded", async function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const searchQuery = urlParams.get("q");
-
-    if (searchQuery) {
-        document.getElementById('search-input').value = searchQuery; // 입력창에도 유지
-        await searchUsers(searchQuery); // 검색 함수 호출
-    }
-});
-
-async function searchUsers(query) {
-    try {
-        const accessToken = localStorage.getItem("access_token");
-        if (!accessToken) {
-            alert("로그인이 필요합니다.");
-            return;
+        
+                    resultContainer.appendChild(blogPost);
+                });
+        
+            } else {
+                // 별명/아이디 검색 결과 렌더링
+                data.users.forEach(user => {
+                    const userPost = document.createElement('div');
+                    userPost.classList.add('post');
+        
+                    userPost.innerHTML = `
+                        <div class="post-author">
+                            <img src="http://127.0.0.1:8000${user.user_pic}" alt="프로필" width="40" height="40">
+                            <div>
+                                <div class="author-name">${user.username}</div>
+                                <div class="time">사용자 ID: ${user.urlname}</div>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <div class="post-text">
+                                <h3>${user.blog_name}</h3>
+                                <p>${user.intro}</p>
+                            </div>
+                        </div>
+                    `;
+        
+                    resultContainer.appendChild(userPost);
+                });
+            }
         }
-
-        const response = await fetch(`http://127.0.0.1:8000/search/global-nickandid/?q=${encodeURIComponent(query)}`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${accessToken}`,
-                "Content-Type": "application/json"
+        
+        // 🟢 페이지 로드 시 URL 파라미터에 따라 검색 자동 실행
+        document.addEventListener("DOMContentLoaded", function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchQuery = urlParams.get("q");
+            const searchType = urlParams.get("type");
+        
+            if (searchQuery && searchType) {
+                document.getElementById('search-input').value = searchQuery;
+                updateActiveCategory(searchType);
+                document.querySelector('.search-button').click(); // 검색 실행
             }
         });
-
-        if (!response.ok) {
-            throw new Error("검색 결과를 불러오는데 실패했습니다.");
-        }
-
-        const data = await response.json();
-        displaySearchResults(data.users);
-    } catch (error) {
-        console.error("❌ 검색 요청 실패:", error);
-        alert("검색 중 오류가 발생했습니다.");
-    }
-}
-
-    </script>
+        </script>
+        
 </body>
 </html>
