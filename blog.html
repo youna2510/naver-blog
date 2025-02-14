@@ -6,6 +6,14 @@
     <link rel="stylesheet" href="prolog.css">
     <title>Document</title>
 
+    <style>
+        .itemtitlefont{
+    font-style: normal;
+    font-weight: bold;
+    font-size:large;
+    margin-left:140px;
+}
+    </style>
     <script>
         function popup(){
             var url = "./neighbor_request.html";
@@ -68,12 +76,12 @@
     <div class="con"> 
         <p class="image"> 
             <a href="#" >
-                <img src="https://blogpfthumb-phinf.pstatic.net/MjAyNDEwMTlfMTEz/MDAxNzI5MzE5NTQ5NjA3.Aa_0Od1vsONSqCGe1r7q1OqfVz6Cb1MjlGB9Z-ybCc8g.xnXl03w8uXjyPQn8MA5A4KwMGYGMWUWk_qaBloXw-s4g.JPEG/profileImage.jpg?type=w161" alt="프로필 이미지">
+                <img class="user-profilepicture" style="width:135px;" src="assets/profile.png" alt="프로필 이미지">
             </a> 
         </p> 
     </div> 
     <div class="name align"> 
-        <div class="nick"> <strong class="itemfont col" id="nickNameArea">멘아</strong>
+        <div class="user-nickname" style="font-size: 15px;"> <strong class="itemfont col" id="nickNameArea">사용자이름</strong>
                 <br> <span class="itemfont col">
                     <span class="blog_domain col"> </span> </span> 
                 
@@ -82,7 +90,6 @@
             <span class="itemfont_col">프로필 소개</span>
             </p>
                 <p class="more align"> <span class="m1">
-            <a class="col_sub">프로필</a>
         </p> 
         <div class="btn_area" onclick="popup()"> 
             <a> 
@@ -265,6 +272,94 @@
     
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", async function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get("user");
+
+    if (!username) {
+        console.error("❌ 오류: username이 없음");
+        document.getElementById("blog-title").innerText = "블로그 정보를 찾을 수 없습니다.";
+        document.getElementById("blog-intro").innerText = "올바른 사용자 이름이 전달되지 않았습니다.";
+        return;
+    }
+
+    try {
+        const accessToken = localStorage.getItem("access_token");
+        if (!accessToken) {
+            console.error("❌ 오류: accessToken이 없음");
+            alert("로그인이 필요합니다.");
+            window.location.href = "login.html";
+            return;
+        }
+
+        // 🔹 백엔드가 UTF-8 URL 인코딩을 사용하므로, 정확하게 인코딩된 URL을 구성
+        const encodedUsername = encodeURIComponent(username);
+        const apiUrl = `http://127.0.0.1:8000/profile/${encodedUsername}/`;
+
+        console.log("🔹 API 요청 URL:", apiUrl);
+
+        // 🔹 사용자 프로필 정보 조회
+        const response = await fetch(apiUrl, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${accessToken}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        console.log("🔹 API 응답 상태 코드:", response.status);
+
+
+
+        if (response.status === 200) {
+            const data = await response.json();
+            console.log("🔹 API 응답 데이터:", data);
+
+            const nickname = data.username || "익명"; // 닉네임 가져오기
+            const blogTitle = data.blog_name || `${username}님의 블로그`;
+            const profilePic = data.user_pic || "assets/profile.png";
+            const intro = data.intro || "이 블로그에 대한 소개 정보가 없습니다.";
+
+            // 🔥 닉네임 변경
+            document.querySelectorAll(".user-nickname").forEach(el => {
+                                el.innerText = nickname;
+            });
+
+            // 🔥 프로필 사진 변경
+            document.querySelectorAll(".user-profilepicture").forEach(img => {
+                                img.src = profilePic;
+            });
+
+            document.querySelectorAll(".itemtitlefont").forEach(e2 => {
+    e2.innerText = blogTitle;
+});
+
+
+                            document.querySelectorAll(".itemfont_col").forEach(e3 => {
+                            e3.innerText = intro;
+                        });
+
+
+
+
+
+            document.getElementById("blog-title").innerText = blogTitle;
+            document.getElementById("profile-pic").src = profilePic;
+            document.getElementById("blog-intro").innerText = intro;
+        } else {
+            console.error("❌ API 요청 실패, 상태 코드:", response.status);
+            document.getElementById("blog-title").innerText = "블로그 정보를 찾을 수 없습니다.";
+            document.getElementById("blog-intro").innerText = "사용자 정보를 불러올 수 없습니다.";
+        }
+    } catch (error) {
+        console.error("❌ 서버 연결 오류:", error);
+        document.getElementById("blog-intro").innerText = "서버 연결에 실패했습니다.";
+    }
+});
+
+
+</script>
 
 </body>
 </html>
