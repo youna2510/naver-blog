@@ -339,26 +339,8 @@ document.addEventListener("focusout", function(event) {
           .getElementById("imageInput")
           .addEventListener("change", insertImage);
 
-        // 백스페이스 또는 삭제 키로 이미지+캡션 삭제
-        document
-          .getElementById("contentField")
-          .addEventListener("keydown", function (event) {
-            if (event.key === "Backspace" || event.key === "Delete") {
-              const selection = window.getSelection();
-              if (selection.rangeCount > 0) {
-                const range = selection.getRangeAt(0);
-                const node = range.commonAncestorContainer;
-
-                // figure 내부에 커서가 있을 때 figure 삭제
-                const figure = node.closest ? node.closest("figure") : null;
-                if (figure) {
-                  event.preventDefault(); // 기본 동작 방지
-                  figure.remove(); // 이미지 + 캡션 삭제
-                }
-              }
-            }
-          });
-      });
+        
+    });
       // ===========================
       // write.html: 제목·본문 보관
       // ===========================
