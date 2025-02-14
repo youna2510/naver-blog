@@ -430,6 +430,13 @@
             }
         
             if (searchType === "geul") {
+                const posts = data.posts || [];
+
+                if (posts.length === 0) {
+        resultContainer.innerHTML = "<p>검색 결과가 없습니다.</p>";
+        return;
+    }
+
     // 🔹 "everyone"인 게시글만 필터링
     const filteredPosts = data.posts.filter(post => post.visibility === "everyone");
 
@@ -489,30 +496,37 @@
                 });
         
             } else {
-                // 별명/아이디 검색 결과 렌더링
-                data.users.forEach(user => {
-                    const userPost = document.createElement('div');
-                    userPost.classList.add('post');
-        
-                    userPost.innerHTML = `
-                        <div class="post-author">
-                            <img src="http://127.0.0.1:8000${user.user_pic}" alt="프로필" width="40" height="40">
-                            <div>
-                                <div class="author-name">${user.username}</div>
-                                <div class="time">사용자 ID: ${user.urlname}</div>
-                            </div>
-                        </div>
-                        <div class="post-content">
-                            <div class="post-text">
-                                <h3>${user.blog_name}</h3>
-                                <p>${user.intro}</p>
-                            </div>
-                        </div>
-                    `;
-        
-                    resultContainer.appendChild(userPost);
-                });
-            }
+    // 별명/아이디 검색 결과 렌더링
+    data.users.forEach(user => {
+        const userPost = document.createElement('div');
+        userPost.classList.add('post');
+        userPost.style.cursor = "pointer"; // 마우스 오버 시 클릭 가능하게 설정
+
+        userPost.innerHTML = `
+            <div class="post-author">
+                <img src="http://127.0.0.1:8000${user.user_pic}" alt="프로필" width="40" height="40">
+                <div>
+                    <div class="author-name">${user.username}</div>
+                    <div class="time">사용자 ID: ${user.urlname}</div>
+                </div>
+            </div>
+            <div class="post-content">
+                <div class="post-text">
+                    <h3>${user.blog_name}</h3>
+                    <p>${user.intro}</p>
+                </div>
+            </div>
+        `;
+
+        // 🔹 클릭 시 `blog.html?user=username` 으로 이동
+        userPost.addEventListener("click", () => {
+            window.location.href = `blog.html?user=${encodeURIComponent(user.urlname)}`;
+        });
+
+        resultContainer.appendChild(userPost);
+    });
+}
+
         }
         
         // 🟢 페이지 로드 시 URL 파라미터에 따라 검색 자동 실행
