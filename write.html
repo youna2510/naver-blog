@@ -12,15 +12,6 @@
       rel="stylesheet"
     />
     <script>
-      function openWriteSavePopup() {
-        if (collectPostData()) {
-          window.open(
-            "./write_save.html",
-            "save",
-            "width=700,height=500,top=100,left=200,location=no"
-          );
-        }
-      }
       function popup() {
         var url = "./temp_save.html";
         var name = "temp_save";
@@ -206,23 +197,23 @@
       });
 
       /*
-        document.addEventListener("focusin", function(event) {
-    if (event.target.classList.contains("image-caption")) {
-        if (event.target.textContent.trim() === "이미지 설명을 입력하세요...") {
-            event.target.textContent = ""; // ✅ 클릭 시 빈 공간으로 변경
-            event.target.style.color = "black";
-        }
-    }
-});*/
-      /* 
-document.addEventListener("focusout", function(event) {
-    if (event.target.classList.contains("image-caption")) {
-        if (event.target.textContent.trim() === "") {
-            event.target.textContent = "이미지 설명을 입력하세요...";
-            event.target.style.color = "gray";
-        }
-    }
-});*/
+              document.addEventListener("focusin", function(event) {
+          if (event.target.classList.contains("image-caption")) {
+              if (event.target.textContent.trim() === "이미지 설명을 입력하세요...") {
+                  event.target.textContent = ""; // ✅ 클릭 시 빈 공간으로 변경
+                  event.target.style.color = "black";
+              }
+          }
+      });*/
+      /*
+      document.addEventListener("focusout", function(event) {
+          if (event.target.classList.contains("image-caption")) {
+              if (event.target.textContent.trim() === "") {
+                  event.target.textContent = "이미지 설명을 입력하세요...";
+                  event.target.style.color = "gray";
+              }
+          }
+      });*/
 
       document.addEventListener("DOMContentLoaded", function () {
         let selectedImage = null; // 현재 선택된 대표사진
@@ -338,15 +329,11 @@ document.addEventListener("focusout", function(event) {
         document
           .getElementById("imageInput")
           .addEventListener("change", insertImage);
+      });
 
-        
-    });
       // ===========================
-      // write.html: 제목·본문 보관
+      // ✅ 1️⃣ 제목·본문 수집 (collectPostData)
       // ===========================
-      window.postData = {};
-
-      // 제목과 본문을 postData에 담기
       function collectPostData() {
         const title = document.getElementById("titleField").innerHTML.trim();
         const content = document
@@ -363,13 +350,62 @@ document.addEventListener("focusout", function(event) {
         }
 
         // 🔥 본문(content)에 HTML 및 CSS 포함
-        window.postData.title = title;
-        window.postData.content = content; // HTML 포함
+        window.postData = {
+          title: title,
+          content: content,
+        };
 
         return true;
       }
 
-      // 발행 팝업 열기: opener에 postData 전달
+      // ===========================
+      // ✅ 2️⃣ 자식 창 객체 전역 선언 (ReferenceError 해결)
+      // ===========================
+      let childWindow = null;
+
+      // ===========================
+      // ✅ 3️⃣ 부모-자식 간 postMessage 리스너 (전역에 작성)
+      // ===========================
+      window.addEventListener("message", (event) => {
+        if (event.data === "CHILD_READY" && childWindow) {
+          // ✅ 자식 창이 준비되면 postData 전달
+          childWindow.postMessage(
+            { type: "POST_DATA", payload: window.postData },
+            "*"
+          );
+          console.log(
+            "🚀 [부모 창] postData를 자식 창에 전달:",
+            window.postData
+          );
+        }
+      });
+
+      // ===========================
+      // ✅ 4️⃣ 발행 팝업 열기: openWriteSavePopup
+      // ===========================
+      function openWriteSavePopup() {
+        // 🟡 제목·본문 수집 후 실행
+        if (!collectPostData()) {
+          return;
+        }
+
+        // ✅ 자식 창 열기
+        childWindow = window.open(
+          "write_save.html",
+          "WriteSavePopup",
+          "width=600,height=700"
+        );
+
+        // 🟡 자식 창이 `postMessage` 신호 보낼 때까지 대기
+        if (!childWindow) {
+          console.error("🚨 자식 창 열기 실패");
+          alert("팝업이 차단되었습니다. 브라우저 설정을 확인하세요.");
+        }
+      }
+
+      // ===========================
+      // ✅ 5️⃣ 버튼에 이벤트 연결
+      // ===========================
     </script>
   </body>
 </html>
