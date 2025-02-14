@@ -19,12 +19,72 @@
     </style>
 
     <script>
-        function popup(){
-            var url = "./neighbor_request.html";
-            var name = "_blank";
-            var option = "width = 480, height = 300, top = 100, left = 200, location = no"
-            window.open(url, name, option);
+function popup(){
+        var url = "./neighbor_request.html";
+        var name = "_blank";
+        var option = "width=480, height=300, top=100, left=200, location=no";
+        window.open(url, name, option);
+    }
+
+    async function fetchRecentPost() {
+        const url = "http://127.0.0.1:8000/posts/me/recent/"; // 사용자의 가장 최근 게시물 API
+
+        // 로컬 스토리지에서 인증 토큰 가져오기
+        const accessToken = localStorage.getItem("access_token");
+        if (!accessToken) {
+            alert("로그인이 필요합니다.");
+            window.location.href = "login.html";
+            return;
         }
+
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`,
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                }
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                // JSON에서 id, title, content, total_likes, created_at, category_name 가져오기
+                const { id, title, content, total_likes, created_at, category_name } = result;
+
+                // 가져온 ID를 콘솔에서 확인 (디버깅 용도)
+                console.log("가져온 게시물 ID:", id);
+
+                // 작성일 포맷 변경 (YYYY.MM.DD HH:mm)
+                const formattedDate = new Date(created_at).toLocaleString("ko-KR", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                }).replace(/\./g, "").replace(" ", ". ").replace("오전", "").replace("오후", "").trim();
+
+                // DOM에 데이터 반영
+                document.querySelector(".post_title").textContent = title;
+                document.querySelector(".post_contents").textContent = content;
+                document.querySelector(".heart_list").textContent = `공감 ${total_likes}`;
+                document.querySelector(".post_writer_list a").textContent = formattedDate; // 작성일
+                document.querySelector(".post_category").textContent = `[${category_name}]`; // 카테고리
+
+            } else {
+                alert(result.error || "게시물 데이터를 불러오는 데 실패했습니다.");
+            }
+        } catch (error) {
+            console.error("게시물 데이터 가져오기 오류:", error);
+            alert("게시물 데이터를 불러오는 중 오류가 발생했습니다.");
+        }
+    }
+
+    // 페이지 로드 시 실행
+    document.addEventListener("DOMContentLoaded", function () {
+        fetchRecentPost();
+    });
     </script>
 </head>
 <body>
