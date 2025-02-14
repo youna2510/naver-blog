@@ -1,0 +1,171 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Nanum Gothic', sans-serif;
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+/* 상단 헤더 */
+.header {
+    position: fixed;
+    top: 1px;
+    width: 100%;
+    background-color: white;
+    padding: 13px 25px;
+    color: #861f1c;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    border-bottom: 2px solid #ddd;
+}
+
+.header .logo {
+    display: flex;
+    align-items: center;
+    font-size: 27px;
+    font-weight: 1000;
+}
+
+.header .buttons {
+    display: flex;
+    gap: 18px;
+}
+
+.header button {
+    background-color: #da9d9c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.header button:hover {
+    background-color: #861f1c;
+}
+
+/* 도구 모음 */
+.toolbar {
+    position: fixed;
+    top: 62px;
+    width: 100%;
+    background-color: white;
+    padding: 13px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    border-bottom: 1px solid #ddd;
+    z-index: 999;
+}
+
+.toolbar button {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 5px 7px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.toolbar button:hover {
+    background-color: #f0f0f0;
+}
+
+/* 글꼴, 크기 설정 바 */
+.topbar {
+    position: fixed;
+    top: 120px;
+    width: 100%;
+    background-color: white;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    z-index: 998;
+}
+
+.topbar select {
+    padding: 5px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+/* 에디터 전체 */
+.editor-container {
+    flex: 1;
+    display: flex;
+    padding: 20px;
+    margin-top: 140px;
+}
+
+/* 글 작성 영역 */
+.editor {
+    flex: 1;
+    background-color: white;
+    padding: 30px;
+}
+
+.editor .title, .editor .content {
+    color: #aaa;
+}
+
+.editor .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    outline: none;
+}
+
+.editor .content {
+    font-size: 16px;
+    min-height: 400px;
+    outline: none;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.editor img {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+/* 숨겨진 파일 선택 버튼 */
+#imageInput {
+    display: none;
+}
+
+.lineup{
+    width:20px;
+    margin-left:16px;
+    margin-top:5px;
+    margin-bottom:-5px;
+    gap:15px;
+    cursor:pointer;
+}
+
+.bold{
+    width:25px;
+    margin-left:16px;
+    margin-top:5px;
+    margin-bottom:-6px;
+    gap:15px;
+    cursor:pointer;
+}
+
+#caption_input{
+    border: 0px;
+    text-align: center;
+    outline: none;
+    color: gray;
+}

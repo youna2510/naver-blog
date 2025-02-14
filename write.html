@@ -1,371 +1,211 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="write.css" />
     <title>SG Blog</title>
 
     <!-- Google Fonts 추가 -->
-    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Serif+KR&family=Gaegu&family=Nanum+Pen+Script&family=Black+And+White+Picture&display=swap" rel="stylesheet">
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Serif+KR&family=Gaegu&family=Nanum+Pen+Script&family=Black+And+White+Picture&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      function openWriteSavePopup() {
+        if (collectPostData()) {
+          window.open(
+            "./write_save.html",
+            "save",
+            "width=700,height=500,top=100,left=200,location=no"
+          );
         }
-
-        body {
-            font-family: 'Nanum Gothic', sans-serif;
-            background-color: #f8f9fa;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow-y: auto;
-        }
-
-        /* 상단 헤더 */
-        .header {
-            position: fixed;
-            top: 1px;
-            width: 100%;
-            background-color: white;
-            padding: 13px 25px;
-            color: #861f1c;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            border-bottom: 2px solid #ddd;
-        }
-
-        .header .logo {
-            display: flex;
-            align-items: center;
-            font-size: 27px;
-            font-weight: 1000;
-        }
-
-        .header .buttons {
-            display: flex;
-            gap: 18px;
-        }
-
-        .header button {
-            background-color: #da9d9c;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .header button:hover {
-            background-color: #861f1c;
-        }
-
-        /* 도구 모음 */
-        .toolbar {
-            position: fixed;
-            top: 62px;
-            width: 100%;
-            background-color: white;
-            padding: 13px;
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            border-bottom: 1px solid #ddd;
-            z-index: 999;
-        }
-
-        .toolbar button {
-            background-color: white;
-            border: 1px solid #ddd;
-            padding: 5px 7px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .toolbar button:hover {
-            background-color: #f0f0f0;
-        }
-
-        /* 글꼴, 크기 설정 바 */
-        .topbar {
-            position: fixed;
-            top: 120px;
-            width: 100%;
-            background-color: white;
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-            z-index: 998;
-        }
-
-        .topbar select {
-            padding: 5px;
-            border: 1px solid #ddd;
-            cursor: pointer;
-        }
-
-        /* 에디터 전체 */
-        .editor-container {
-            flex: 1;
-            display: flex;
-            padding: 20px;
-            margin-top: 140px;
-        }
-
-        /* 글 작성 영역 */
-        .editor {
-            flex: 1;
-            background-color: white;
-            padding: 30px;
-        }
-
-        .editor .title, .editor .content {
-            color: #aaa;
-        }
-
-        .editor .title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            outline: none;
-        }
-
-        .editor .content {
-            font-size: 16px;
-            min-height: 400px;
-            outline: none;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: white;
-        }
-
-        .editor img {
-            max-width: 100%;
-            height: auto;
-            margin-top: 10px;
-            border-radius: 5px;
-        }
-
-        /* 숨겨진 파일 선택 버튼 */
-        #imageInput {
-            display: none;
-        }
-
-        .lineup{
-            width:20px;
-            margin-left:16px;
-            margin-top:5px;
-            margin-bottom:-5px;
-            gap:15px;
-            cursor:pointer;
-        }
-
-        .bold{
-            width:25px;
-            margin-left:16px;
-            margin-top:5px;
-            margin-bottom:-6px;
-            gap:15px;
-            cursor:pointer;
-        }
-    </style>
-     <script>
-        function popup(){
-            var url = "./temp_save.html";
-            var name = "temp_save";
-            var option = "width = 480, height = 300, top = 100, left = 200, location = no"
-            window.open(url, name, option);
-        }
-
-        function pop_save(){
-            var url = "./write_save.html";
-            var name = "save";
-            var option = "width = 700, height = 500, top = 100, left = 200, location = no"
-            window.open(url, name, option);
-        }
+      }
+      function popup() {
+        var url = "./temp_save.html";
+        var name = "temp_save";
+        var option =
+          "width = 480, height = 300, top = 100, left = 200, location = no";
+        window.open(url, name, option);
+      }
     </script>
-</head>
-<body>
-
+  </head>
+  <body>
     <!-- 상단 헤더 -->
     <div class="header">
-        <div class="logo">SG Blog</div>
-        <div class="buttons">
-            <button onclick="popup()">임시 저장</button>
-            <button onclick="pop_save()">발행</button>
-        </div>
+      <div class="logo">SG Blog</div>
+      <div class="buttons">
+        <button onclick="popup()">임시 저장</button>
+        <button onclick="openWriteSavePopup ()">발행</button>
+      </div>
     </div>
 
     <!-- 도구 모음 -->
     <div class="toolbar">
-        <button onclick="openImageUploader()">사진</button>
-        <input type="file" id="imageInput" accept="image/*" onchange="insertImage(event)">
+      <button onclick="openImageUploader()">사진</button>
+      <input
+        type="file"
+        id="imageInput"
+        accept="image/*"
+        onchange="insertImage(event)"
+      />
     </div>
 
     <!-- 글꼴 및 크기 설정 바 -->
     <div class="topbar">
-        <select id="fontSelect" onchange="changeFontFamily()">
-            <option value="'Nanum Gothic', sans-serif">나눔고딕</option>
-            <option value="'Noto Serif KR', serif">Noto Serif</option>
-            <option value="'Gaegu', cursive">Gaegu</option>
-            <option value="'Nanum Pen Script', cursive">나눔펜</option>
-            <option value="'Black And White Picture', cursive">Black & White</option>
-        </select>
+      <select id="fontSelect" onchange="changeFontFamily()">
+        <option value="'Nanum Gothic', sans-serif">나눔고딕</option>
+        <option value="'Noto Serif KR', serif">Noto Serif</option>
+        <option value="'Gaegu', cursive">Gaegu</option>
+        <option value="'Nanum Pen Script', cursive">나눔펜</option>
+        <option value="'Black And White Picture', cursive">
+          Black & White
+        </option>
+      </select>
 
-        <select id="fontSizeSelect" onchange="changeFontSize()">
-            <option value="1">11</option>
-            <option value="2">13</option>
-            <option value="3">15</option>
-            <option value="4">16</option>
-            <option value="5">19</option>
-            <option value="6">24</option>
-            <option value="7">28</option>
-            <option value="8">30</option>
-            <option value="9">34</option>
-            <option value="10">38</option>
-        </select>
+      <select id="fontSizeSelect" onchange="changeFontSize()">
+        <option value="1">11</option>
+        <option value="2">13</option>
+        <option value="3">15</option>
+        <option value="4">16</option>
+        <option value="5">19</option>
+        <option value="6">24</option>
+        <option value="7">28</option>
+        <option value="8">30</option>
+        <option value="9">34</option>
+        <option value="10">38</option>
+      </select>
 
-        <img class="lineup" src="assets/left.png" onclick="changeAlignment('left')">
-        <img class="lineup" src="assets/middle.png" onclick="changeAlignment('center')">
-        <img class="lineup" src="assets/right.png"  onclick="changeAlignment('right')">
-        <img class="bold" src="assets/bold.png"  onclick="toggleBold()">
-
-
-
+      <img
+        class="lineup"
+        src="assets/left.png"
+        onclick="changeAlignment('left')"
+      />
+      <img
+        class="lineup"
+        src="assets/middle.png"
+        onclick="changeAlignment('center')"
+      />
+      <img
+        class="lineup"
+        src="assets/right.png"
+        onclick="changeAlignment('right')"
+      />
+      <img class="bold" src="assets/bold.png" onclick="toggleBold()" />
     </div>
 
     <!-- 글 작성 컨테이너 -->
     <div class="editor-container">
-        <div class="editor">
-            <div contenteditable="true" class="title" id="titleField">제목</div>
-            <div contenteditable="true" class="content" id="contentField">본문을 입력하세요...</div>
+      <div class="editor">
+        <div contenteditable="true" class="title" id="titleField">제목</div>
+        <div contenteditable="true" class="content" id="contentField">
+          본문을 입력하세요...
         </div>
+      </div>
     </div>
 
     <script>
-         function changeAlignment(alignment) {
-            document.execCommand("justify" + alignment);
+      function changeAlignment(alignment) {
+        document.execCommand("justify" + alignment);
+      }
+
+      function toggleBold() {
+        document.execCommand("bold");
+      }
+
+      document.addEventListener("selectionchange", function () {
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+          const range = selection.getRangeAt(0);
+          const parentNode = range.commonAncestorContainer.parentNode;
+
+          if (parentNode) {
+            const computedStyle = window.getComputedStyle(parentNode);
+            document.getElementById("fontSelect").value =
+              computedStyle.fontFamily;
+            document.getElementById("fontSizeSelect").value =
+              computedStyle.fontSize.replace("px", "");
+          }
         }
+      });
 
-        function toggleBold() {
-            document.execCommand("bold");
+      //사진을 넣을 수 있게 하는 기능
+      function openImageUploader() {
+        document.getElementById("imageInput").click();
+      }
+
+      document
+        .getElementById("titleField")
+        .addEventListener("focus", function () {
+          if (this.textContent === "제목") {
+            this.textContent = "";
+            this.style.color = "black";
+          }
+        });
+
+      document
+        .getElementById("titleField")
+        .addEventListener("blur", function () {
+          if (this.textContent.trim() === "") {
+            this.textContent = "제목";
+            this.style.color = "#aaa";
+          }
+        });
+
+      document
+        .getElementById("contentField")
+        .addEventListener("focus", function () {
+          if (this.textContent === "본문을 입력하세요...") {
+            this.textContent = "";
+            this.style.color = "black";
+          }
+        });
+
+      document
+        .getElementById("contentField")
+        .addEventListener("blur", function () {
+          if (this.textContent.trim() === "") {
+            this.textContent = "본문을 입력하세요...";
+            this.style.color = "#aaa";
+          }
+        });
+
+      function changeFontFamily() {
+        let selectedFont = document.getElementById("fontSelect").value;
+        document.execCommand("styleWithCSS", false, true); // CSS 적용 활성화
+        document.execCommand("fontName", false, selectedFont);
+      }
+
+      function changeFontSize() {
+        let selectedSize = document.getElementById("fontSizeSelect").value;
+        document.execCommand("styleWithCSS", false, true);
+        document.execCommand("fontSize", false, selectedSize); // 임시 크기 설정
+
+        // 선택된 텍스트에 적용된 font-size를 변경
+        let fontElements = document.querySelectorAll("font[size='7']");
+        fontElements.forEach((el) => {
+          el.removeAttribute("size");
+          el.style.fontSize = selectedSize + "px";
+        });
+      }
+
+      document.addEventListener("selectionchange", function () {
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+          const range = selection.getRangeAt(0);
+          const parentNode = range.commonAncestorContainer.parentNode;
+
+          if (parentNode) {
+            const computedStyle = window.getComputedStyle(parentNode);
+            document.getElementById("fontSelect").value =
+              computedStyle.fontFamily;
+            document.getElementById("fontSizeSelect").value =
+              computedStyle.fontSize.replace("px", "");
+          }
         }
+      });
 
-document.addEventListener("selectionchange", function() {
-            const selection = window.getSelection();
-            if (selection.rangeCount > 0) {
-                const range = selection.getRangeAt(0);
-                const parentNode = range.commonAncestorContainer.parentNode;
-                
-                if (parentNode) {
-                    const computedStyle = window.getComputedStyle(parentNode);
-                    document.getElementById("fontSelect").value = computedStyle.fontFamily;
-                    document.getElementById("fontSizeSelect").value = computedStyle.fontSize.replace("px", "");
-                }
-            }
-        });
-
-
-    //사진을 넣을 수 있게 하는 기능능
-    function openImageUploader() {
-            document.getElementById('imageInput').click();
-        }
-
-        function insertImage(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const imgHtml = `
-                    <figure style="text-align: center; margin: 15px 0;">
-                        <img src="${e.target.result}" 
-                             style="max-width: 300px; height: auto; margin-top: 10px; border-radius: 5px;">
-                        <figcaption contenteditable="true" 
-                                    class="image-caption"
-                                    style="font-size: 14px; margin-top: 5px; cursor: text; color: gray;">
-                            <input type="text" placeholder="이미지 설명을 입력하세요...">"
-                        </figcaption>
-                    </figure><br>`;
-                insertAtCursor(imgHtml);
-            };
-            reader.readAsDataURL(file);
-        }
-        
-
-
-
-    
-        document.getElementById("titleField").addEventListener("focus", function() {
-            if (this.textContent === "제목") {
-                this.textContent = "";
-                this.style.color = "black";
-            }
-        });
-    
-        document.getElementById("titleField").addEventListener("blur", function() {
-            if (this.textContent.trim() === "") {
-                this.textContent = "제목";
-                this.style.color = "#aaa";
-            }
-        });
-    
-        document.getElementById("contentField").addEventListener("focus", function() {
-            if (this.textContent === "본문을 입력하세요...") {
-                this.textContent = "";
-                this.style.color = "black";
-            }
-        });
-    
-        document.getElementById("contentField").addEventListener("blur", function() {
-            if (this.textContent.trim() === "") {
-                this.textContent = "본문을 입력하세요...";
-                this.style.color = "#aaa";
-            }
-        });
-
-
-        function changeFontFamily() {
-    let selectedFont = document.getElementById("fontSelect").value;
-    document.execCommand("styleWithCSS", false, true); // CSS 적용 활성화
-    document.execCommand("fontName", false, selectedFont);
-}
-
-
-function changeFontSize() {
-    let selectedSize = document.getElementById("fontSizeSelect").value;
-    document.execCommand("styleWithCSS", false, true);
-    document.execCommand("fontSize", false, selectedSize); // 임시 크기 설정
-
-    // 선택된 텍스트에 적용된 font-size를 변경
-    let fontElements = document.querySelectorAll("font[size='7']");
-    fontElements.forEach(el => {
-        el.removeAttribute("size");
-        el.style.fontSize = selectedSize + "px";
-    });
-}
-
-
-        document.addEventListener("selectionchange", function() {
-            const selection = window.getSelection();
-            if (selection.rangeCount > 0) {
-                const range = selection.getRangeAt(0);
-                const parentNode = range.commonAncestorContainer.parentNode;
-                
-                if (parentNode) {
-                    const computedStyle = window.getComputedStyle(parentNode);
-                    document.getElementById("fontSelect").value = computedStyle.fontFamily;
-                    document.getElementById("fontSizeSelect").value = computedStyle.fontSize.replace("px", "");
-                }
-            }
-        });
-
-/*
+      /*
         document.addEventListener("focusin", function(event) {
     if (event.target.classList.contains("image-caption")) {
         if (event.target.textContent.trim() === "이미지 설명을 입력하세요...") {
@@ -374,7 +214,7 @@ function changeFontSize() {
         }
     }
 });*/
-/* 
+      /* 
 document.addEventListener("focusout", function(event) {
     if (event.target.classList.contains("image-caption")) {
         if (event.target.textContent.trim() === "") {
@@ -384,24 +224,15 @@ document.addEventListener("focusout", function(event) {
     }
 });*/
 
+      document.addEventListener("DOMContentLoaded", function () {
+        let selectedImage = null; // 현재 선택된 대표사진
 
+        function insertImage(event) {
+          const file = event.target.files[0];
+          if (!file) return;
 
-
-
-
-
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    let selectedImage = null; // 현재 선택된 대표사진
-
-    function insertImage(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = function (e) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
             const figure = document.createElement("figure");
             figure.style.textAlign = "center";
             figure.style.margin = "15px 0";
@@ -417,18 +248,23 @@ document.addEventListener("DOMContentLoaded", function () {
             img.classList.add("editable-image"); // 이미지에 클래스 추가
 
             const caption = document.createElement("figcaption");
-            caption.contentEditable = "true";
+            caption.contentEditable = "false";
             caption.classList.add("image-caption");
             caption.style.fontSize = "14px";
             caption.style.marginTop = "5px";
             caption.style.cursor = "text";
             caption.style.color = "gray";
-           // caption.innerHTML = "이미지 설명을 입력하세요...";
+            caption.innerHTML =
+              "<input type = text id = 'caption_input' placeholder = " +
+              "'이미지 설명을 입력하세요...'" +
+              ">";
+            caption.style.display = "none";
 
             const selectButton = document.createElement("button");
+            selectButton.contentEditable = "false";
             selectButton.innerText = "대표사진 선택";
             selectButton.style.position = "absolute";
-            selectButton.style.bottom = "10px";
+            selectButton.style.bottom = "30px";
             selectButton.style.left = "50%";
             selectButton.style.transform = "translateX(-50%)";
             selectButton.style.padding = "5px 10px";
@@ -439,27 +275,35 @@ document.addEventListener("DOMContentLoaded", function () {
             selectButton.style.color = "white";
             selectButton.style.cursor = "pointer";
             selectButton.style.display = "none"; // 기본적으로 숨김
+            selectButton.style.userSelect = "none";
 
             // 이미지에 마우스를 올리면 버튼 표시
             figure.addEventListener("mouseenter", function () {
-                selectButton.style.display = "block";
+              selectButton.style.display = "block";
+              caption.style.display = "block";
             });
 
             // 이미지에서 마우스가 벗어나면 버튼 숨김
             figure.addEventListener("mouseleave", function () {
-                selectButton.style.display = "none";
+              selectButton.style.display = "none";
+              let cap_input = document.getElementById("caption_input");
+              if (cap_input.value == "") {
+                caption.style.display = "none";
+              } else {
+                caption.style.display = "display";
+              }
             });
 
             // 버튼 클릭 시 대표사진으로 선택
             selectButton.addEventListener("click", function (event) {
-                event.stopPropagation(); // 부모 figure의 클릭 이벤트 방지
+              event.stopPropagation(); // 부모 figure의 클릭 이벤트 방지
 
-                if (selectedImage) {
-                    selectedImage.style.outline = "none"; // 이전 대표사진 테두리 제거
-                }
+              if (selectedImage) {
+                selectedImage.style.outline = "none"; // 이전 대표사진 테두리 제거
+              }
 
-                selectedImage = img;
-                img.style.outline = "4px solid #861f1c"; // 대표사진 윤곽선 표시
+              selectedImage = img;
+              img.style.outline = "4px solid #861f1c"; // 대표사진 윤곽선 표시
             });
 
             figure.appendChild(img);
@@ -467,36 +311,83 @@ document.addEventListener("DOMContentLoaded", function () {
             figure.appendChild(caption);
 
             insertAtCursor(figure);
-        };
-        reader.readAsDataURL(file);
-    }
-
-    function insertAtCursor(element) {
-        const contentField = document.getElementById("contentField");
-        contentField.focus();
-
-        const selection = window.getSelection();
-        if (!selection.rangeCount) {
-            contentField.appendChild(element);
-            return;
+          };
+          reader.readAsDataURL(file);
         }
 
-        const range = selection.getRangeAt(0);
-        range.deleteContents();
-        range.insertNode(element);
+        function insertAtCursor(element) {
+          const contentField = document.getElementById("contentField");
+          contentField.focus();
 
-        range.setStartAfter(element);
-        range.collapse(true);
-        selection.removeAllRanges();
-        selection.addRange(range);
-    }
+          const selection = window.getSelection();
+          if (!selection.rangeCount) {
+            contentField.appendChild(element);
+            return;
+          }
 
-    document.getElementById("imageInput").addEventListener("change", insertImage);
-});
+          const range = selection.getRangeAt(0);
+          range.deleteContents();
+          range.insertNode(element);
 
+          range.setStartAfter(element);
+          range.collapse(true);
+          selection.removeAllRanges();
+          selection.addRange(range);
+        }
 
+        document
+          .getElementById("imageInput")
+          .addEventListener("change", insertImage);
 
+        // 백스페이스 또는 삭제 키로 이미지+캡션 삭제
+        document
+          .getElementById("contentField")
+          .addEventListener("keydown", function (event) {
+            if (event.key === "Backspace" || event.key === "Delete") {
+              const selection = window.getSelection();
+              if (selection.rangeCount > 0) {
+                const range = selection.getRangeAt(0);
+                const node = range.commonAncestorContainer;
+
+                // figure 내부에 커서가 있을 때 figure 삭제
+                const figure = node.closest ? node.closest("figure") : null;
+                if (figure) {
+                  event.preventDefault(); // 기본 동작 방지
+                  figure.remove(); // 이미지 + 캡션 삭제
+                }
+              }
+            }
+          });
+      });
+      // ===========================
+      // write.html: 제목·본문 보관
+      // ===========================
+      window.postData = {};
+
+      // 제목과 본문을 postData에 담기
+      function collectPostData() {
+        const title = document.getElementById("titleField").innerHTML.trim();
+        const content = document
+          .getElementById("contentField")
+          .innerHTML.trim();
+
+        if (!title || title === "제목") {
+          alert("제목을 입력해주세요.");
+          return false;
+        }
+        if (!content || content === "본문을 입력하세요...") {
+          alert("본문을 입력해주세요.");
+          return false;
+        }
+
+        // 🔥 본문(content)에 HTML 및 CSS 포함
+        window.postData.title = title;
+        window.postData.content = content; // HTML 포함
+
+        return true;
+      }
+
+      // 발행 팝업 열기: opener에 postData 전달
     </script>
-    
-</body>
+  </body>
 </html>
