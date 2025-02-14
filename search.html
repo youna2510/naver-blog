@@ -284,9 +284,9 @@
             <!-- 카테고리 네비게이션 -->
             <nav class="category-nav">
                 <ul>
-                    <li><a href="search_guel.html">글</a></li>
-                    <li><a href="search_blog.html">블로그</a></li>
-                    <li><a href="search_id.html" class="active">별명 · 아이디</a></li>
+                    <li><a class="active">글</a></li>
+                    <li><a>블로그</a></li>
+                    <li><a>별명 · 아이디</a></li>
                 </ul>
             </nav>
         
@@ -337,7 +337,6 @@
     </div>
 
     <script>
-        // 검색 버튼 클릭 시 실행되는 함수
 document.querySelector('.search-button').addEventListener('click', async function() {
     const searchQuery = document.getElementById('search-input').value.trim();
     const searchType = document.getElementById('search-type').value;
@@ -347,8 +346,10 @@ document.querySelector('.search-button').addEventListener('click', async functio
         return;
     }
 
+    // 카테고리 활성화 업데이트 함수 호출
+    updateActiveCategory(searchType);
+
     try {
-        // API 요청 URL 설정
         const response = await fetch(`http://127.0.0.1:8000/search/global-nickandid/?q=${encodeURIComponent(searchQuery)}`, {
             method: "GET",
             headers: {
@@ -367,6 +368,39 @@ document.querySelector('.search-button').addEventListener('click', async functio
     } catch (error) {
         console.error('검색 중 에러 발생:', error);
         alert('검색 중 에러가 발생했습니다.');
+    }
+});
+
+// 🟢 카테고리 활성화 업데이트 함수
+function updateActiveCategory(selectedType) {
+    // 모든 카테고리에서 active 클래스 제거
+    document.querySelectorAll('.category-nav a').forEach(link => {
+        link.classList.remove('active');
+    });
+
+    // 선택된 타입에 맞는 링크에 active 클래스 추가
+    let targetSelector = "";
+    if (selectedType === "geul") {
+        targetSelector = 'a[href="search_guel.html"]';
+    } else if (selectedType === "blog") {
+        targetSelector = 'a[href="search_blog.html"]';
+    } else if (selectedType === "id") {
+        targetSelector = 'a[href="search_id.html"]';
+    }
+
+    const targetElement = document.querySelector(targetSelector);
+    if (targetElement) {
+        targetElement.classList.add("active");
+    }
+}
+
+// 🔹 페이지 로드 시 URL 파라미터에 따라 활성화 상태 설정
+document.addEventListener("DOMContentLoaded", function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchType = urlParams.get("type"); // URL에서 검색 타입 가져오기
+
+    if (searchType) {
+        updateActiveCategory(searchType); // 검색 타입에 맞게 active 적용
     }
 });
 
@@ -446,38 +480,6 @@ async function searchUsers(query) {
         alert("검색 중 오류가 발생했습니다.");
     }
 }
-
-function displaySearchResults(users) {
-    const resultsContainer = document.querySelector(".post-list");
-    resultsContainer.innerHTML = ""; // 기존 검색 결과 초기화
-
-    if (!users.length) {
-        resultsContainer.innerHTML = "<p>검색 결과가 없습니다.</p>";
-        return;
-    }
-
-    users.forEach(user => {
-        const userItem = document.createElement("div");
-        userItem.classList.add("post");
-        userItem.innerHTML = `
-            <div class="post-author">
-                <img src="${user.user_pic || 'assets/profile.png'}" alt="프로필">
-                <div>
-                    <div class="author-name">${user.username}</div>
-                    <div class="time">${user.blog_name || "블로그 이름 없음"}</div>
-                </div>
-            </div>
-            <div class="post-content">
-                <div class="post-text">
-                    <h3>${user.username}의 블로그</h3>
-                    <p>${user.intro || "소개 없음"}</p>
-                </div>
-            </div>
-        `;
-        resultsContainer.appendChild(userItem);
-    });
-}
-
 
     </script>
 </body>
