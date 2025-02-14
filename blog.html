@@ -6,14 +6,6 @@
     <link rel="stylesheet" href="prolog.css">
     <title>Document</title>
 
-    <style>
-        .itemtitlefont{
-    font-style: normal;
-    font-weight: bold;
-    font-size:large;
-    margin-left:140px;
-}
-    </style>
     <script>
         function popup(){
             var url = "./neighbor_request.html";
@@ -36,19 +28,9 @@
             <a style="color: gray;"> | </a>
             <a href="./login.html" class="login_btn">로그인</a>
         </div>
-        <div id="blog-title">
-        <table role="presentation">
-            <tbody>
-                <tr>
-                    <td id="blogTitleText">
-                        <h1><a id="blog-title-anchor" >
-                            <span id="blogTitleName" class="itemtitlefont">블로그 제목입니당</span>
-                        </a></h1>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        </div>
+ 
+              <div class="itemtitlefont" id="blogTitleName">블로그 제목입니당</div>
+
         
         <div id="blog-menu">
             <div class="border">
@@ -114,7 +96,7 @@
 <!--서로이웃-->
 <div class="bg-neighbor"> 
     <div class="neighbor-profile">
-        <div style = "font-size: 15px;"><strong>멘아</strong></div>
+        <div class="user-nickname" style = "font-size: 15px;"><strong>사용자</strong></div>
         <div>이웃 커넥트</div>
         <hr style="width:100%; border: 0.25px solid gray;">
     </div>
@@ -140,7 +122,7 @@
         <br>     
         <div>
             <hr style="width:80%; border: 0.25px solid gray;">
-            <a style="margin-left:10px; font-size: 13px; color:gray"><strong>멘아</strong>님 이웃의 새글보기 ></a>
+            <a class="user-nickname" style="margin-left:10px; font-size: 13px; color:gray"><strong>멘아</strong>님 이웃의 새글보기 ></a>
         </div>
     </div> 
 </div>
@@ -204,7 +186,7 @@
             <div class="post_category">[블첼] 일상 포토덤프</div>
             <div class="post_title"> 글 제목 </div>
             <div class="post_writer_list">
-                <strong style="color: black;">멘아</strong>&nbsp;<a>2024. 9. 24. 23:21</a>
+                <strong class="user-nickname" style="color: black;">멘아</strong>&nbsp;<a>2024. 9. 24. 23:21</a>
                 <a class="neighbor_insert">+이웃추가</a><a style="float:right; padding-right: 10px;">URL 복사</a>
             </div>
             <hr class="post_hr">
@@ -317,7 +299,7 @@
             console.log("🔹 API 응답 데이터:", data);
 
             const nickname = data.username || "익명"; // 닉네임 가져오기
-            const blogTitle = data.blog_name || `${username}님의 블로그`;
+            const blogTitle = data.blog_name || "블로그명";
             const profilePic = data.user_pic || "assets/profile.png";
             const intro = data.intro || "이 블로그에 대한 소개 정보가 없습니다.";
 
@@ -332,13 +314,13 @@
             });
 
             document.querySelectorAll(".itemtitlefont").forEach(e2 => {
-    e2.innerText = blogTitle;
-});
+                e2.innerText = blogTitle;
+            });
 
 
-                            document.querySelectorAll(".itemfont_col").forEach(e3 => {
-                            e3.innerText = intro;
-                        });
+            document.querySelectorAll(".itemfont_col").forEach(e3 => {
+                e3.innerText = intro;
+            });
 
 
 

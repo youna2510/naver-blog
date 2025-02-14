@@ -17,7 +17,9 @@
     font-style: normal;
     font-weight: bold;
     font-size:large;
-    margin-left:140px;
+    margin-top:40px;
+    margin-bottom:40px;
+    margin-left:160px;
 }
 
 hr{
@@ -119,6 +121,8 @@ li {
     font-weight: lighter;
 
 }
+
+
 
 .col_sub{
     font-size: 11px;
