@@ -399,10 +399,20 @@ li {
     margin-left: 9px;
 }
 
-.neighbor_img{
+.neighbor_img {
     background-color: white;
     border: 0.5px solid gray;
-    margin-left:10px;
-    width:40px;
-    height:40px;
+    margin-left: 10px;
+    width: 45px; /* 크기를 40px 정도로 조정 */
+    height: 45px;
+    display: flex; /* 이미지가 정렬되도록 flex 적용 */
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* 이미지가 넘치지 않도록 설정 */
+}
+
+.neighbor_img img {
+    width: 100%;  /* 부모 크기에 맞게 이미지 크기 조정 */
+    height: 100%;
+    object-fit: cover; /* 이미지가 꽉 차도록 설정 (비율 유지) */
 }

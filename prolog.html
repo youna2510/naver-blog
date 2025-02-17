@@ -21,44 +21,33 @@
         <a style="color: gray;"> | </a>
         <a>이웃 블로그</a>
         <a style="color: gray;"> | </a>
-        <a style="color:black; text-decoration-line: none;" href="./main_login.html">블로그 홈</a>
+        <a style="color:black; text-decoration-line: none;" href="./main.html">블로그 홈</a>
         <a style="color: gray;"> | </a>
         <a href="./login.html" class="login_btn">로그인</a>
     </div>
-    <div id="top-area">
-        <div id="blog-title">
-        <table role="presentation">
-            <tbody>
-                <tr>
-                    <td id="blogTitleText">
-                        <h1><a id="blog-title-anchor" >
-                            <span id="blogTitleName" class="itemtitlefont">블로그 제목입니당</span>
-                        </a></h1>
-                    </td>
-                </tr>
-            </tbody>
+ 
+    <div class="itemtitlefont" id="blogTitleName">블로그 제목입니당</div>
+
+
+<div id="blog-menu">
+    <div class="border">
+        <table>
+            <tbody><tr><td nowrap="nowrap" class="menu1">
+                <ul>
+                    <li>                        
+                        <a style="color : #861f1c;  font-weight: bold;">프롤로그</a>
+                    </li>
+                    <li> | </li>
+                    <li>                       
+                        <a id="blog-link" href="#" style="color:black; text-decoration-line: none;">블로그</a>
+                    </li>      
+                </ul>
+            </td></tr></tbody>
         </table>
-        </div>
-        
-        <div id="blog-menu">
-            <div class="border">
-                    <table>
-                        <tbody><tr><td nowrap="nowrap" class="menu1">
-                            <ul>
-                                <li>                        
-                                    <a style="color:#861f1c; font-weight: bold;">프롤로그</a>
-                                </li>
-                                <li> | </li>
-                                <li>                       
-                                    <a href="./blog.html" style="color : black; text-decoration-line: none;">블로그</a>
-                                </li>      
-                            </ul>
-                        </td></tr></tbody>
-                    </table>
-            </div>
-        </div>
-        <hr style="margin-left: 140px;">
-    </div>
+</div>
+</div>
+<hr style="margin-left: 140px;">
+</div>
 
     
 <!--프로필-->
@@ -66,12 +55,12 @@
     <div class="con"> 
         <p class="image"> 
             <a href="#" >
-                <img src="https://blogpfthumb-phinf.pstatic.net/MjAyNDEwMTlfMTEz/MDAxNzI5MzE5NTQ5NjA3.Aa_0Od1vsONSqCGe1r7q1OqfVz6Cb1MjlGB9Z-ybCc8g.xnXl03w8uXjyPQn8MA5A4KwMGYGMWUWk_qaBloXw-s4g.JPEG/profileImage.jpg?type=w161" alt="프로필 이미지">
+                <img class="user-profilepicture" style="width:135px;" src="assets/profile.png" alt="프로필 이미지">
             </a> 
         </p> 
     </div> 
     <div class="name align"> 
-        <div class="nick"> <strong class="itemfont col" id="nickNameArea">멘아</strong>
+        <div class="user-nickname" style="font-size: 15px;"> <strong class="itemfont col" id="nickNameArea">사용자이름</strong>
                 <br> <span class="itemfont col">
                     <span class="blog_domain col"> </span> </span> 
                 
@@ -80,10 +69,9 @@
             <span class="itemfont_col">프로필 소개</span>
             </p>
                 <p class="more align"> <span class="m1">
-            <a class="col_sub">프로필</a>
         </p> 
         <div class="btn_area" onclick="popup()"> 
-            <a > 
+            <a> 
                 <span class="blind">이웃추가</span> 
             </a> 
         </div> 
@@ -91,17 +79,19 @@
 </div>
 
 <!--서로이웃-->
-<div style="top: 30px;" class="bg-neighbor"> 
+<div class="bg-neighbor"> 
     <div class="neighbor-profile">
-        <div style = "font-size: 15px;"><strong>멘아</strong></div>
+        <div class="user-nickname" style = "font-size: 15px;"><strong>사용자</strong></div>
         <div>이웃 커넥트</div>
+        <hr style="width:100%; border: 0.25px solid gray;">
     </div>
     <div class="neighbor-list"> 
+        <div style="display: none;">
+            <a class="find_neighbor">내가 추가한</a><a class="find_neighbor">나를 추가한</a>
+        </div>
         <div class="all_neighborhood">
             <a>전체 이웃</a><a style="margin-left: 80px;">57</a><a>명</a>
-            <hr style="width:95%; border: 0.25px solid gray;">
-
-        </div>  
+        </div>   
         <div style="display:inline-block;">
             <div class="neighbor_img"><img></div>
             <a class="neighbor_nickname">이웃별명</a>
@@ -113,12 +103,11 @@
         <div style="display:inline-block;">
             <div class="neighbor_img"><img></div>
             <a class="neighbor_nickname">이웃별명</a>
-        </div>  
-        <br>   
-
+        </div>
+        <br>     
         <div>
             <hr style="width:80%; border: 0.25px solid gray;">
-            <a style="margin-left:10px; font-size: 13px; color:gray"><strong>멘아</strong>님 이웃의 새글보기 ></a>
+            <a class="user-nickname" style="margin-left:10px; font-size: 13px; color:gray"><strong>멘아</strong>님 이웃의 새글보기 ></a>
         </div>
     </div> 
 </div>
@@ -247,6 +236,201 @@
 
     </div>    
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", async function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get("user");
+
+    if (!username) {
+        console.error("❌ 오류: username이 없음");
+        document.getElementById("blog-title").innerText = "블로그 정보를 찾을 수 없습니다.";
+        document.getElementById("blog-intro").innerText = "올바른 사용자 이름이 전달되지 않았습니다.";
+        return;
+    }
+
+    try {
+        const accessToken = localStorage.getItem("access_token");
+        if (!accessToken) {
+            console.error("❌ 오류: accessToken이 없음");
+            alert("로그인이 필요합니다.");
+            window.location.href = "login.html";
+            return;
+        }
+
+        // 🔹 백엔드가 UTF-8 URL 인코딩을 사용하므로, 정확하게 인코딩된 URL을 구성
+        const encodedUsername = encodeURIComponent(username);
+        const apiUrl = `http://127.0.0.1:8000/profile/${encodedUsername}/`;
+
+        console.log("🔹 API 요청 URL:", apiUrl);
+
+        // 🔹 사용자 프로필 정보 조회
+        const response = await fetch(apiUrl, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${accessToken}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        console.log("🔹 API 응답 상태 코드:", response.status);
+
+
+
+        if (response.status === 200) {
+            const data = await response.json();
+            console.log("🔹 API 응답 데이터:", data);
+
+            const nickname = data.username || "익명"; // 닉네임 가져오기
+            const blogTitle = data.blog_name || "블로그명";
+            const profilePic = data.user_pic || "assets/profile.png";
+            const intro = data.intro || "이 블로그에 대한 소개 정보가 없습니다.";
+
+            // 🔥 닉네임 변경
+            document.querySelectorAll(".user-nickname").forEach(el => {
+                                el.innerText = nickname;
+            });
+
+            // 🔥 프로필 사진 변경
+            document.querySelectorAll(".user-profilepicture").forEach(img => {
+                                img.src = profilePic;
+            });
+
+            document.querySelectorAll(".itemtitlefont").forEach(e2 => {
+                e2.innerText = blogTitle;
+            });
+
+
+            document.querySelectorAll(".itemfont_col").forEach(e3 => {
+                e3.innerText = intro;
+            });
+
+            document.getElementById("blog-title").innerText = blogTitle;
+            document.getElementById("profile-pic").src = profilePic;
+            document.getElementById("blog-intro").innerText = intro;
+        } else {
+            console.error("❌ API 요청 실패, 상태 코드:", response.status);
+            document.getElementById("blog-title").innerText = "블로그 정보를 찾을 수 없습니다.";
+            document.getElementById("blog-intro").innerText = "사용자 정보를 불러올 수 없습니다.";
+        }
+    } catch (error) {
+        console.error("❌ 서버 연결 오류:", error);
+        document.getElementById("blog-intro").innerText = "서버 연결에 실패했습니다.";
+    }
+});
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", async function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get("user"); // 현재 블로그 주인의 username
+
+    if (!username) {
+        console.error("❌ 오류: username이 없음");
+        return;
+    }
+
+    // 🔹 '프롤로그' 링크를 해당 블로그 주인의 프로로그 페이지로 설정
+    const blogLink = document.getElementById("blog-link");
+    blogLink.href = `blog.html?user=${encodeURIComponent(username)}`;
+});
+    
+
+
+
+
+
+
+function getFullMediaUrl(relativeUrl) {
+    if (!relativeUrl) {
+        return "assets/default_profile.png";  // 기본 프로필 이미지
+    }
+    return `http://127.0.0.1:8000${relativeUrl}`;  // Django 서버에서 제공하는 절대 경로
+}
+
+
+
+
+
+
+//서로이웃 목록 연동
+
+document.addEventListener("DOMContentLoaded", async function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get("user"); // 현재 보고 있는 블로그 주인
+
+    if (!username) {
+        console.error("❌ 오류: 블로그 주인의 username이 없음");
+        return;
+    }
+
+
+    try {
+        // 🔹 서로이웃 목록 조회 API 요청
+        const apiUrl = `http://127.0.0.1:8000/profile/${encodeURIComponent(username)}/neighbors/`;
+        console.log("🔹 서로이웃 목록 API 호출:", apiUrl);
+
+        const response = await fetch(apiUrl, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (response.status !== 200) {
+            console.error("❌ 서로이웃 목록 조회 실패, 상태 코드:", response.status);
+            return;
+        }
+
+        const data = await response.json();
+        console.log("🔹 서로이웃 목록 데이터:", data);
+
+        // 🔹 서로이웃 목록을 UI에 추가
+        const neighborListContainer = document.querySelector(".neighbor-list");
+        neighborListContainer.innerHTML = ""; // 기존 내용 초기화
+
+        if (data.neighbors.length === 0) {
+            neighborListContainer.innerHTML = "<p>아직 서로이웃이 없습니다.</p>";
+            return;
+        }
+
+        data.neighbors.forEach(neighbor => {
+    const neighborDiv = document.createElement("div");
+    neighborDiv.style.display = "inline-block";
+
+    const neighborImgDiv = document.createElement("div");
+    neighborImgDiv.classList.add("neighbor_img");
+    const img = document.createElement("img");
+
+    img.src = getFullMediaUrl(neighbor.user_pic);  // user_pic을 절대 경로로 변환
+    img.alt = "이웃 프로필";
+    neighborImgDiv.appendChild(img);
+
+    const neighborNickname = document.createElement("a");
+    neighborNickname.classList.add("neighbor_nickname");
+    neighborNickname.innerText = neighbor.urlname;
+    neighborNickname.href = `blog.html?user=${encodeURIComponent(neighbor.urlname)}`;
+
+    neighborDiv.appendChild(neighborImgDiv);
+    neighborDiv.appendChild(neighborNickname);
+    neighborListContainer.appendChild(neighborDiv);
+});
+
+    } catch (error) {
+        console.error("❌ 서버 연결 오류:", error);
+    }
+});
+
+
+
+
+
+
+</script>
 
 
 </body>

@@ -439,7 +439,7 @@ document.querySelector('.search-button').addEventListener('click', function() {
 
     if (searchType === 'id') {
         // `search_id.html` 페이지로 이동하며 검색어 전달
-        window.location.href = `search_id.html?q=${encodeURIComponent(searchQuery)}`;
+        window.location.href = `search.html?q=${encodeURIComponent(searchQuery)}`;
     } else {
         alert('현재 지원되지 않는 검색 유형입니다.');
     }

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="prolog.css">
-    <title>Document</title>
+    <title>SG Blog</title>
 
     <script>
         function popup(){
@@ -38,7 +38,7 @@
                         <tbody><tr><td nowrap="nowrap" class="menu1">
                             <ul>
                                 <li>                        
-                                    <a href="./prolog.html" style="color : black; text-decoration-line: none;">프롤로그</a>
+                                    <a id="prolog-link" href="#" style="color: black; text-decoration-line: none;">프롤로그</a>
                                 </li>
                                 <li> | </li>
                                 <li>                       
@@ -255,6 +255,7 @@
 </div>
 
 <script>
+
     document.addEventListener("DOMContentLoaded", async function () {
     const urlParams = new URLSearchParams(window.location.search);
     const username = urlParams.get("user");
@@ -341,7 +342,291 @@
 });
 
 
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", async function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get("user"); // 이웃 신청을 받는 사람 (블로그 주인)
+
+    if (!username) {
+        console.error("❌ 오류: username이 없음");
+        document.getElementById("blog-title").innerText = "블로그 정보를 찾을 수 없습니다.";
+        document.getElementById("blog-intro").innerText = "올바른 사용자 이름이 전달되지 않았습니다.";
+        return;
+    }
+
+    try {
+        const accessToken = localStorage.getItem("access_token");
+        if (!accessToken) {
+            console.error("❌ 오류: accessToken이 없음");
+            alert("로그인이 필요합니다.");
+            window.location.href = "login.html";
+            return;
+        }
+
+        // 🔹 로그인한 사용자 정보 가져오기
+        const userResponse = await fetch("http://127.0.0.1:8000/profile/me/", {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${accessToken}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (userResponse.status !== 200) {
+            console.error("❌ 사용자 정보 요청 실패:", userResponse.status);
+            alert("사용자 정보를 불러올 수 없습니다.");
+            return;
+        }
+
+        const userData = await userResponse.json();
+        const loggedInUser = userData.username; // 로그인한 사용자 닉네임
+
+        console.log("🔹 로그인한 사용자:", loggedInUser);
+        console.log("🔹 블로그 주인:", username);
+
+        // 🔥 '이웃 추가' 버튼 클릭 시 API 호출
+        document.getElementById("add-neighbor-btn").addEventListener("click", async function () {
+            // 서로이웃 요청 메시지
+            const requestMessage = prompt("이웃 신청 메시지를 입력하세요:", "친하게 지내고 싶어요!");
+
+            if (!requestMessage) {
+                alert("이웃 신청이 취소되었습니다.");
+                return;
+            }
+
+            try {
+                const apiUrl = `http://127.0.0.1:8000/neighbors/${encodeURIComponent(username)}/`;
+
+                console.log("🔹 서로이웃 신청 API 호출:", apiUrl);
+
+                const response = await fetch(apiUrl, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        request_message: requestMessage
+                    })
+                });
+
+                if (response.status === 201) {
+                    alert("✅ 이웃 신청이 성공적으로 전송되었습니다.");
+                } else {
+                    console.error("❌ 이웃 신청 실패, 상태 코드:", response.status);
+                    alert("이웃 신청에 실패했습니다.");
+                }
+            } catch (error) {
+                console.error("❌ 서버 연결 오류:", error);
+                alert("서버에 연결할 수 없습니다.");
+            }
+        });
+
+    } catch (error) {
+        console.error("❌ 서버 연결 오류:", error);
+        document.getElementById("blog-intro").innerText = "서버 연결에 실패했습니다.";
+    }
+});
+
+// 🔹 '이웃 추가' 버튼 클릭 시 팝업 열기
+function popup() {
+    var url = "./neighbor_request.html";
+    var name = "_blank";
+    var option = "width=480, height=300, top=100, left=200, location=no";
+    window.open(url, name, option);
+}
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", async function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get("user"); // 현재 블로그 주인의 username
+
+    if (!username) {
+        console.error("❌ 오류: username이 없음");
+        return;
+    }
+
+    // 🔹 '프롤로그' 링크를 해당 블로그 주인의 프로로그 페이지로 설정
+    const prologLink = document.getElementById("prolog-link");
+    prologLink.href = `prolog.html?user=${encodeURIComponent(username)}`;
+});
+
+
+
+
+
+
+function getFullMediaUrl(relativeUrl) {
+    if (!relativeUrl) {
+        return "assets/default_profile.png";  // 기본 프로필 이미지
+    }
+    return `http://127.0.0.1:8000${relativeUrl}`;  // Django 서버에서 제공하는 절대 경로
+}
+
+
+
+
+
+
+//서로이웃 목록 연동
+
+document.addEventListener("DOMContentLoaded", async function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get("user"); // 현재 보고 있는 블로그 주인
+
+    if (!username) {
+        console.error("❌ 오류: 블로그 주인의 username이 없음");
+        return;
+    }
+
+
+    try {
+        // 🔹 서로이웃 목록 조회 API 요청
+        const apiUrl = `http://127.0.0.1:8000/profile/${encodeURIComponent(username)}/neighbors/`;
+        console.log("🔹 서로이웃 목록 API 호출:", apiUrl);
+
+        const response = await fetch(apiUrl, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (response.status !== 200) {
+            console.error("❌ 서로이웃 목록 조회 실패, 상태 코드:", response.status);
+            return;
+        }
+
+        const data = await response.json();
+        console.log("🔹 서로이웃 목록 데이터:", data);
+
+        // 🔹 서로이웃 목록을 UI에 추가
+        const neighborListContainer = document.querySelector(".neighbor-list");
+        neighborListContainer.innerHTML = ""; // 기존 내용 초기화
+
+        if (data.neighbors.length === 0) {
+            neighborListContainer.innerHTML = "<p>아직 서로이웃이 없습니다.</p>";
+            return;
+        }
+
+        data.neighbors.forEach(neighbor => {
+    const neighborDiv = document.createElement("div");
+    neighborDiv.style.display = "inline-block";
+
+    const neighborImgDiv = document.createElement("div");
+    neighborImgDiv.classList.add("neighbor_img");
+    const img = document.createElement("img");
+
+    img.src = getFullMediaUrl(neighbor.user_pic);  // user_pic을 절대 경로로 변환
+    img.alt = "이웃 프로필";
+    neighborImgDiv.appendChild(img);
+
+    const neighborNickname = document.createElement("a");
+    neighborNickname.classList.add("neighbor_nickname");
+    neighborNickname.innerText = neighbor.urlname;
+    neighborNickname.href = `blog.html?user=${encodeURIComponent(neighbor.urlname)}`;
+
+    neighborDiv.appendChild(neighborImgDiv);
+    neighborDiv.appendChild(neighborNickname);
+    neighborListContainer.appendChild(neighborDiv);
+});
+
+    } catch (error) {
+        console.error("❌ 서버 연결 오류:", error);
+    }
+});
+
+
+
+//근데 타인의 카테고리를 조회할 수 있는 백엔드 API가 따로 필요한가
+document.addEventListener("DOMContentLoaded", async function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get("user"); // 현재 보고 있는 블로그 주인
+
+    if (!username) {
+        console.error("❌ 오류: 블로그 주인의 username이 없음");
+        return;
+    }
+
+    const accessToken = localStorage.getItem("access_token");
+    if (!accessToken) {
+        console.warn("🚨 로그인되지 않음, 로그인 페이지로 이동");
+        alert("로그인이 필요합니다.");
+        window.location.href = "login.html";
+        return;
+    }
+
+    try {
+        // 🔹 카테고리 목록 조회 API 요청
+        const apiUrl = `http://127.0.0.1:8000/category/`;
+        console.log("🔹 카테고리 목록 API 호출:", apiUrl);
+
+        const response = await fetch(apiUrl, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${accessToken}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (response.status !== 200) {
+            console.error("❌ 카테고리 목록 조회 실패, 상태 코드:", response.status);
+            return;
+        }
+
+        const data = await response.json();
+        console.log("🔹 카테고리 목록 데이터:", data);
+
+        // 🔹 카테고리 목록을 UI에 추가
+        const categoryListContainer = document.querySelector(".category-list");
+        categoryListContainer.innerHTML = ""; // 기존 내용 초기화
+
+        // 기본 전체보기 추가
+        const allCategoryDiv = document.createElement("div");
+        allCategoryDiv.innerText = "전체보기";
+        allCategoryDiv.classList.add("category-item");
+        allCategoryDiv.addEventListener("click", () => {
+            window.location.href = `blog.html?user=${encodeURIComponent(username)}`;
+        });
+        categoryListContainer.appendChild(allCategoryDiv);
+
+        if (data.length === 0) {
+            const emptyDiv = document.createElement("div");
+            emptyDiv.innerText = "등록된 카테고리가 없습니다.";
+            categoryListContainer.appendChild(emptyDiv);
+            return;
+        }
+
+        data.forEach(category => {
+            const categoryDiv = document.createElement("div");
+            categoryDiv.innerText = category.name;
+            categoryDiv.classList.add("category-item");
+            categoryDiv.addEventListener("click", () => {
+                window.location.href = `blog.html?user=${encodeURIComponent(username)}&category=${encodeURIComponent(category.id)}`;
+            });
+            categoryListContainer.appendChild(categoryDiv);
+        });
+
+    } catch (error) {
+        console.error("❌ 서버 연결 오류:", error);
+    }
+});
+
+
+
+
 </script>
+
 
 </body>
 </html>
