@@ -76,7 +76,7 @@
             color: #fff;
             font-weight: bold;
             cursor: pointer;
-            margin-left:-193px;
+            margin-left:0px;
         }
 
         
@@ -484,13 +484,7 @@
                     <option value="id">별명, 아이디</option>
                 </select>
             </div>
-
-            <div class="search-input">
-                <label for="search-input" class="visually-hidden"></label>
-                <input id="search-input" type="text" placeholder="검색어를 입력하세요">
-            </div>
-
-            <button class="search-button">검색</button>
+            <button class="search-button">로 검색하기</button>
         </div>
 
         <!-- 메뉴 버튼 -->
@@ -708,6 +702,104 @@
                 heartCount.innerText = count - 1; // 숫자 감소
             }
         }
+
+
+
+
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+    executeSearch(); // 페이지가 로드되면 검색 실행
+});
+
+function executeSearch() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchType = urlParams.get("type"); // 검색 유형 (geul, blog, id)
+    const searchQuery = urlParams.get("query"); // 검색어
+
+
+    console.log(`🔹 검색 유형: ${searchType}, 검색어: ${searchQuery}`);
+
+    // 🔹 검색창에 자동 입력
+    document.getElementById("search-input").value = searchQuery;
+    document.getElementById("search-type").value = searchType;
+
+    // 🔹 로딩 메시지 표시
+    document.querySelector('.post-list').innerHTML = "<p>검색 중...</p>";
+
+    // 🔹 백엔드에서 검색 결과 가져오기
+    fetch(`http://127.0.0.1:8000/search?type=${encodeURIComponent(searchType)}&query=${encodeURIComponent(searchQuery)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`서버 응답 오류: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.querySelector('.post-list').innerHTML = ""; // 로딩 메시지 제거
+            renderSearchResults(searchType, data);
+        })
+        .catch(error => {
+            console.error("❌ 검색 결과 불러오기 오류:", error);
+            document.querySelector('.post-list').innerHTML = "<p>검색 결과를 불러오는 데 실패했습니다.</p>";
+        });
+}
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const searchButton = document.querySelector(".search-button");
+    const searchTypeSelect = document.getElementById("search-type");
+
+    searchButton.addEventListener("click", function () {
+        const searchType = searchTypeSelect.value;  // 선택한 검색 유형
+        const accessToken = localStorage.getItem("access_token");  // 로그인한 사용자 토큰
+        let loggedInUser = "";  
+
+        if (accessToken) {
+            // 🔹 로그인된 사용자 정보 가져오기
+            fetch("http://127.0.0.1:8000/profile/me/", {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`,
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("사용자 정보를 가져올 수 없습니다.");
+                }
+                return response.json();
+            })
+            .then(data => {
+                loggedInUser = encodeURIComponent(data.username);  // 로그인된 사용자 이름 저장
+                redirectToSearch(searchType, loggedInUser);
+            })
+            .catch(error => {
+                console.error("사용자 정보 가져오기 오류:", error);
+                redirectToSearch(searchType, ""); // 로그인 정보 없이 이동
+            });
+        } else {
+            redirectToSearch(searchType, ""); // 로그인 정보 없이 이동
+        }
+    });
+
+    function redirectToSearch(searchType, username) {
+        console.log(`🔹 검색 실행: ${searchType}, 로그인된 사용자: ${username}`);
+
+        let url = `search.html?type=${encodeURIComponent(searchType)}`;
+        if (username) {
+            url += `&user=${username}`;
+        }
+
+        window.location.href = url;
+    }
+});
+
+
+
+
+
         </script>
         
 </body>
