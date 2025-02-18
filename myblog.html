@@ -18,74 +18,8 @@
 
     </style>
 
-    <script>
-function popup(){
-        var url = "./neighbor_request.html";
-        var name = "_blank";
-        var option = "width=480, height=300, top=100, left=200, location=no";
-        window.open(url, name, option);
-    }
 
-    async function fetchRecentPost() {
-        const url = "http://127.0.0.1:8000/posts/me/recent/"; // 사용자의 가장 최근 게시물 API
-
-        // 로컬 스토리지에서 인증 토큰 가져오기
-        const accessToken = localStorage.getItem("access_token");
-        if (!accessToken) {
-            alert("로그인이 필요합니다.");
-            window.location.href = "login.html";
-            return;
-        }
-
-        try {
-            const response = await fetch(url, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${accessToken}`,
-                    "Content-Type": "application/json",
-                    "Accept": "application/json"
-                }
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-                // JSON에서 id, title, content, total_likes, created_at, category_name 가져오기
-                const { id, title, content, total_likes, created_at, category_name } = result;
-
-                // 가져온 ID를 콘솔에서 확인 (디버깅 용도)
-                console.log("가져온 게시물 ID:", id);
-
-                // 작성일 포맷 변경 (YYYY.MM.DD HH:mm)
-                const formattedDate = new Date(created_at).toLocaleString("ko-KR", {
-                    year: "numeric",
-                    month: "2-digit",
-                    day: "2-digit",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                }).replace(/\./g, "").replace(" ", ". ").replace("오전", "").replace("오후", "").trim();
-
-                // DOM에 데이터 반영
-                document.querySelector(".post_title").textContent = title;
-                document.querySelector(".post_contents").textContent = content;
-                document.querySelector(".heart_list").textContent = `공감 ${total_likes}`;
-                document.querySelector(".post_writer_list a").textContent = formattedDate; // 작성일
-                document.querySelector(".post_category").textContent = `[${category_name}]`; // 카테고리
-
-            } else {
-                alert(result.error || "게시물 데이터를 불러오는 데 실패했습니다.");
-            }
-        } catch (error) {
-            console.error("게시물 데이터 가져오기 오류:", error);
-            alert("게시물 데이터를 불러오는 중 오류가 발생했습니다.");
-        }
-    }
-
-    // 페이지 로드 시 실행
-    document.addEventListener("DOMContentLoaded", function () {
-        fetchRecentPost();
-    });
-    </script>
+    
 </head>
 <body>
     
@@ -212,7 +146,7 @@ function popup(){
 <div class="pro_posts">
     <div class="post_list">
         <div class="post_list_title">
-            <strong>전체보기</strong> <a>5개의 글</a>
+            <strong>전체보기</strong> <a></a>
             <a class="list_open"> 목록 열기 </a>
         </div>
         <div style="display:none;" class="post_list_contents">
@@ -387,6 +321,124 @@ function popup(){
                     }
                 });
     
+
+
+
+
+                function popup(){
+        var url = "./neighbor_request.html";
+        var name = "_blank";
+        var option = "width=480, height=300, top=100, left=200, location=no";
+        window.open(url, name, option);
+    }
+    
+    async function fetchRecentPost(n = 1) { // 기본값을 1로 설정
+        const url = `http://127.0.0.1:8000/posts/me/recent/?n=${n}`; // n번째 최신 게시물 조회
+    
+        // 로컬 스토리지에서 인증 토큰 가져오기
+        const accessToken = localStorage.getItem("access_token");
+        if (!accessToken) {
+            alert("로그인이 필요합니다.");
+            window.location.href = "login.html";
+            return;
+        }
+    
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`,
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                }
+            });
+    
+            const result = await response.json();
+    
+            if (response.ok) {
+                // JSON에서 id, title, content, total_likes, created_at, category_name 가져오기
+                const { id, title, content, total_likes, created_at, category_name } = result;
+    
+                // 가져온 ID를 콘솔에서 확인 (디버깅 용도)
+                console.log("📌 가져온 게시물 ID:", id);
+    
+                // 작성일 포맷 변경 (YYYY.MM.DD HH:mm)
+                const formattedDate = new Date(created_at).toLocaleString("ko-KR", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                }).replace(/\./g, "").replace(" ", ". ").replace("오전", "").replace("오후", "").trim();
+    
+                // ✅ 상세 뷰에 데이터 반영
+                document.querySelector(".post_title").textContent = title;
+                document.querySelector(".post_contents").textContent = content;
+                document.querySelector(".heart_list").textContent = `공감 ${total_likes}`;
+                document.querySelector(".post_writer_list a").textContent = formattedDate; // 작성일
+                document.querySelector(".post_category").textContent = `[${category_name}]`; // 카테고리
+    
+            } else {
+                alert(result.error || "게시물 데이터를 불러오는 데 실패했습니다.");
+            }
+        } catch (error) {
+            console.error("📌 게시물 데이터 가져오기 오류:", error);
+            alert("게시물 데이터를 불러오는 중 오류가 발생했습니다.");
+        }
+    }
+    
+    // ✅ "전체보기 X개의 글" 업데이트하는 함수 추가
+    async function fetchPostCount() {
+        const blogOwnerUrlname = "kdy";  // 🔥 URL name (동적으로 설정할 필요 있음)
+        const url = `http://127.0.0.1:8000/posts/count/${blogOwnerUrlname}/`;
+
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Authorization": localStorage.getItem("access_token") ? `Bearer ${localStorage.getItem("access_token")}` : "",
+                    "Content-Type": "application/json"
+                }
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                const postCount = result.post_count; // ✅ 게시물 개수 가져오기
+                console.log("📌 게시물 개수:", postCount);
+
+                // ✅ "전체보기 X개의 글" 부분 업데이트
+                document.querySelector(".post_list_title strong").textContent = `전체보기 ${postCount}개의 글`;
+            } else {
+                console.error("❌ 게시물 개수 가져오기 실패:", result);
+            }
+        } catch (error) {
+            console.error("❌ 게시물 개수 가져오는 중 오류 발생:", error);
+        }
+    }
+
+    // ✅ 페이지네이션 버튼 클릭 이벤트 추가
+    document.addEventListener("DOMContentLoaded", function () {
+        const paginationLinks = document.querySelectorAll(".pagination .num");
+
+        paginationLinks.forEach(link => {
+            link.addEventListener("click", function (event) {
+                event.preventDefault(); // 기본 링크 이동 방지
+                const n = this.textContent.trim(); // 클릭한 숫자 (n번째 게시물)
+
+                console.log(`📌 선택된 게시물 번호: ${n}`);
+
+                // n번째 최신 게시물 가져오기
+                fetchRecentPost(n);
+            });
+        });
+
+        // 기본적으로 가장 최신 게시물(n=1) 조회
+        fetchRecentPost();
+
+        // ✅ "전체보기 X개의 글" 데이터 업데이트
+        fetchPostCount();
+    });
     
     
     
