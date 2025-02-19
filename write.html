@@ -27,7 +27,7 @@
       <div class="logo">SG Blog</div>
       <div class="buttons">
         <button onclick="popup()">임시 저장</button>
-        <button onclick="openWriteSavePopup ()">발행</button>
+        <button onclick="openWriteSavePopup()">발행</button>
       </div>
     </div>
 
@@ -197,23 +197,23 @@
       });
 
       /*
-              document.addEventListener("focusin", function(event) {
-          if (event.target.classList.contains("image-caption")) {
-              if (event.target.textContent.trim() === "이미지 설명을 입력하세요...") {
-                  event.target.textContent = ""; // ✅ 클릭 시 빈 공간으로 변경
-                  event.target.style.color = "black";
-              }
-          }
-      });*/
+                    document.addEventListener("focusin", function(event) {
+                if (event.target.classList.contains("image-caption")) {
+                    if (event.target.textContent.trim() === "이미지 설명을 입력하세요...") {
+                        event.target.textContent = ""; // ✅ 클릭 시 빈 공간으로 변경
+                        event.target.style.color = "black";
+                    }
+                }
+            });*/
       /*
-      document.addEventListener("focusout", function(event) {
-          if (event.target.classList.contains("image-caption")) {
-              if (event.target.textContent.trim() === "") {
-                  event.target.textContent = "이미지 설명을 입력하세요...";
-                  event.target.style.color = "gray";
-              }
-          }
-      });*/
+            document.addEventListener("focusout", function(event) {
+                if (event.target.classList.contains("image-caption")) {
+                    if (event.target.textContent.trim() === "") {
+                        event.target.textContent = "이미지 설명을 입력하세요...";
+                        event.target.style.color = "gray";
+                    }
+                }
+            });*/
 
       document.addEventListener("DOMContentLoaded", function () {
         let selectedImage = null; // 현재 선택된 대표사진
@@ -238,17 +238,16 @@
             img.style.cursor = "pointer";
             img.classList.add("editable-image"); // 이미지에 클래스 추가
 
+            const uniqueId = "caption_" + crypto.randomUUID(); // UUID 기반 ID 생성
             const caption = document.createElement("figcaption");
-            caption.contentEditable = "false";
+            caption.contentEditable = "true";
             caption.classList.add("image-caption");
             caption.style.fontSize = "14px";
             caption.style.marginTop = "5px";
             caption.style.cursor = "text";
             caption.style.color = "gray";
-            caption.innerHTML =
-              "<input type = text id = 'caption_input' placeholder = " +
-              "'이미지 설명을 입력하세요...'" +
-              ">";
+            caption.innerHTML = `<input type="text" id="${uniqueId}" placeholder="이미지 설명을 입력하세요...">`;
+
             caption.style.display = "none";
 
             const selectButton = document.createElement("button");
@@ -289,13 +288,20 @@
             selectButton.addEventListener("click", function (event) {
               event.stopPropagation(); // 부모 figure의 클릭 이벤트 방지
 
+              // 기존 대표사진 스타일 해제
               if (selectedImage) {
-                selectedImage.style.outline = "none"; // 이전 대표사진 테두리 제거
+                selectedImage.style.outline = "none";
+                selectedImage.dataset.isRepresentative = "false"; // 기존 대표사진 false 처리
               }
 
+              // 새로운 대표사진 지정
               selectedImage = img;
               img.style.outline = "4px solid #861f1c"; // 대표사진 윤곽선 표시
+              img.dataset.isRepresentative = "true"; // 데이터 속성으로 저장
             });
+
+            const newLine = document.createElement("div");
+            newLine.innerHTML = "<br>"; // 새로운 줄 추가
 
             figure.appendChild(img);
             figure.appendChild(selectButton);
@@ -331,81 +337,150 @@
           .addEventListener("change", insertImage);
       });
 
-      // ===========================
-      // ✅ 1️⃣ 제목·본문 수집 (collectPostData)
-      // ===========================
-      function collectPostData() {
-        const title = document.getElementById("titleField").innerHTML.trim();
-        const content = document
-          .getElementById("contentField")
-          .innerHTML.trim();
-
-        if (!title || title === "제목") {
-          alert("제목을 입력해주세요.");
-          return false;
-        }
-        if (!content || content === "본문을 입력하세요...") {
-          alert("본문을 입력해주세요.");
-          return false;
-        }
-
-        // 🔥 본문(content)에 HTML 및 CSS 포함
-        window.postData = {
-          title: title,
-          content: content,
-        };
-
-        return true;
-      }
-
-      // ===========================
-      // ✅ 2️⃣ 자식 창 객체 전역 선언 (ReferenceError 해결)
-      // ===========================
-      let childWindow = null;
-
-      // ===========================
-      // ✅ 3️⃣ 부모-자식 간 postMessage 리스너 (전역에 작성)
-      // ===========================
-      window.addEventListener("message", (event) => {
-        if (event.data === "CHILD_READY" && childWindow) {
-          // ✅ 자식 창이 준비되면 postData 전달
-          childWindow.postMessage(
-            { type: "POST_DATA", payload: window.postData },
-            "*"
-          );
-          console.log(
-            "🚀 [부모 창] postData를 자식 창에 전달:",
-            window.postData
-          );
-        }
-      });
-
-      // ===========================
-      // ✅ 4️⃣ 발행 팝업 열기: openWriteSavePopup
-      // ===========================
       function openWriteSavePopup() {
-        // 🟡 제목·본문 수집 후 실행
-        if (!collectPostData()) {
-          return;
-        }
-
-        // ✅ 자식 창 열기
+        // 자식 창 열기 (데이터 주고받을 필요 없음)
         childWindow = window.open(
-          "write_save.html",
-          "WriteSavePopup",
-          "width=600,height=700"
+          "write_save.html", // 자식 창 HTML
+          "WriteSavePopup", // 창 이름
+          "width=600,height=700" // 창 크기 및 옵션
         );
 
-        // 🟡 자식 창이 `postMessage` 신호 보낼 때까지 대기
         if (!childWindow) {
-          console.error("🚨 자식 창 열기 실패");
-          alert("팝업이 차단되었습니다. 브라우저 설정을 확인하세요.");
+          console.error("🚨 팝업 창 열기 실패: 브라우저 팝업 차단 확인 필요");
+          alert(
+            "팝업 차단이 설정되어 있습니다. 브라우저 설정을 확인해 주세요."
+          );
         }
       }
 
-      // ===========================
-      // ✅ 5️⃣ 버튼에 이벤트 연결
-      // ===========================
+      // ✅ 이미지 삽입 시 `caption_input`의 값 추출
+      function extractCaptions() {
+        const captions = [];
+        document.querySelectorAll(".image-caption input").forEach((input) => {
+          captions.push(input.value.trim() || "");
+        });
+        return captions;
+      }
+
+      // 🔥 FormData에 추가
+      // Base64 데이터를 File 객체로 변환하는 함수
+      function dataURLToFile(dataUrl, filename) {
+        const arr = dataUrl.split(",");
+        const mime = arr[0].match(/:(.*?);/)[1];
+        const bstr = atob(arr[1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+
+        while (n--) {
+          u8arr[n] = bstr.charCodeAt(n);
+        }
+
+        return new File([u8arr], filename, { type: mime });
+      }
+
+      // ✅ Base64로 저장된 본문 내 이미지들을 찾아서 File 객체로 변환
+      // ✅ Base64로 저장된 본문 내 이미지들을 찾아서 File 객체로 변환하고, 대표사진 여부까지 처리
+      function extractBase64Images() {
+        const images = [];
+        const isRepresentativeArray = [];
+
+        document.querySelectorAll(".editable-image").forEach((img, index) => {
+          if (img.src.startsWith("data:image")) {
+            const file = dataURLToFile(img.src, `image_${index}.png`);
+            images.push(file);
+
+            // ✅ 대표사진 여부 저장
+            isRepresentativeArray.push(img.dataset.isRepresentative === "true");
+          }
+        });
+
+        // ✅ 대표사진이 없으면 첫 번째 이미지를 대표사진으로 설정
+        if (!isRepresentativeArray.includes(true) && images.length > 0) {
+          isRepresentativeArray[0] = true;
+        }
+
+        return { images, isRepresentativeArray };
+      }
+
+      // ✅ 부모 창에서 자식 창 메시지 수신
+      window.addEventListener("message", handlePublish);
+
+      async function handlePublish(eventData) {
+        if (event.data.type === "SAVE_DATA") {
+          console.log("🚀 [부모 창] 자식 창으로부터 데이터 수신 성공!");
+          console.log("📦 전달된 데이터:", event.data.payload);
+
+          // 1. 제목과 본문, 사진 캡션, 대표사진 여부 추출
+          const title = document
+            .getElementById("titleField")
+            .textContent.trim();
+          const contentHTML = document.getElementById("contentField").innerHTML;
+          const captionsArray = extractCaptions();
+
+          const { images, isRepresentativeArray } = extractBase64Images();
+
+          if (captionsArray.length !== images.length) {
+            console.error("🚨 captions 배열과 images 배열 개수가 다릅니다!");
+            console.log("▶ captions:", captionsArray);
+            console.log("▶ images:", images);
+          }
+
+          // 2. FormData 생성
+          const formData = new FormData();
+          formData.append("title", title);
+          formData.append("content", contentHTML);
+          formData.append("category_name", event.data.payload.category);
+          formData.append("subject", event.data.payload.subject);
+          formData.append("visibility", event.data.payload.open);
+          formData.append("status", "published");
+          formData.append("captions", JSON.stringify(captionsArray));
+          formData.append(
+            "is_representative",
+            JSON.stringify(isRepresentativeArray)
+          );
+
+          // ✅ Base64를 변환한 이미지들을 FormData에 추가
+          images.forEach((image, index) => {
+            formData.append(`images`, image);
+          });
+
+          const accessToken = localStorage.getItem("access_token");
+
+          // 3. 백엔드 전송
+          console.log("📌 FormData 확인");
+          console.log("▶ 제목:", formData.get("title"));
+          console.log("▶ 본문:", formData.get("content"));
+          console.log("▶ 카테고리:", formData.get("category_name"));
+          console.log("▶ 주제:", formData.get("subject"));
+          console.log("▶ 공개 설정:", formData.get("visibility"));
+          console.log("▶ 상태:", formData.get("status"));
+          console.log("▶ 캡션 리스트:", formData.get("captions"));
+          console.log("▶ 대표사진 여부:", formData.get("is_representative"));
+
+          try {
+            const response = await fetch(
+              "http://127.0.0.1:8000/posts/me/create/",
+              {
+                method: "POST",
+                headers: { Authorization: `Bearer ${accessToken}` },
+                body: formData,
+              }
+            );
+
+            if (response.ok) {
+              alert("✅ 게시물이 성공적으로 등록되었습니다!");
+              window.location.href = "/myblog.html";
+            } else {
+              alert("⚠️ 게시물 등록 실패");
+            }
+          } catch (error) {
+            console.error("❌ 게시물 전송 중 오류:", error);
+            alert("서버와 연결할 수 없습니다.");
+          }
+        } else {
+          console.log("⚠️ 알 수 없는 메시지 수신:", event.data);
+        }
+      }
     </script>
   </body>
 </html>

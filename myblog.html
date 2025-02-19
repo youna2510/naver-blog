@@ -1,436 +1,576 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="prolog.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="prolog.css" />
     <title>SG Blog</title>
     <style>
-        .user-profilepicture {
-            width:135px;
-            margin-top:-5px;
+      .user-profilepicture {
+        width: 135px;
+        margin-top: -5px;
+      }
 
-        }
-
-        .buttons {
-            padding-top:20px;
-        }
-
+      .buttons {
+        padding-top: 20px;
+      }
     </style>
-
-
-    
-</head>
-<body>
-    
+  </head>
+  <body>
     <div id="top-area">
-        <div class="top_menubar">
-            <a style="margin-left:50px;">이웃 블로그</a>
-            <a style="color: gray;"> | </a>
-            <a style="color:black; text-decoration-line: none;" href="./main_login.html">블로그 홈</a>
-            <a style="color: gray;"> | </a>
-            <a href="./main.html" class="login_btn">로그아웃</a>
-        </div>
-        <div id="blog-title">
+      <div class="top_menubar">
+        <a style="margin-left: 50px">이웃 블로그</a>
+        <a style="color: gray"> | </a>
+        <a
+          style="color: black; text-decoration-line: none"
+          href="./main_login.html"
+          >블로그 홈</a
+        >
+        <a style="color: gray"> | </a>
+        <a href="./main.html" class="login_btn">로그아웃</a>
+      </div>
+      <div id="blog-title">
         <table role="presentation">
-            <tbody>
-                <tr>
-                    <td id="blogTitleText">
-                        <h1><a id="blog-title-anchor" >
-                            <span id="blogTitleName" class="itemtitlefont">블로그 제목</span>
-                        </a></h1>
-                    </td>
-                </tr>
-            </tbody>
+          <tbody>
+            <tr>
+              <td id="blogTitleText">
+                <h1>
+                  <a id="blog-title-anchor">
+                    <span id="blogTitleName" class="itemtitlefont"
+                      >블로그 제목</span
+                    >
+                  </a>
+                </h1>
+              </td>
+            </tr>
+          </tbody>
         </table>
+      </div>
+
+      <div id="blog-menu">
+        <div class="border">
+          <table>
+            <tbody>
+              <tr>
+                <td nowrap="nowrap" class="menu1">
+                  <ul>
+                    <li>
+                      <a
+                        href="./myprolog.html"
+                        style="color: black; text-decoration-line: none"
+                        >프롤로그</a
+                      >
+                    </li>
+                    <li>|</li>
+                    <li>
+                      <a style="color: #861f1c; font-weight: bold">블로그</a>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        
-        <div id="blog-menu">
-            <div class="border">
-                    <table>
-                        <tbody><tr><td nowrap="nowrap" class="menu1">
-                            <ul>
-                                <li>                        
-                                    <a href="./myprolog.html" style="color : black; text-decoration-line: none;">프롤로그</a>
-                                </li>
-                                <li> | </li>
-                                <li>                       
-                                    <a style="color:#861f1c; font-weight: bold;">블로그</a>
-                                </li>      
-                            </ul>
-                        </td></tr></tbody>
-                    </table>
-            </div>
-        </div>
-        <hr style="margin-left: 140px;">
+      </div>
+      <hr style="margin-left: 140px" />
     </div>
 
-    
-<!--프로필-->
-<div class="bg-body"> 
-    <div class="con"> 
-        <p class="image"> 
-            <a href="#" >
-                <img class="user-profilepicture" src="assets/profile.png" alt="프로필 이미지">
-            </a> 
-        </p> 
-    </div> 
-    <div class="name align"> 
-        <div class="user-nickname"> <strong class="itemfont col" id="nickNameArea">사용자본인</strong>
-            <br> <span class="itemfont col">
-                    <span class="blog_domain col"> </span> </span> 
-                
-            </div> 
-        </div> <p class="caption align"> 
-            <span class="itemfont_col">프로필 소개</span>
-            </p>
-                <p class="more align"> <span class="m1">
-        </p> 
-        <div class="buttons">
-            <button class="write" onclick="location.href='write.html'">글쓰기</button>
-            <button class="settings" onclick="location.href='profile.html'">프로필 관리</button>
+    <!--프로필-->
+    <div class="bg-body">
+      <div class="con">
+        <p class="image">
+          <a href="#">
+            <img
+              class="user-profilepicture"
+              src="assets/profile.png"
+              alt="프로필 이미지"
+            />
+          </a>
+        </p>
+      </div>
+      <div class="name align">
+        <div class="user-nickname">
+          <strong class="itemfont col" id="nickNameArea">사용자본인</strong>
+          <br />
+          <span class="itemfont col">
+            <span class="blog_domain col"> </span>
+          </span>
         </div>
-    </div> 
-</div>
+      </div>
+      <p class="caption align">
+        <span class="itemfont_col">프로필 소개</span>
+      </p>
+      <p class="more align">
+        <span class="m1"></span>
+      </p>
+      <div class="buttons">
+        <button class="write" onclick="location.href='write.html'">
+          글쓰기
+        </button>
+        <button class="settings" onclick="location.href='profile.html'">
+          프로필 관리
+        </button>
+      </div>
+    </div>
 
-
-<!--카테고리-->
-<div class="bg-category"> 
-    <div class="category-list"> 
+    <!--카테고리-->
+    <div class="bg-category">
+      <div class="category-list">
         <div>전체보기</div>
         <div>게시판1</div>
         <div>게시판2</div>
         <div>게시판3</div>
-
-    </div> 
-</div>
-
-<!--서로이웃-->
-<div class="bg-neighbor"> 
-    <div class="neighbor-profile">
-        <div class="user-nickname" style="font-size: 15px;"><strong>본인</strong></div>
-        <div>이웃 커넥트</div>
-        <hr style="width:100%; border: 0.25px solid gray;">
+      </div>
     </div>
-    <div class="neighbor-list"> 
-        <div style="display: none;">
-            <a class="find_neighbor">내가 추가한</a><a class="find_neighbor">나를 추가한</a>
+
+    <!--서로이웃-->
+    <div class="bg-neighbor">
+      <div class="neighbor-profile">
+        <div class="user-nickname" style="font-size: 15px">
+          <strong>본인</strong>
+        </div>
+        <div>이웃 커넥트</div>
+        <hr style="width: 100%; border: 0.25px solid gray" />
+      </div>
+      <div class="neighbor-list">
+        <div style="display: none">
+          <a class="find_neighbor">내가 추가한</a
+          ><a class="find_neighbor">나를 추가한</a>
         </div>
         <div class="all_neighborhood">
-            <a>전체 이웃</a><a style="margin-left: 80px;">57</a><a>명</a>
-        </div>   
-        <div style="display:inline-block;">
-            <div class="neighbor_img"><img></div>
-            <a class="neighbor_nickname">이웃별명</a>
+          <a>전체 이웃</a><a style="margin-left: 80px">57</a><a>명</a>
         </div>
-        <div style="display:inline-block;">
-            <div class="neighbor_img"><img></div>
-            <a class="neighbor_nickname">이웃별명</a>
+        <div style="display: inline-block">
+          <div class="neighbor_img"><img /></div>
+          <a class="neighbor_nickname">이웃별명</a>
         </div>
-        <div style="display:inline-block;">
-            <div class="neighbor_img"><img></div>
-            <a class="neighbor_nickname">이웃별명</a>
+        <div style="display: inline-block">
+          <div class="neighbor_img"><img /></div>
+          <a class="neighbor_nickname">이웃별명</a>
         </div>
-        <br>     
+        <div style="display: inline-block">
+          <div class="neighbor_img"><img /></div>
+          <a class="neighbor_nickname">이웃별명</a>
+        </div>
+        <br />
         <div>
-            <hr style="width:80%; border: 0.25px solid gray;">
-            <a class="user-nickname" style="margin-left:10px; font-size: 13px; color:gray"><strong>본인</strong>님 이웃의 새글보기 ></a>
+          <hr style="width: 80%; border: 0.25px solid gray" />
+          <a
+            class="user-nickname"
+            style="margin-left: 10px; font-size: 13px; color: gray"
+            ><strong>본인</strong>님 이웃의 새글보기 ></a
+          >
         </div>
-    </div> 
-</div>
-
-
-
-
-<!--포스트 목록-->
-<div class="pro_posts">
-    <div class="post_list">
-        <div class="post_list_title">
-            <strong>전체보기</strong> <a></a>
-            <a class="list_open"> 목록 열기 </a>
-        </div>
-        <div style="display:none;" class="post_list_contents">
-            <div class="post_list_content_title">
-                <a>글 제목</a><a style="float:right;">작성일</a>
-            </div>
-            <hr class="post_list_hr">
-            <div class="post_list_contents_list">
-                <div>
-                    <a>글 제목1</a><a style="float:right;">2024.02.10</a>
-                    <hr class="post_list_contents_hr">
-                </div>
-                <div>
-                    <a>글 제목2</a><a style="float:right;">2024.02.10</a>
-                    <hr class="post_list_contents_hr">
-                </div>
-                <div>
-                    <a>글 제목3</a><a style="float:right;">2024.02.10</a>
-                    <hr class="post_list_contents_hr">
-                </div>
-                <div>
-                    <a>글 제목4</a><a style="float:right;">2024.02.10</a>
-                    <hr class="post_list_contents_hr">
-                </div>
-                <div>
-                    <a>글 제목5</a><a style="float:right;">2024.02.10</a>
-                    <hr class="post_list_contents_hr">
-                </div>
-                <div class="post_list_page">
-                    <ul class="pagination">
-                        <li><a href="#" class="left"> <이전 </a></li>
-                        <li><a href="#" class="active num">1</a></li>
-                        <li><a href="#" class="num">2</a></li>
-                        <li><a href="#" class="num">3</a></li>
-                        <li><a href="#" class="num">4</a></li>
-                        <li><a href="#" class="num">5</a></li>
-                        <li><a href="#" class="num">6</a></li>
-                        <li><a href="#" class="num">7</a></li>
-                        <li><a href="#" class="num">8</a></li>
-                        <li><a href="#" class="right">다음></a></li>
-
-                    </ul>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
-    <div class="post_content">
-        <div class="post_title_content">
-            <div class="post_category">[블첼] 일상 포토덤프</div>
-            <div class="post_title"> 글 제목 </div>
-            <div class="post_writer_list">
-                <strong class="user-nickname" style="color: black;">멘아</strong>&nbsp;<a>2024. 9. 24. 23:21</a>
-                <a class="neighbor_insert">+이웃추가</a><a style="float:right; padding-right: 10px;">URL 복사</a>
+
+    <!--포스트 목록-->
+    <div class="pro_posts">
+      <div class="post_list">
+        <div class="post_list_title">
+          <strong>전체보기</strong> <a></a>
+          <a class="list_open"> 목록 열기 </a>
+        </div>
+        <div style="display: none" class="post_list_contents">
+          <div class="post_list_content_title">
+            <a>글 제목</a><a style="float: right">작성일</a>
+          </div>
+          <hr class="post_list_hr" />
+          <div class="post_list_contents_list">
+            <div>
+              <a>글 제목1</a><a style="float: right">2024.02.10</a>
+              <hr class="post_list_contents_hr" />
             </div>
-            <hr class="post_hr">
+            <div>
+              <a>글 제목2</a><a style="float: right">2024.02.10</a>
+              <hr class="post_list_contents_hr" />
+            </div>
+            <div>
+              <a>글 제목3</a><a style="float: right">2024.02.10</a>
+              <hr class="post_list_contents_hr" />
+            </div>
+            <div>
+              <a>글 제목4</a><a style="float: right">2024.02.10</a>
+              <hr class="post_list_contents_hr" />
+            </div>
+            <div>
+              <a>글 제목5</a><a style="float: right">2024.02.10</a>
+              <hr class="post_list_contents_hr" />
+            </div>
+            <div class="post_list_page">
+              <ul class="pagination">
+                <li><a href="#" class="left"> <이전 </a></li>
+                <li><a href="#" class="active num">1</a></li>
+                <li><a href="#" class="num">2</a></li>
+                <li><a href="#" class="num">3</a></li>
+                <li><a href="#" class="num">4</a></li>
+                <li><a href="#" class="num">5</a></li>
+                <li><a href="#" class="num">6</a></li>
+                <li><a href="#" class="num">7</a></li>
+                <li><a href="#" class="num">8</a></li>
+                <li><a href="#" class="right">다음></a></li>
+              </ul>
+            </div>
+          </div>
         </div>
-        <div class="post_contents">
-            글글글
+      </div>
+      <div class="post_content">
+        <div class="post_title_content">
+          <div class="post_category">[블첼] 일상 포토덤프</div>
+          <div class="post_title">글 제목</div>
+          <div class="post_writer_list">
+            <strong class="user-nickname" style="color: black">멘아</strong
+            >&nbsp;<a>2024. 9. 24. 23:21</a>
+            <a class="neighbor_insert">+이웃추가</a
+            ><a style="float: right; padding-right: 10px">URL 복사</a>
+          </div>
+          <hr class="post_hr" />
         </div>
+        <div class="post_contents">글글글</div>
         <div class="post_last_list">
-            <a class="heart_list">공감 4</a>
-            <a class="comment_list">댓글 쓰기</a>
+          <a class="heart_list">공감 4</a>
+          <a class="comment_list">댓글 쓰기</a>
         </div>
         <div class="comments">
-            <div class="writed_comments">
-                <a class="cmt_writer_nickname"><strong>닉네임1</strong></a>
-                <div class="writing_comment">글 좋아요~</div>
-                <div style="margin-left: 5px; margin-top: 10px;" class="comment_btns">
-                    <a class="another_cmts"><strong>답글</strong></a>
-                </div>
-                <hr style="margin-top:20px; margin-left:20px; width:95%; border: solid 0.25px gray;">
+          <div class="writed_comments">
+            <a class="cmt_writer_nickname"><strong>닉네임1</strong></a>
+            <div class="writing_comment">글 좋아요~</div>
+            <div
+              style="margin-left: 5px; margin-top: 10px"
+              class="comment_btns"
+            >
+              <a class="another_cmts"><strong>답글</strong></a>
             </div>
-            <div class="writed_comments">
-                <a class="cmt_writer_nickname"><strong>닉네임1</strong></a>
-                <div class="writing_comment">글 좋아요~</div>
-                <div style="margin-left: 5px; margin-top: 10px;" class="comment_btns">
-                    <a class="another_cmts"><strong>답글</strong></a>
-                </div>
-                <hr style="margin-top:20px; margin-left:20px; width:95%; border: solid 0.25px gray;">
+            <hr
+              style="
+                margin-top: 20px;
+                margin-left: 20px;
+                width: 95%;
+                border: solid 0.25px gray;
+              "
+            />
+          </div>
+          <div class="writed_comments">
+            <a class="cmt_writer_nickname"><strong>닉네임1</strong></a>
+            <div class="writing_comment">글 좋아요~</div>
+            <div
+              style="margin-left: 5px; margin-top: 10px"
+              class="comment_btns"
+            >
+              <a class="another_cmts"><strong>답글</strong></a>
             </div>
+            <hr
+              style="
+                margin-top: 20px;
+                margin-left: 20px;
+                width: 95%;
+                border: solid 0.25px gray;
+              "
+            />
+          </div>
 
-            <div style="margin-left: 45%;" >
-                <ul class="pagination">
-                    <li><a href="#" class="active num">1</a></li>
-                    <li><a href="#" class="num">2</a></li>
-                </ul>
-            </div>
+          <div style="margin-left: 45%">
+            <ul class="pagination">
+              <li><a href="#" class="active num">1</a></li>
+              <li><a href="#" class="num">2</a></li>
+            </ul>
+          </div>
 
-            <div class="comment_write">
-                <a class="cmt_writer_nickname"><strong>닉네임</strong></a>
-                <div class="writing_comment">
-                    <textarea class="writing_comment_input" type="text" id="comment" name="comment" placeholder="블로그가 더 훈훈해지는 댓글 부탁드립니다. 불쾌감을 주는 욕설과 악플은 삭제될 수 있습니다."></textarea>
-                </div>
-                <hr class="comment_hr">
-                <div class="comment_btns">
-                    <a>스티커</a><a>사진</a><a>비밀댓글</a>
-                    <a class="submit_cmt"><strong>등록</strong></a>
-                </div>
+          <div class="comment_write">
+            <a class="cmt_writer_nickname"><strong>닉네임</strong></a>
+            <div class="writing_comment">
+              <textarea
+                class="writing_comment_input"
+                type="text"
+                id="comment"
+                name="comment"
+                placeholder="블로그가 더 훈훈해지는 댓글 부탁드립니다. 불쾌감을 주는 욕설과 악플은 삭제될 수 있습니다."
+              ></textarea>
             </div>
+            <hr class="comment_hr" />
+            <div class="comment_btns">
+              <a>스티커</a><a>사진</a><a>비밀댓글</a>
+              <a class="submit_cmt"><strong>등록</strong></a>
+            </div>
+          </div>
         </div>
-    </div>
-    <div class="list_page">
+      </div>
+      <div class="list_page">
         <ul class="pagination">
-            <li><a href="#" class="left"> <이전 </a></li>
-            <li><a href="#" class="active num">1</a></li>
-            <li><a href="#" class="num">2</a></li>
-            <li><a href="#" class="num">3</a></li>
-            <li><a href="#" class="num">4</a></li>
-            <li><a href="#" class="num">5</a></li>
-            <li><a href="#" class="num">6</a></li>
-            <li><a href="#" class="num">7</a></li>
-            <li><a href="#" class="num">8</a></li>
-            <li><a href="#" class="right">다음></a></li>
-    
+          <li><a href="#" class="left"> <이전 </a></li>
+          <li><a href="#" class="active num">1</a></li>
+          <li><a href="#" class="num">2</a></li>
+          <li><a href="#" class="num">3</a></li>
+          <li><a href="#" class="num">4</a></li>
+          <li><a href="#" class="num">5</a></li>
+          <li><a href="#" class="num">6</a></li>
+          <li><a href="#" class="num">7</a></li>
+          <li><a href="#" class="num">8</a></li>
+          <li><a href="#" class="right">다음></a></li>
         </ul>
+      </div>
     </div>
-    
-</div>
 
+    <script>
+      document.addEventListener("DOMContentLoaded", async function () {
+        const accessToken = localStorage.getItem("access_token");
+        if (!accessToken) {
+          alert("로그인이 필요합니다.");
+          window.location.href = "login.html";
+          return;
+        }
 
-<script>
-    document.addEventListener("DOMContentLoaded", async function () {
-                    const accessToken = localStorage.getItem("access_token");
-                    if (!accessToken) {
-                        alert("로그인이 필요합니다.");
-                        window.location.href = "login.html";
-                        return;
-                    }
-                
-                    try {
-                        const response = await fetch("http://127.0.0.1:8000/profile/me/", {
-                            method: "GET",
-                            headers: {
-                                "Authorization": `Bearer ${accessToken}`,
-                                "Content-Type": "application/json"
-                            }
-                        });
-                
-                        if (response.status === 200) {
-                            const data = await response.json();
-                            const nickname = data.username || "익명"; // 닉네임 가져오기
-                            const profilePic = data.user_pic || "assets/profile.png"; // 프로필 사진 가져오기\
-                            const blogname = data.blog_name || "블로그 제목";
-                            const intro = data.intro || "프로필 소개글";
+        try {
+          const response = await fetch("http://127.0.0.1:8000/profile/me/", {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            },
+          });
 
-                
-                            // 🔥 닉네임 변경
-                            document.querySelectorAll(".user-nickname").forEach(el => {
-                                el.innerText = nickname;
-                            });
-                
-                            // 🔥 프로필 사진 변경
-                            document.querySelectorAll(".user-profilepicture").forEach(img => {
-                                img.src = profilePic;
-                            });
-    
-                            document.querySelectorAll(".itemtitlefont").forEach(e2 => {
-                                e2.innerText = blogname;
-                            });
+          if (response.status === 200) {
+            const data = await response.json();
+            const nickname = data.username || "익명"; // 닉네임 가져오기
+            const profilePic = data.user_pic || "assets/profile.png"; // 프로필 사진 가져오기\
+            const blogname = data.blog_name || "블로그 제목";
+            const intro = data.intro || "프로필 소개글";
 
-                            document.querySelectorAll(".itemfont_col").forEach(e3 => {
-                            e3.innerText = intro;
-                        });
-                
-                        } else {
-                            alert("사용자 정보를 불러올 수 없습니다.");
-                            console.log("❌ 응답 상태 코드:", response.status);
-                        }
-                    } catch (error) {
-                        console.error("❌ 서버 연결 오류:", error);
-                        alert("서버 연결에 실패했습니다.");
-                    }
-                });
-    
+            // 🔥 닉네임 변경
+            document.querySelectorAll(".user-nickname").forEach((el) => {
+              el.innerText = nickname;
+            });
 
+            // 🔥 프로필 사진 변경
+            document.querySelectorAll(".user-profilepicture").forEach((img) => {
+              img.src = profilePic;
+            });
 
+            document.querySelectorAll(".itemtitlefont").forEach((e2) => {
+              e2.innerText = blogname;
+            });
 
+            document.querySelectorAll(".itemfont_col").forEach((e3) => {
+              e3.innerText = intro;
+            });
+          } else {
+            alert("사용자 정보를 불러올 수 없습니다.");
+            console.log("❌ 응답 상태 코드:", response.status);
+          }
+        } catch (error) {
+          console.error("❌ 서버 연결 오류:", error);
+          alert("서버 연결에 실패했습니다.");
+        }
+      });
 
-                function popup(){
+      function popup() {
         var url = "./neighbor_request.html";
         var name = "_blank";
         var option = "width=480, height=300, top=100, left=200, location=no";
         window.open(url, name, option);
-    }
-    
-    async function fetchRecentPost(n = 1) { // 기본값을 1로 설정
-        const url = `http://127.0.0.1:8000/posts/me/recent/?n=${n}`; // n번째 최신 게시물 조회
-    
-        // 로컬 스토리지에서 인증 토큰 가져오기
+      }
+
+      function cleanUpCaptions(htmlContent) {
+        // 1️⃣ 임시 div를 생성하고 HTML을 삽입 (DOM 파싱)
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = htmlContent;
+
+        // 2️⃣ 모든 figcaption 내부의 input 태그를 찾아 변환
+        tempDiv.querySelectorAll("figcaption input").forEach((input) => {
+          const captionText = document.createTextNode(input.value.trim() || ""); // 입력값을 일반 텍스트로 변환
+          const parentFigcaption = input.parentNode; // 부모 figcaption 찾기
+
+          parentFigcaption.innerHTML = ""; // 기존 내용 제거
+          parentFigcaption.appendChild(captionText); // 텍스트 삽입
+        });
+
+        // 3️⃣ 수정된 HTML 반환
+        return tempDiv.innerHTML;
+      }
+
+      function fixImageUrls(htmlContent) {
+        const baseUrl = "http://127.0.0.1:8000"; // Django 백엔드 URL
+
+        // 1️⃣ HTML을 파싱하여 DOM 객체로 변환
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = htmlContent;
+
+        // 2️⃣ 모든 img 태그를 찾아 URL 수정
+        tempDiv.querySelectorAll("img").forEach((img) => {
+          const imgSrc = img.getAttribute("src"); // 속성값 가져오기
+
+          if (imgSrc && !imgSrc.startsWith("http")) {
+            // 절대 경로가 아닌 경우만 변환
+            img.src = baseUrl + imgSrc;
+          }
+        });
+
+        // 3️⃣ 수정된 HTML 반환
+        return tempDiv.innerHTML;
+      }
+
+      function removeUnnecessaryButtons(htmlContent) {
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = htmlContent;
+
+        // 1️⃣ 모든 "대표사진 선택" 버튼 삭제
+        tempDiv.querySelectorAll("button").forEach((button) => {
+          if (button.textContent.trim() === "대표사진 선택") {
+            button.remove();
+          }
+        });
+
+        return tempDiv.innerHTML;
+      }
+
+      async function fetchRecentPost(n = 1) {
+        const url = `http://127.0.0.1:8000/posts/me/recent/`;
+
         const accessToken = localStorage.getItem("access_token");
         if (!accessToken) {
-            alert("로그인이 필요합니다.");
-            window.location.href = "login.html";
-            return;
+          alert("로그인이 필요합니다.");
+          window.location.href = "login.html";
+          return;
         }
-    
+
         try {
-            const response = await fetch(url, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${accessToken}`,
-                    "Content-Type": "application/json",
-                    "Accept": "application/json"
-                }
-            });
-    
-            const result = await response.json();
-    
-            if (response.ok) {
-                // JSON에서 id, title, content, total_likes, created_at, category_name 가져오기
-                const { id, title, content, total_likes, created_at, category_name } = result;
-    
-                // 가져온 ID를 콘솔에서 확인 (디버깅 용도)
-                console.log("📌 가져온 게시물 ID:", id);
-    
-                // 작성일 포맷 변경 (YYYY.MM.DD HH:mm)
-                const formattedDate = new Date(created_at).toLocaleString("ko-KR", {
-                    year: "numeric",
-                    month: "2-digit",
-                    day: "2-digit",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                }).replace(/\./g, "").replace(" ", ". ").replace("오전", "").replace("오후", "").trim();
-    
-                // ✅ 상세 뷰에 데이터 반영
-                document.querySelector(".post_title").textContent = title;
-                document.querySelector(".post_contents").textContent = content;
-                document.querySelector(".heart_list").textContent = `공감 ${total_likes}`;
-                document.querySelector(".post_writer_list a").textContent = formattedDate; // 작성일
-                document.querySelector(".post_category").textContent = `[${category_name}]`; // 카테고리
-    
-            } else {
-                alert(result.error || "게시물 데이터를 불러오는 데 실패했습니다.");
+          const response = await fetch(url, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          });
+
+          const result = await response.json();
+
+          if (response.ok) {
+            const {
+              id,
+              title,
+              content,
+              total_likes,
+              created_at,
+              category_name,
+              images,
+            } = result;
+
+            console.log("📌 가져온 게시물 ID:", id);
+
+            const formattedDate = new Date(created_at)
+              .toLocaleString("ko-KR", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+              })
+              .replace(/\./g, "")
+              .replace(" ", ". ")
+              .replace("오전", "")
+              .replace("오후", "")
+              .trim();
+
+            document.querySelector(".post_title").textContent = title;
+
+            // ✅ 본문 정리
+            let cleanedContent = cleanUpCaptions(content);
+            cleanedContent = fixImageUrls(cleanedContent);
+            cleanedContent = removeUnnecessaryButtons(cleanedContent);
+
+            // ✅ 이미지 태그를 figure 태그로 변환하여 캡션 추가
+            if (images && images.length > 0) {
+              images.forEach((imageData) => {
+                const { image_url, caption } = imageData;
+                const captionText = caption ? caption : ""; // 캡션이 없는 경우 빈 문자열 처리
+
+                // ✅ 기존 <img> 태그를 figure + figcaption으로 교체
+                const imageTag = `
+            <figure style="text-align: center; margin: 15px 0px;">
+              <img src="${image_url}" class="editable-image" 
+                   style="max-width: 300px; height: auto; margin-top: 10px; border-radius: 5px;">
+              <figcaption style="font-size: 12px; color: gray; margin-top: 5px; text-align: center;">
+                ${captionText}
+              </figcaption>
+            </figure>
+          `;
+
+                cleanedContent = cleanedContent.replace(
+                  new RegExp(`<img[^>]*src=["']${image_url}["'][^>]*>`, "g"),
+                  imageTag
+                );
+              });
             }
+
+            // ✅ 최종 정리된 HTML 본문 삽입
+            document.querySelector(".post_contents").innerHTML = cleanedContent;
+
+            document.querySelector(
+              ".heart_list"
+            ).textContent = `공감 ${total_likes}`;
+            document.querySelector(".post_writer_list a").textContent =
+              formattedDate;
+            document.querySelector(
+              ".post_category"
+            ).textContent = `[${category_name}]`;
+          } else {
+            alert(result.error || "게시물 데이터를 불러오는 데 실패했습니다.");
+          }
         } catch (error) {
-            console.error("📌 게시물 데이터 가져오기 오류:", error);
-            alert("게시물 데이터를 불러오는 중 오류가 발생했습니다.");
+          console.error("📌 게시물 데이터 가져오기 오류:", error);
+          alert("게시물 데이터를 불러오는 중 오류가 발생했습니다.");
         }
-    }
-    
-    // ✅ "전체보기 X개의 글" 업데이트하는 함수 추가
-    async function fetchPostCount() {
-        const blogOwnerUrlname = "kdy";  // 🔥 URL name (동적으로 설정할 필요 있음)
+      }
+
+      // ✅ "전체보기 X개의 글" 업데이트하는 함수 추가
+      async function fetchPostCount() {
+        const blogOwnerUrlname = "3"; // 🔥 URL name (동적으로 설정할 필요 있음)
         const url = `http://127.0.0.1:8000/posts/count/${blogOwnerUrlname}/`;
 
         try {
-            const response = await fetch(url, {
-                method: "GET",
-                headers: {
-                    "Authorization": localStorage.getItem("access_token") ? `Bearer ${localStorage.getItem("access_token")}` : "",
-                    "Content-Type": "application/json"
-                }
-            });
+          const response = await fetch(url, {
+            method: "GET",
+            headers: {
+              Authorization: localStorage.getItem("access_token")
+                ? `Bearer ${localStorage.getItem("access_token")}`
+                : "",
+              "Content-Type": "application/json",
+            },
+          });
 
-            const result = await response.json();
+          const result = await response.json();
 
-            if (response.ok) {
-                const postCount = result.post_count; // ✅ 게시물 개수 가져오기
-                console.log("📌 게시물 개수:", postCount);
+          if (response.ok) {
+            const postCount = result.post_count; // ✅ 게시물 개수 가져오기
+            console.log("📌 게시물 개수:", postCount);
 
-                // ✅ "전체보기 X개의 글" 부분 업데이트
-                document.querySelector(".post_list_title strong").textContent = `전체보기 ${postCount}개의 글`;
-            } else {
-                console.error("❌ 게시물 개수 가져오기 실패:", result);
-            }
+            // ✅ "전체보기 X개의 글" 부분 업데이트
+            document.querySelector(
+              ".post_list_title strong"
+            ).textContent = `전체보기 ${postCount}개의 글`;
+          } else {
+            console.error("❌ 게시물 개수 가져오기 실패:", result);
+          }
         } catch (error) {
-            console.error("❌ 게시물 개수 가져오는 중 오류 발생:", error);
+          console.error("❌ 게시물 개수 가져오는 중 오류 발생:", error);
         }
-    }
+      }
 
-    // ✅ 페이지네이션 버튼 클릭 이벤트 추가
-    document.addEventListener("DOMContentLoaded", function () {
+      // ✅ 페이지네이션 버튼 클릭 이벤트 추가
+      document.addEventListener("DOMContentLoaded", function () {
         const paginationLinks = document.querySelectorAll(".pagination .num");
 
-        paginationLinks.forEach(link => {
-            link.addEventListener("click", function (event) {
-                event.preventDefault(); // 기본 링크 이동 방지
-                const n = this.textContent.trim(); // 클릭한 숫자 (n번째 게시물)
+        paginationLinks.forEach((link) => {
+          link.addEventListener("click", function (event) {
+            event.preventDefault(); // 기본 링크 이동 방지
+            const n = this.textContent.trim(); // 클릭한 숫자 (n번째 게시물)
 
-                console.log(`📌 선택된 게시물 번호: ${n}`);
+            console.log(`📌 선택된 게시물 번호: ${n}`);
 
-                // n번째 최신 게시물 가져오기
-                fetchRecentPost(n);
-            });
+            // n번째 최신 게시물 가져오기
+            fetchRecentPost(n);
+          });
         });
 
         // 기본적으로 가장 최신 게시물(n=1) 조회
@@ -438,73 +578,92 @@
 
         // ✅ "전체보기 X개의 글" 데이터 업데이트
         fetchPostCount();
-    });
+      });
+    </script>
 
-    async function fetchComments(postId) {
-    const url = `http://127.0.0.1:8000/comments/${postId}/`;
+    <script>
+      async function fetchComments(postId) {
+        const url = `http://127.0.0.1:8000/comments/${postId}/`;
 
-    try {
-        const response = await fetch(url, {
+        try {
+          const response = await fetch(url, {
             method: "GET",
             headers: {
-                "Authorization": localStorage.getItem("access_token") ? `Bearer ${localStorage.getItem("access_token")}` : "",
-                "Content-Type": "application/json"
-            }
-        });
+              Authorization: localStorage.getItem("access_token")
+                ? `Bearer ${localStorage.getItem("access_token")}`
+                : "",
+              "Content-Type": "application/json",
+            },
+          });
 
-        if (response.status === 404) {
+          if (response.status === 404) {
             console.warn(`📌 게시물 ID ${postId}의 댓글 없음`);
-            document.querySelector(".comments").innerHTML = "<p>해당 게시물에 댓글이 없습니다.</p>";
+            document.querySelector(".comments").innerHTML =
+              "<p>해당 게시물에 댓글이 없습니다.</p>";
             return;
-        }
+          }
 
-        const result = await response.json();
-        console.log(`📌 게시물 ID ${postId}의 댓글 목록:`, result);
+          const result = await response.json();
+          console.log(`📌 게시물 ID ${postId}의 댓글 목록:`, result);
 
-        const commentContainer = document.querySelector(".comments");
-        commentContainer.innerHTML = ""; // 기존 댓글 목록 초기화
+          const commentContainer = document.querySelector(".comments");
+          commentContainer.innerHTML = ""; // 기존 댓글 목록 초기화
 
-        // ✅ 댓글을 부모-자식 관계로 그룹화
-        const commentMap = new Map();
+          // ✅ 댓글을 부모-자식 관계로 그룹화
+          const commentMap = new Map();
 
-        result.forEach(comment => {
+          result.forEach((comment) => {
             comment.replies = [];
             commentMap.set(comment.id, comment);
-        });
+          });
 
-        const rootComments = [];
+          const rootComments = [];
 
-        result.forEach(comment => {
+          result.forEach((comment) => {
             if (comment.parent_id) {
-                // 부모 댓글이 존재하면 부모 댓글의 replies 배열에 추가
-                const parent = commentMap.get(comment.parent_id);
-                if (parent) {
-                    parent.replies.push(comment);
-                }
+              // 부모 댓글이 존재하면 부모 댓글의 replies 배열에 추가
+              const parent = commentMap.get(comment.parent_id);
+              if (parent) {
+                parent.replies.push(comment);
+              }
             } else {
-                // 부모가 없으면 최상위 댓글 목록에 추가
-                rootComments.push(comment);
+              // 부모가 없으면 최상위 댓글 목록에 추가
+              rootComments.push(comment);
             }
-        });
+          });
 
-        // ✅ 댓글을 재귀적으로 렌더링하는 함수
-        function renderComment(comment, parentElement, depth = 0) {
+          // ✅ 댓글을 재귀적으로 렌더링하는 함수
+          function renderComment(comment, parentElement, depth = 0) {
             const commentElement = document.createElement("div");
             commentElement.classList.add("writed_comments");
             commentElement.style.marginLeft = `${depth * 20}px`; // 대댓글일수록 들여쓰기 적용
 
             commentElement.innerHTML = `
                 <div class="comment-header">
-                    <a class="cmt_writer_nickname"><strong>${comment.author_name || "익명"}</strong></a>
-                    <span class="comment-date">${new Date(comment.created_at).toLocaleString("ko-KR")}</span>
+                    <a class="cmt_writer_nickname"><strong>${
+                      comment.author_name || "익명"
+                    }</strong></a>
+                    <span class="comment-date">${new Date(
+                      comment.created_at
+                    ).toLocaleString("ko-KR")}</span>
                 </div>
-                <div class="writing_comment">${comment.is_private ? "<i>비밀 댓글입니다.</i>" : comment.content}</div>
+                <div class="writing_comment">${
+                  comment.is_private
+                    ? "<i>비밀 댓글입니다.</i>"
+                    : comment.content
+                }</div>
                 <div class="comment_btns">
-                    <a class="reply_btn" data-comment-id="${comment.id}"><strong>답글</strong></a>
+                    <a class="reply_btn" data-comment-id="${
+                      comment.id
+                    }"><strong>답글</strong></a>
                 </div>
-                <div class="reply_form" id="reply_form_${comment.id}" style="display:none; margin-left: 30px;">
+                <div class="reply_form" id="reply_form_${
+                  comment.id
+                }" style="display:none; margin-left: 30px;">
                     <textarea class="reply_input" placeholder="대댓글을 입력하세요"></textarea>
-                    <button class="submit_reply" data-parent-id="${comment.id}">등록</button>
+                    <button class="submit_reply" data-parent-id="${
+                      comment.id
+                    }">등록</button>
                 </div>
                 <hr>
             `;
@@ -512,27 +671,32 @@
             parentElement.appendChild(commentElement);
 
             // ✅ "답글" 버튼 클릭 시 대댓글 입력창 표시
-            commentElement.querySelector(".reply_btn").addEventListener("click", function () {
-                const replyForm = document.getElementById(`reply_form_${comment.id}`);
-                replyForm.style.display = replyForm.style.display === "none" ? "block" : "none";
-            });
+            commentElement
+              .querySelector(".reply_btn")
+              .addEventListener("click", function () {
+                const replyForm = document.getElementById(
+                  `reply_form_${comment.id}`
+                );
+                replyForm.style.display =
+                  replyForm.style.display === "none" ? "block" : "none";
+              });
 
             // ✅ 대댓글이 있는 경우 재귀적으로 추가
             if (comment.replies.length > 0) {
-                comment.replies.forEach(reply => renderComment(reply, parentElement, depth + 1));
+              comment.replies.forEach((reply) =>
+                renderComment(reply, parentElement, depth + 1)
+              );
             }
+          }
+
+          // ✅ 최상위 댓글부터 렌더링
+          rootComments.forEach((comment) =>
+            renderComment(comment, commentContainer)
+          );
+        } catch (error) {
+          console.error("❌ 댓글 데이터를 가져오는 중 오류 발생:", error);
         }
-
-        // ✅ 최상위 댓글부터 렌더링
-        rootComments.forEach(comment => renderComment(comment, commentContainer));
-
-    } catch (error) {
-        console.error("❌ 댓글 데이터를 가져오는 중 오류 발생:", error);
-    }
-}
-
+      }
     </script>
-    </body>
-    </html>
-
-
+  </body>
+</html>
