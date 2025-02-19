@@ -439,11 +439,100 @@
         // ✅ "전체보기 X개의 글" 데이터 업데이트
         fetchPostCount();
     });
-    
-    
-    
-    
-    
+
+    async function fetchComments(postId) {
+    const url = `http://127.0.0.1:8000/comments/${postId}/`;
+
+    try {
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                "Authorization": localStorage.getItem("access_token") ? `Bearer ${localStorage.getItem("access_token")}` : "",
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (response.status === 404) {
+            console.warn(`📌 게시물 ID ${postId}의 댓글 없음`);
+            document.querySelector(".comments").innerHTML = "<p>해당 게시물에 댓글이 없습니다.</p>";
+            return;
+        }
+
+        const result = await response.json();
+        console.log(`📌 게시물 ID ${postId}의 댓글 목록:`, result);
+
+        const commentContainer = document.querySelector(".comments");
+        commentContainer.innerHTML = ""; // 기존 댓글 목록 초기화
+
+        // ✅ 댓글을 부모-자식 관계로 그룹화
+        const commentMap = new Map();
+
+        result.forEach(comment => {
+            comment.replies = [];
+            commentMap.set(comment.id, comment);
+        });
+
+        const rootComments = [];
+
+        result.forEach(comment => {
+            if (comment.parent_id) {
+                // 부모 댓글이 존재하면 부모 댓글의 replies 배열에 추가
+                const parent = commentMap.get(comment.parent_id);
+                if (parent) {
+                    parent.replies.push(comment);
+                }
+            } else {
+                // 부모가 없으면 최상위 댓글 목록에 추가
+                rootComments.push(comment);
+            }
+        });
+
+        // ✅ 댓글을 재귀적으로 렌더링하는 함수
+        function renderComment(comment, parentElement, depth = 0) {
+            const commentElement = document.createElement("div");
+            commentElement.classList.add("writed_comments");
+            commentElement.style.marginLeft = `${depth * 20}px`; // 대댓글일수록 들여쓰기 적용
+
+            commentElement.innerHTML = `
+                <div class="comment-header">
+                    <a class="cmt_writer_nickname"><strong>${comment.author_name || "익명"}</strong></a>
+                    <span class="comment-date">${new Date(comment.created_at).toLocaleString("ko-KR")}</span>
+                </div>
+                <div class="writing_comment">${comment.is_private ? "<i>비밀 댓글입니다.</i>" : comment.content}</div>
+                <div class="comment_btns">
+                    <a class="reply_btn" data-comment-id="${comment.id}"><strong>답글</strong></a>
+                </div>
+                <div class="reply_form" id="reply_form_${comment.id}" style="display:none; margin-left: 30px;">
+                    <textarea class="reply_input" placeholder="대댓글을 입력하세요"></textarea>
+                    <button class="submit_reply" data-parent-id="${comment.id}">등록</button>
+                </div>
+                <hr>
+            `;
+
+            parentElement.appendChild(commentElement);
+
+            // ✅ "답글" 버튼 클릭 시 대댓글 입력창 표시
+            commentElement.querySelector(".reply_btn").addEventListener("click", function () {
+                const replyForm = document.getElementById(`reply_form_${comment.id}`);
+                replyForm.style.display = replyForm.style.display === "none" ? "block" : "none";
+            });
+
+            // ✅ 대댓글이 있는 경우 재귀적으로 추가
+            if (comment.replies.length > 0) {
+                comment.replies.forEach(reply => renderComment(reply, parentElement, depth + 1));
+            }
+        }
+
+        // ✅ 최상위 댓글부터 렌더링
+        rootComments.forEach(comment => renderComment(comment, commentContainer));
+
+    } catch (error) {
+        console.error("❌ 댓글 데이터를 가져오는 중 오류 발생:", error);
+    }
+}
+
     </script>
     </body>
     </html>
+
+

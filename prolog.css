@@ -24,6 +24,23 @@
     margin-left:160px;
 }
 
+
+#bloghome-link {
+    position: relative; /* 다른 요소에 가려지지 않도록 */
+    z-index: 1000 !important; /* 클릭 우선 순위 증가 */
+    pointer-events: auto !important; /* 클릭 이벤트 활성화 */
+}
+
+#login-btn {
+    position: relative; /* 다른 요소에 가려지지 않도록 */
+    z-index: 1000 !important; /* 클릭 우선 순위 증가 */
+    pointer-events: auto !important; /* 클릭 이벤트 활성화 */
+    cursor:pointer;
+}
+
+
+
+
 hr{
     border:2px solid #da9d9c;
     width: 1250px;

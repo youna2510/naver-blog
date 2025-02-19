@@ -517,7 +517,7 @@ function updateNeighborUI(neighbors) {
     neighborListContainer.innerHTML = ""; // 기존 내용 초기화
 
     if (!neighbors || !Array.isArray(neighbors.neighbors) || neighbors.neighbors.length === 0) {
-        neighborListContainer.innerHTML = "<p>서로이웃이 없습니다.</p>";
+        neighborListContainer.innerHTML = "<p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp아직 공개된<br>&nbsp&nbsp&nbsp서로이웃이 없습니다.</p>";
         return;
     }
 
