@@ -24,7 +24,7 @@
             background-color: #f8f9fa;
         }
 
-   
+
 /*헤더 부분*/        
 .header {
             display: flex;
@@ -112,13 +112,11 @@
         }
         
         .main-container {
-            display: flex;
-            justify-content: space-between;
-            margin: 20px;
-        }
-
-
-
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch; /* 높이를 컨테이너 전체로 늘리기 */
+    margin: 20px;
+}
 
 /*헤더 부분 오른쪽 계정 이름 부분*/
         .header-profile img{
@@ -160,95 +158,108 @@
 
 
 
-/*왼쪽 게시글 부분*/
-        .post {
-            display: flex;
-            gap: 35px; /*게시글 간 간격*/
-            padding: 20px 7px;
-            border-bottom: 1px solid #ddd;
-        }
+/* 왼쪽 게시글 부분 */
+.post {
+    display: flex;
+    align-items: center; /* 세로 중앙 정렬 */
+    gap: 15px; /* 이미지와 글 내용 사이 간격 조정 */
+    padding: 20px 10px;
+    border-bottom: 1px solid #ddd;
+    margin-top: 20px; /* 위쪽 간격 추가 */
+}
 
-        .post:last-child {
-            border-bottom: none;
-        }
+.post:last-child {
+    border-bottom: none;
+}
 
-        .post img { /*게시글 썸네일*/
-            width: 110px;
-            height: 110px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
+.post img {
+    width: 80px;  /* 이미지 크기 조정 */
+    height: 80px;
+    object-fit: cover; /* 비율 유지하면서 크기 조정 */
+    border-radius: 50%;
+    flex-shrink: 0; /* 크기가 줄어들지 않도록 설정 */
+}
 
-        .post-content {
-            flex: 1;
-        }
+.post-content {
+    flex: 1; /* 내용이 남은 공간을 차지하도록 설정 */
+    min-width: 0; /* 내용이 넘치지 않도록 설정 */
+}
 
-        .post-author {
-            display: flex;
-            align-items: center;
-            font-size: 14px;
-            margin-bottom: 10px;
-            color: #555;
-        }
+.post-author {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* 프로필 사진과 닉네임 사이 간격 조정 */
+}
 
-        .post-author img { /*게시글 작성자 프로필 사진*/
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            margin-right: 4px;
-        }
+.post-author img { /*게시글 작성자 프로필 사진*/
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    margin-right: 4px;
+}
 
-        .post-title { /*게시글 제목*/
-            font-size: 17px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            margin-top:16px;
-        }
+.post-title { /*게시글 제목*/
+    font-size: 17px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-top:16px;
+}
 
-        .post-text {
-            font-size: 14px;
-            color: #666;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
+.post-text {
+    font-size: 14px;
+    color: #666;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 
-        .post-actions { /*게시글에서 좋아요, 댓글 등 */
-            font-size: 12px;
-            color: #777;
-            margin-top: 8px;
-            display: flex;
-            align-items: center;
-        }
+.post-actions { /*게시글에서 좋아요, 댓글 등 */
+    font-size: 12px;
+    color: #777;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+}
 
-        .post-actions span {
-            margin-right: 8px;
-        }
+.post-actions span {
+    margin-right: 8px;
+}
 
-        .post-actions img {
-            width: 16px;
-            height: 16px;
-        }
+.post-actions img {
+    width: 16px;
+    height: 16px;
+}
 
+/* 왼쪽 게시글 부분 높이 늘리기 */
+.left-column {
+    width: 70%; /* 왼쪽 부분 크기 조절 */
+    max-width: 1500px; /* 최대 너비 제한 */
+    padding: 25px;
+    margin-top: 30px; /* 상단 여백 추가 */
+}
 
-/*왼쪽 부분*/
-        .left-column {
-            width: 80%;
-            padding: 25px;
-        }
+/* 게시물 목록 아래쪽 여백 추가 */
+.mutual-posts {
+    margin-top: 40px; /* 게시물 목록과 이웃 새글 박스 사이의 간격을 넓힘 */
+}
 
 /* 이웃새글 메시지 스타일 */
+       /* 이웃 새글 박스 위로 올리기 */
         .new-posts {
-            text-align: left;
-            margin-bottom: 30px;
+        position: relative; /* 상대 위치로 설정 */
+        top: -20px; /* 박스를 위로 20px 올리기 */
+        margin-bottom: 20px; /* 아래쪽 간격 추가 */
+        z-index: 999;
         }
 
+        /* new-posts 글씨 안 보이는 문제 해결 */
         .new-posts p {
-            font-size: 25px;
-            color: #666;
-            font-weight: 530;
-            margin: 4px;
+        font-size: 18px;
+        color: #333; /* 텍스트 색상 */
+        font-weight: bold;
+        margin-bottom: 20px; /* 아래쪽 여백 추가 */
         }
+
 
 /*게시글 작성자 관련*/
         .post-author {
@@ -297,13 +308,20 @@
 
 
 /*오른쪽*/
-        .right-sidebar {
-            width: 400px;
-            background-color: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
+.right-sidebar {
+    width: 350px; /* 기존보다 더 넓게 설정 */
+    height: 1000px; /* 기존 높이보다 확장 */
+    min-height: 100vh; /* 최소 높이를 화면 전체 높이로 설정 */
+    flex-shrink: 0; /* 크기 줄어들지 않도록 설정 */
+    margin-left: 30px; /* 왼쪽 여백 */
+    position: absolute; /* 오른쪽으로 고정 */
+    right: 8%; /* 기존 10% → 8%로 변경 (너무 오른쪽으로 붙지 않게) */
+    top: 90px; /* 위쪽 여백 설정 */
+    overflow-y: auto; /* 내용이 많아지면 스크롤 생성 */
+}
+
+
+
 
         /* 프로필 영역 */
         .profile {
@@ -466,10 +484,67 @@
         .liked {
             color: red;
         }
+
+
+
+/* 이웃 목록 컨테이너 */
+.neighbor-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* 이웃 항목 */
+.neighbor-item {
+    display: flex;
+    align-items: center;  /* 수직 중앙 정렬 */
+    width: calc(50% - 10px);  /* 1줄에 2명씩 */
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/* 이웃 내용 */
+.neighbor-content {
+    display: flex;
+    flex-direction: row;  /* 사진 왼쪽, 닉네임 오른쪽 */
+    align-items: center;  /* 수직 중앙 정렬 */
+    justify-content: flex-start;  /* 왼쪽 정렬 */
+    width: 100%; /* 전체 너비 사용 */
+}
+
+/* 프로필 이미지 */
+.neighbor-profile {
+    width: 35px;  /* 크기 조정 */
+    height: 35px;
+    border-radius: 50%;
+    margin-right: 10px;  /* 이미지 오른쪽 간격 */
+    flex-shrink: 0; /* 크기 고정 */
+}
+
+/* 닉네임 스타일 */
+.neighbor-name {
+    font-size: 14px;  /* 글자 크기 */
+    font-weight: bold;
+    text-align: left;  /* 왼쪽 정렬 */
+    white-space: nowrap; /* 닉네임이 줄 바꿈되지 않도록 설정 */
+    overflow: hidden; /* 너무 길면 숨김 */
+    text-overflow: ellipsis; /* 생략 부호(...) 추가 */
+}
+
+.left-column {
+    margin-top:-5px;
+    margin-bottom:5px;
+    margin-left:25px;
+    font-size:20px;
+    font-weight:700;
+}
+
+
     </style>
 </head>
 
-<body>
     <header class="header">
         <!-- 로고 -->
         <div class="logo">SG blog</div>
@@ -489,158 +564,340 @@
 
         <!-- 메뉴 버튼 -->
         <div class="header-profile">
-
             <button class="header-profile-setting" onclick="location.href='profile.html'">프로필 수정</button>
         </div>
     </header>
 
     <div class="main-container">
         <div class="left-column">
-            <!-- 이웃새글 메시지 -->
-            <div class="new-posts">
-                <p>이웃새글</p>
+           이웃 새글 
+             <div class="new-posts">
             </div>
- 
-        
-            <!-- 전체 공개된 글 목록 -->
-            <div class="post">
-                <div class="post-content">
-                    <div class="post-author">
-                        <img src="assets/profile.png" alt="프로필">
-                        <div class="author-info">
-                            <span class="author-name">와 여름이다</span>
-                            <span class="time">3시간 전</span>
-                        </div>
-                    </div>
-                    <div class="post-title">23살 시작</div>
-                    <div class="post-text">01월 01일 다들 일출을 봤죠?! 전 새해 첫 일몰을 담아보았습니다...</div>
-                    <div class="post-actions">
-                        <span class="heart" onclick="toggleHeart(this)">🤍</span>
-                        <span class="heart-count">8</span>
-                        <span>💬 14</span>
-                    </div>
-                </div>
-                <img src="assets/profile.png" alt="포스트 이미지">
-            </div>
-
-            <div class="post">
-                <div class="post-content">
-                    <div class="post-author">
-                        <img src="assets/profile.png" alt="프로필">
-                        <div class="author-info">
-                            <span class="author-name">내 소원은</span>
-                            <span class="time">9시간 전</span>
-                        </div>
-                    </div>
-                    <div class="post-title">1월</div>
-                    <div class="post-text">올해도 유익하게 마셔보자...ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</div>
-                    <div class="post-actions">
-                        <span class="heart" onclick="toggleHeart(this)">🤍</span>
-                        <span class="heart-count">9</span>
-                        <span>💬 14</span>
-                    </div>
-                </div>
-                <img src="assets/profile.png" alt="포스트 이미지">
-            </div>
-
-            <div class="post">
-                <div class="post-content">
-                    <div class="post-author">
-                        <img src="assets/profile.png" alt="프로필">
-                        <div class="author-info">
-                            <span class="author-name">보리</span>
-                            <span class="time">2025.01.02</span>
-                        </div>
-                    </div>
-                    
-                    <div class="post-title">착한데 나쁜 아이</div>
-                    <div class="post-text">반가워 2025년도...</div>
-                    <div class="post-actions">
-                        <span class="heart" onclick="toggleHeart(this)">🤍</span>
-                        <span class="heart-count">8</span>
-                        <span>💬 14</span>
-                    </div>
-                </div>
-                <img src="assets/profile.png" alt="포스트 이미지">
-            </div>
-            
         </div>
-
-        
-        
-        
 
         <div class="right-sidebar">
             <!-- 프로필 정보 -->
             <div class="profile">
                 <div class="profile-left">
-                    <img class="user-profilepicture" src="assets/profile.png" alt="프로필 이미지">
+                    <!-- 프로필 사진 변경 -->
+                    <img class="user-profilepicture" id="profile-image" src="assets/profile.png" alt="프로필 이미지">
                     <div class="profile-info">
-                        <span class="profile-name user-nickname">유나</span>
-                      <!--  <div class="profile-status">오늘 6명 방문</div>  -->
+                        <span class="profile-name user-nickname" id="user-nickname"></span> <!-- 로그인한 사용자 이름 표시 -->
                     </div>
                 </div>
                 <button class="logout-btn" onclick="location.href='main.html'">로그아웃</button>
             </div>
-    
             <!-- 메뉴 -->
-            
             <div class="menu">
                 <button class="active" onclick="location.href='myprolog.html'">내 블로그</button>
                 <button onclick="location.href='write.html'">✏ 글쓰기</button>
             </div>
-    
+        
             <!-- 알림 탭 -->
             <div class="notification-tabs">
-                <div class="active">내 소식</div>
-                <div>내 활동</div>
-                <div>이웃 목록</div>
+                <div class="tab active" data-tab="news">내 소식</div>
+                <div class="tab" data-tab="activity">내 활동</div>
+                <div class="tab" data-tab="neighbors">이웃 목록</div>
             </div>
-    
+        
             <!-- 알림 리스트 -->
             <div class="notifications">
-                <div class="notification-item">
-                    <div class="notification-content">
-                        💬 <span class="notification-user">쏘사진님</span>이 <b>쭈도 일상</b> 글에 댓글을 남겼습니다.
-                        <div class="notification-time">1시간 전</div>
-                    </div>
-                    <button class="delete-btn">✖</button>
-                </div>
-    
-                <div class="notification-item">
-                    <div class="notification-content">
-                        <span class="heart" onclick="toggleHeart(this)">❤️</span>
-                        <span class="notification-user">쏘사진님</span>이 <b>쭈도 일상</b> 글을 좋아합니다.
-                        <div class="notification-time">1시간 전</div>
-                    </div>
-                    <button class="delete-btn">✖</button>
-                </div>
-    
-                <div class="notification-item">
-                    <div class="notification-content">
-                        ↩ <span class="notification-user">와 여름이다님</span>이 23살 시작 글에 답글을 남겼습니다.
-                        <div class="notification-time">15시간 전</div>
-                    </div>
-                    <button class="delete-btn">✖</button>
-                </div>
-    
-                <div class="notification-item">
-                    <div class="notification-content">
-                        ↩ <span class="notification-user">내 소원은님</span>이 1월 글에 답글을 남겼습니다.
-                        <div class="notification-time">2025.2.2. 12:04</div>
-                    </div>
-                    <button class="delete-btn">✖</button>
-                </div>
+                <!-- 여기에 JavaScript가 백엔드에서 받아온 데이터를 동적으로 추가할 거임 -->
             </div>
-    
-            <!-- 모두 삭제 -->
-            <div class="delete-all">모두 삭제</div>
         </div>
-    
-
-
+    </div>
         <script>
+            // 로그인한 사용자의 프로필 정보를 받아오는 함수
+async function fetchUserProfile() {
+    try {
+        const response = await fetch("http://127.0.0.1:8000/profile/me/", {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (response.status === 200) {
+            const userData = await response.json();
+            const userNickname = userData.username;
+            const userPic = userData.user_pic;
+
+            // 프로필 이미지 경로 설정
+            let fullImageUrl;
+            if (userPic && userPic.includes('user_pics')) {
+                fullImageUrl = `http://127.0.0.1:8000${userPic}`;
+            } else {
+                fullImageUrl = `http://127.0.0.1:8000/media/default/user_default.jpg`;
+            }
+
+            // 프로필 정보 업데이트
+            document.getElementById("user-nickname").textContent = userNickname;
+            document.getElementById("profile-image").src = fullImageUrl;
+        } else {
+            console.log("❌ 사용자 프로필 정보 불러오기 실패:", response.status);
+        }
+    } catch (error) {
+        console.error("❌ 서버 연결 오류:", error);
+    }
+}
+
+// 페이지가 로드된 후 프로필 정보 불러오기
+document.addEventListener("DOMContentLoaded", fetchUserProfile);
+
+         document.addEventListener("DOMContentLoaded", async function () {
+    const accessToken = localStorage.getItem("access_token");
+    if (!accessToken) {
+        alert("로그인이 필요합니다.");
+        window.location.href = "login.html";
+        return;
+    }
+
+    const userUrlname = await getUserUrlname(); // 로그인한 사용자의 urlname 가져오기
+
+    // API 엔드포인트 설정 (이웃 목록은 로그인한 사용자에 따라 동적 URL 적용)
+    const API_ENDPOINTS = {
+        news: "http://127.0.0.1:8000/news/list/",
+        activity: "http://127.0.0.1:8000/activity/list/",
+        neighbors: `http://127.0.0.1:8000/profile/${userUrlname}/neighbors/` // 백틱 사용
+    };
+
+    const notificationsContainer = document.querySelector(".notifications");
+    const tabs = document.querySelectorAll(".tab");
+
+    // 탭 클릭 이벤트 추가
+    tabs.forEach(tab => {
+        tab.addEventListener("click", function () {
+            tabs.forEach(t => t.classList.remove("active"));
+            tab.classList.add("active");
+
+            const tabType = tab.getAttribute("data-tab");
+            fetchNotifications(API_ENDPOINTS[tabType], tabType);
+        });
+    });
+
+    // 알림 가져오는 함수
+    async function fetchNotifications(apiUrl, tabType) {
+        try {
+            const response = await fetch(apiUrl, { // API 호출 URL 수정
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`,
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (response.status === 200) {
+                const data = await response.json();
+                console.log(`📢 ${apiUrl} 데이터:`, data);
+
+                notificationsContainer.innerHTML = ""; // 기존 데이터 초기화
+
+                if (tabType === "neighbors") {
+                    // "이웃 목록" 처리 (1줄에 2명씩 표시하고 user_pic 추가)
+                    const neighborContainer = document.createElement("div");
+                    neighborContainer.classList.add("neighbor-container");
+
+                    data.neighbors.forEach((neighbor, index) => {
+                        const { username, user_pic } = neighbor;
+
+                        // user_pic 경로 설정: 기본 사진(default)인지, 사용자 사진(user_pics)인지 확인
+                        let fullImageUrl;
+                        if (user_pic && user_pic.includes('user_pics')) {
+                            fullImageUrl = `http://127.0.0.1:8000${user_pic}`;
+                        } else {
+                            fullImageUrl = `http://127.0.0.1:8000/media/default/user_default.jpg`;
+                        }
+
+                        const neighborItem = document.createElement("div");
+                        neighborItem.classList.add("neighbor-item");
+                        neighborItem.innerHTML = `
+                            <div class="neighbor-content">
+                                <img src="${fullImageUrl}" alt="${username}" class="neighbor-profile">
+                                <span class="neighbor-name">${username}</span>
+                            </div>
+                        `;
+
+                        // 짝수 번째 아이템에 줄바꿈 추가 (1줄에 2명씩)
+                        if (index % 2 === 0 && index !== 0) {
+                            neighborContainer.appendChild(document.createElement("br"));
+                        }
+
+                        // DOM에 추가
+                        neighborContainer.appendChild(neighborItem);
+                    });
+
+                    notificationsContainer.appendChild(neighborContainer);
+
+                } else {
+                // "내 소식" & "내 활동" 처리 (아이콘 다르게 설정)
+                data.forEach(activity => {
+                    const { type, content, created_at, is_parent } = activity;
+
+                    let icon = "";
+                    if (type === "written_comment"||type==="post_comment") {
+                        icon = `<span class="icon comment">💬</span>`; // 댓글 아이콘
+                    } else if (type === "written_reply"||type==="comment_reply") {
+                        icon = `<span class="icon reply">↩</span>`; // 대댓글 아이콘
+                    } else if (type === "post_like" || type === "liked_post"||type==="liked_comment") {
+                        icon = `<span class="icon like">❤️</span>`; // 좋아요 아이콘
+                    }
+
+                        // 날짜 포맷 변경 (YYYY. M. D. HH:mm)
+                        let dateObj = new Date(created_at);
+                        let formattedDate = `${dateObj.getFullYear()}. ${dateObj.getMonth() + 1}. ${dateObj.getDate()} ${dateObj.getHours()}:${String(dateObj.getMinutes()).padStart(2, '0')}`;
+
+                        // 알림 HTML 생성
+                        const notificationItem = document.createElement("div");
+                        notificationItem.classList.add("notification-item");
+                        notificationItem.innerHTML = `
+                            <div class="notification-content">
+                                ${icon} <span class="notification-user">${content}</span>
+                                <div class="notification-time">${formattedDate}</div>
+                            </div>
+                        `;
+
+                        notificationsContainer.appendChild(notificationItem);
+                    });
+                }
+
+            } else {
+                alert("알림을 불러올 수 없습니다.");
+                console.log(`❌ ${apiUrl} 응답 상태 코드:`, response.status);
+            }
+        } catch (error) {
+            console.error("❌ 서버 연결 오류:", error);
+            alert("서버 연결에 실패했습니다.");
+        }
+    }
+
+    // 로그인한 사용자의 urlname 가져오는 함수
+    async function getUserUrlname() {
+        try {
+            const response = await fetch("http://127.0.0.1:8000/profile/me/", {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (response.status === 200) {
+                const userData = await response.json();
+                return userData.urlname; // 로그인한 사용자의 urlname 반환
+            } else {
+                console.log("❌ 사용자 정보 불러오기 실패:", response.status);
+                return null;
+            }
+        } catch (error) {
+            console.error("❌ 서버 연결 오류:", error);
+            return null;
+        }
+    }
+
+    // 기본적으로 "내 소식" 데이터를 불러오기
+    fetchNotifications(API_ENDPOINTS.news, "news");
+});
+
+
+
             document.addEventListener("DOMContentLoaded", async function () {
+    const accessToken = localStorage.getItem("access_token");
+    if (!accessToken) {
+        alert("로그인이 필요합니다.");
+        window.location.href = "login.html";
+        return;
+    }
+
+    const API_ENDPOINTS = {
+        mutualPosts: "http://127.0.0.1:8000/posts/mutual/recentweekly/",
+    };
+
+    const postsContainer = document.querySelector(".new-posts"); // 게시글이 추가될 컨테이너
+
+    // 게시물 데이터를 가져오는 함수
+    async function fetchMutualPosts() {
+        try {
+            const response = await fetch(API_ENDPOINTS.mutualPosts, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`,
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (response.status === 200) {
+                const data = await response.json();
+                console.log("📢 받은 데이터:", data);
+
+                // 기존 게시물 초기화
+                postsContainer.innerHTML = "";
+
+                // 데이터 순회하여 HTML 동적으로 생성
+                data.forEach(post => {
+                    const { user_name, user_pic, title, content, total_likes, total_comments, created_at } = post;
+
+                    // 🛠️ user_pic 경로 설정 (기본 사진 또는 사용자 사진)
+                    let fullImageUrl = "http://127.0.0.1:8000/media/default/user_default.jpg"; // 기본값 설정
+                    if (user_pic) {
+                        if (user_pic.startsWith("/media/")) {
+                            fullImageUrl = `http://127.0.0.1:8000${user_pic}`;
+                        }
+                    }
+
+                    console.log(`✅ ${user_name}의 이미지:`, fullImageUrl);
+
+                    // 날짜 포맷
+                    let dateObj = new Date(created_at);
+                    let formattedDate = `${dateObj.getFullYear()}. ${dateObj.getMonth() + 1}. ${dateObj.getDate()} ${dateObj.getHours()}:${String(dateObj.getMinutes()).padStart(2, '0')}`;
+
+                    // 게시글 HTML 생성
+                    const postHTML = `
+                        <div class="post">
+                            <div class="post-content">
+                                <div class="post-author">
+                                    <img src="${fullImageUrl}" alt="${user_name}" class="profile-pic">
+                                    <div class="author-info">
+                                        <span class="author-name">${user_name}</span>
+                                        <span class="time">${formattedDate}</span>
+                                    </div>
+                                </div>
+                                <div class="post-title">${title}</div>
+                                <div class="post-text">${content}</div>
+                                <div class="post-actions">
+                                    <span class="heart">🤍</span>
+                                    <span class="heart-count">${total_likes}</span>
+                                    <span>💬 ${total_comments}</span>
+                                </div>
+                            </div>
+                            <img src="assets/profile.png" alt="포스트 이미지">
+                        </div>
+                    `;
+
+                    postsContainer.innerHTML += postHTML;
+                });
+
+            } else {
+                alert("게시글을 불러올 수 없습니다.");
+                console.log(`❌ 응답 상태 코드:`, response.status);
+            }
+        } catch (error) {
+            console.error("❌ 서버 연결 오류:", error);
+            alert("서버 연결에 실패했습니다.");
+        }
+    }
+
+    // 기본적으로 "서로이웃 게시글"을 불러오기
+    fetchMutualPosts();
+});
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", async function () {
                 const accessToken = localStorage.getItem("access_token");
                 if (!accessToken) {
                     alert("로그인이 필요합니다.");
