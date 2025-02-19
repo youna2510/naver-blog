@@ -746,42 +746,39 @@ function executeSearch() {
 }
 
 
-
 document.addEventListener("DOMContentLoaded", function () {
     const searchButton = document.querySelector(".search-button");
     const searchTypeSelect = document.getElementById("search-type");
 
-    searchButton.addEventListener("click", function () {
-        const searchType = searchTypeSelect.value;  // 선택한 검색 유형
-        const accessToken = localStorage.getItem("access_token");  // 로그인한 사용자 토큰
-        let loggedInUser = "";  
+    searchButton.addEventListener("click", async function () {
+        const searchType = searchTypeSelect.value; // 선택한 검색 유형
+        const accessToken = localStorage.getItem("access_token"); // 로그인한 사용자 토큰
+        let loggedInUser = "";
 
         if (accessToken) {
-            // 🔹 로그인된 사용자 정보 가져오기
-            fetch("http://127.0.0.1:8000/profile/me/", {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${accessToken}`,
-                    "Content-Type": "application/json"
+            try {
+                // 🔹 로그인된 사용자 정보 가져오기
+                const response = await fetch("http://127.0.0.1:8000/profile/me/", {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`,
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    loggedInUser = encodeURIComponent(data.username);
+                } else {
+                    console.error("사용자 정보를 가져올 수 없습니다.");
                 }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("사용자 정보를 가져올 수 없습니다.");
-                }
-                return response.json();
-            })
-            .then(data => {
-                loggedInUser = encodeURIComponent(data.username);  // 로그인된 사용자 이름 저장
-                redirectToSearch(searchType, loggedInUser);
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error("사용자 정보 가져오기 오류:", error);
-                redirectToSearch(searchType, ""); // 로그인 정보 없이 이동
-            });
-        } else {
-            redirectToSearch(searchType, ""); // 로그인 정보 없이 이동
+            }
         }
+
+        // 🔹 검색 페이지로 이동 (로그인된 사용자 정보 포함)
+        redirectToSearch(searchType, loggedInUser);
     });
 
     function redirectToSearch(searchType, username) {
@@ -789,14 +786,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let url = `search.html?type=${encodeURIComponent(searchType)}`;
         if (username) {
-            url += `&user=${username}`;
+            url += `&loggedUser=${username}`;
         }
 
         window.location.href = url;
     }
 });
-
-
 
 
 

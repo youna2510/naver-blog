@@ -17,13 +17,9 @@
 </head>
 <body>
     <div class="top_menubar">
-        <a>내 블로그</a>
+        <a id="bloghome-link" href="#" style="color:black; text-decoration-line: none;">블로그 홈</a>
         <a style="color: gray;"> | </a>
-        <a>이웃 블로그</a>
-        <a style="color: gray;"> | </a>
-        <a style="color:black; text-decoration-line: none;" href="./main.html">블로그 홈</a>
-        <a style="color: gray;"> | </a>
-        <a href="./login.html" class="login_btn">로그인</a>
+        <button id="login-btn" href="./login.html">로그인</button>
     </div>
  
     <div class="itemtitlefont" id="blogTitleName">블로그 제목입니당</div>
@@ -49,8 +45,7 @@
 <hr style="margin-left: 140px;">
 </div>
 
-    
-<!--프로필-->
+<!-- 프로필 -->
 <div class="bg-body"> 
     <div class="con"> 
         <p class="image"> 
@@ -60,23 +55,24 @@
         </p> 
     </div> 
     <div class="name align"> 
-        <div class="user-nickname" style="font-size: 15px;"> <strong class="itemfont col" id="nickNameArea">사용자이름</strong>
-                <br> <span class="itemfont col">
-                    <span class="blog_domain col"> </span> </span> 
-                
-            </div> 
-        </div> <p class="caption align"> 
-            <span class="itemfont_col">프로필 소개</span>
-            </p>
-                <p class="more align"> <span class="m1">
-        </p> 
-        <div class="btn_area" onclick="popup()"> 
-            <a> 
-                <span class="blind">이웃추가</span> 
-            </a> 
+        <div class="user-nickname" style="font-size: 15px;">
+            <strong class="itemfont col" id="nickNameArea">사용자이름</strong>
+            <br> <span class="itemfont col">
+                <span class="blog_domain col"></span>
+            </span> 
         </div> 
     </div> 
+    <p class="caption align"> 
+        <span class="itemfont_col">프로필 소개</span>
+    </p>
+    <p class="more align"> <span class="m1"></span> </p>
+
+    <!-- 이웃 추가 버튼 (popup 없이 직접 신청) -->
+    <div class="btn_area" id="neighbor-btn">
+        <span class="blind">이웃추가</span>
+    </div>
 </div>
+
 
 <!--서로이웃-->
 <div class="bg-neighbor"> 
@@ -238,34 +234,35 @@
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", async function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const username = urlParams.get("user");
+//현재 서로이웃인지의 여부에 따라 '이웃 추가' 버튼을 다르게 구현현
+document.addEventListener("DOMContentLoaded", async function () {
+    const neighborButton = document.getElementById("neighbor-btn");
+    
+    if (!neighborButton) {
+        console.error("❌ 오류: 이웃 추가 버튼을 찾을 수 없음");
+        return;
+    }
 
-    if (!username) {
-        console.error("❌ 오류: username이 없음");
-        document.getElementById("blog-title").innerText = "블로그 정보를 찾을 수 없습니다.";
-        document.getElementById("blog-intro").innerText = "올바른 사용자 이름이 전달되지 않았습니다.";
+    const neighborText = neighborButton.querySelector(".blind");
+    const accessToken = localStorage.getItem("access_token");
+
+    if (!accessToken) {
+        console.log("🔹 로그인되지 않은 사용자 (이웃 버튼 비활성화)");
+        return; // 로그인하지 않은 경우 버튼 비활성화
+    }
+
+    // 🔹 URL에서 블로그 주인의 username 가져오기
+    const urlParams = new URLSearchParams(window.location.search);
+    const toUrlname = urlParams.get("user");
+
+    if (!toUrlname) {
+        console.error("❌ 오류: 블로그 주인의 username이 없음");
         return;
     }
 
     try {
-        const accessToken = localStorage.getItem("access_token");
-        if (!accessToken) {
-            console.error("❌ 오류: accessToken이 없음");
-            alert("로그인이 필요합니다.");
-            window.location.href = "login.html";
-            return;
-        }
-
-        // 🔹 백엔드가 UTF-8 URL 인코딩을 사용하므로, 정확하게 인코딩된 URL을 구성
-        const encodedUsername = encodeURIComponent(username);
-        const apiUrl = `http://127.0.0.1:8000/profile/${encodedUsername}/`;
-
-        console.log("🔹 API 요청 URL:", apiUrl);
-
-        // 🔹 사용자 프로필 정보 조회
-        const response = await fetch(apiUrl, {
+        // 🔹 서로이웃 여부 확인 API 요청
+        const response = await fetch(`http://127.0.0.1:8000/neighbors/${encodeURIComponent(toUrlname)}/status/`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${accessToken}`,
@@ -273,50 +270,62 @@
             }
         });
 
-        console.log("🔹 API 응답 상태 코드:", response.status);
+        if (!response.ok) {
+            console.error("❌ 서로이웃 상태 확인 실패:", response.status);
+            return;
+        }
 
+        const data = await response.json();
+        console.log("🔹 서로이웃 상태 응답:", data);
 
-
-        if (response.status === 200) {
-            const data = await response.json();
-            console.log("🔹 API 응답 데이터:", data);
-
-            const nickname = data.username || "익명"; // 닉네임 가져오기
-            const blogTitle = data.blog_name || "블로그명";
-            const profilePic = data.user_pic || "assets/profile.png";
-            const intro = data.intro || "블로그 소개 정보가 없습니다.";
-
-            // 🔥 닉네임 변경
-            document.querySelectorAll(".user-nickname").forEach(el => {
-                                el.innerText = nickname;
-            });
-
-            // 🔥 프로필 사진 변경
-            document.querySelectorAll(".user-profilepicture").forEach(img => {
-                                img.src = profilePic;
-            });
-
-            document.querySelectorAll(".itemtitlefont").forEach(e2 => {
-                e2.innerText = blogTitle;
-            });
-
-
-            document.querySelectorAll(".itemfont_col").forEach(e3 => {
-                e3.innerText = intro;
-            });
-
-            document.getElementById("blog-title").innerText = blogTitle;
-            document.getElementById("profile-pic").src = profilePic;
-            document.getElementById("blog-intro").innerText = intro;
-        } else {
-            console.error("❌ API 요청 실패, 상태 코드:", response.status);
-            document.getElementById("blog-title").innerText = "블로그 정보를 찾을 수 없습니다.";
-            document.getElementById("blog-intro").innerText = "사용자 정보를 불러올 수 없습니다.";
+        // ✅ 서로이웃이면 버튼을 '서로 이웃'으로 변경 후 클릭 비활성화
+        if (data.is_neighbor) {
+            neighborText.innerText = "서로 이웃"; // 🔥 버튼 텍스트 변경
+            neighborButton.style.cursor = "default"; // 클릭 불가능하도록 설정
+            neighborButton.style.pointerEvents = "none"; // 클릭 방지
+            return;
         }
     } catch (error) {
-        console.error("❌ 서버 연결 오류:", error);
-        document.getElementById("blog-intro").innerText = "서버 연결에 실패했습니다.";
+        console.error("❌ 서버 오류:", error);
     }
+
+    // 🔹 서로이웃 신청 이벤트 리스너 추가 (서로이웃이 아닐 때만 실행)
+    neighborButton.addEventListener("click", async function () {
+        console.log("🔹 이웃 추가 버튼 클릭됨");
+
+        const requestMessage = prompt("이웃 신청 메시지를 입력하세요:", "친하게 지내고 싶어요!");
+
+        if (!requestMessage) {
+            alert("이웃 신청이 취소되었습니다.");
+            return;
+        }
+
+        try {
+            const requestResponse = await fetch(`http://127.0.0.1:8000/neighbors/${encodeURIComponent(toUrlname)}/`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    request_message: requestMessage
+                })
+            });
+
+            if (requestResponse.status === 201) {
+                alert("✅ 이웃 신청이 성공적으로 전송되었습니다.");
+                neighborText.innerText = "서로 이웃"; // 🔥 버튼 텍스트 변경
+                neighborButton.style.cursor = "default"; // 클릭 불가능하도록 설정
+                neighborButton.style.pointerEvents = "none"; // 클릭 방지
+            } else {
+                console.error("❌ 이웃 신청 실패:", requestResponse.status);
+                alert("이웃 신청에 실패했습니다.");
+            }
+        } catch (error) {
+            console.error("❌ 서버 연결 오류:", error);
+            alert("서버에 연결할 수 없습니다.");
+        }
+    });
 });
 
 
@@ -325,31 +334,96 @@
 
 
 
-document.addEventListener("DOMContentLoaded", async function () {
+
+
+
+
+
+
+
+
+
+
+//로그인된 사용자의 정보를 통해 왼쪽 배너의 프로필 렌더링
+    document.addEventListener("DOMContentLoaded", async function () {
     const urlParams = new URLSearchParams(window.location.search);
-    const username = urlParams.get("user"); // 현재 블로그 주인의 username
+    const username = urlParams.get("user");
+    const accessToken = localStorage.getItem("access_token");    
 
     if (!username) {
         console.error("❌ 오류: username이 없음");
+        updateBlogUI(null);
         return;
     }
 
-    // 🔹 '프롤로그' 링크를 해당 블로그 주인의 프로로그 페이지로 설정
-    const blogLink = document.getElementById("blog-link");
-    blogLink.href = `blog.html?user=${encodeURIComponent(username)}`;
-});
-    
-
-
-
-
-
-
-function getFullMediaUrl(relativeUrl) {
-    if (!relativeUrl) {
-        return "assets/default_profile.png";  // 기본 프로필 이미지
+    if (!accessToken) {
+        console.warn("⚠️ 로그인 필요: access_token 없음");
+        updateUserStatus(null);
+    } else {
+        const loggedInUser = await fetchUserInfo();
+        updateUserStatus(loggedInUser);
     }
-    return `http://127.0.0.1:8000${relativeUrl}`;  // Django 서버에서 제공하는 절대 경로
+
+    // 프로필 및 블로그 정보 가져오기
+    const profileData = await fetchAPI(`profile/${encodeURIComponent(username)}/`);
+    updateBlogUI(profileData);
+
+    // 서로이웃 목록 가져오기
+    const neighbors = await fetchAPI(`profile/${encodeURIComponent(username)}/neighbors/`);
+    updateNeighborUI(neighbors);
+
+    // 프롤로그 링크 설정
+    setupBlogLink(username);
+    setupBlogHomeLink(username);
+
+});
+
+
+
+// 🔹 **API 호출 함수 (GET 요청)**
+async function fetchAPI(endpoint) {
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/${endpoint}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
+        });
+
+        if (!response.ok) {
+            console.error(`⚠️ API 요청 실패: ${endpoint} (상태 코드: ${response.status})`);
+            return null;
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error(`❌ 서버 연결 오류: ${endpoint}`, error);
+        return null;
+    }
+}
+
+// 🔹 **사용자 정보 가져오기**
+async function fetchUserInfo() {
+    try {
+        const accessToken = localStorage.getItem("access_token");
+        if (!accessToken) return null;
+
+        const response = await fetch("http://127.0.0.1:8000/profile/me/", {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${accessToken}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (response.status !== 200) {
+            console.warn("⚠️ 사용자 정보 요청 실패 (401 Unauthorized)");
+            return null;
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("❌ 사용자 정보 가져오기 오류:", error);
+        return null;
+    }
 }
 
 
@@ -357,73 +431,244 @@ function getFullMediaUrl(relativeUrl) {
 
 
 
-//서로이웃 목록 연동
 
-document.addEventListener("DOMContentLoaded", async function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const username = urlParams.get("user"); // 현재 보고 있는 블로그 주인
 
-    if (!username) {
-        console.error("❌ 오류: 블로그 주인의 username이 없음");
-        return;
-    }
-
+// 🔹 **로그인 상태 업데이트**
+async function updateUserStatus() {
+    const loginButton = document.querySelector(".login_btn");
 
     try {
-        // 🔹 서로이웃 목록 조회 API 요청
-        const apiUrl = `http://127.0.0.1:8000/profile/${encodeURIComponent(username)}/neighbors/`;
-        console.log("🔹 서로이웃 목록 API 호출:", apiUrl);
+        const accessToken = localStorage.getItem("access_token");
 
-        const response = await fetch(apiUrl, {
+        if (!accessToken) {
+            // 🔹 로그인되지 않은 경우
+            updateLoginButtonUI();
+            return;
+        }
+
+        // 🔹 로그인한 사용자 정보 가져오기
+        const userResponse = await fetch("http://127.0.0.1:8000/profile/me/", {
             method: "GET",
             headers: {
+                "Authorization": `Bearer ${accessToken}`,
                 "Content-Type": "application/json"
             }
         });
 
-        if (response.status !== 200) {
-            console.error("❌ 서로이웃 목록 조회 실패, 상태 코드:", response.status);
+        if (userResponse.status !== 200) {
+            console.error("❌ 사용자 정보 요청 실패:", userResponse.status);
+            updateLoginButtonUI(); // 로그인 버튼 UI 업데이트
             return;
         }
 
-        const data = await response.json();
-        console.log("🔹 서로이웃 목록 데이터:", data);
+        const userData = await userResponse.json();
+        const loggedInUser = userData.username; // 로그인한 사용자 닉네임
 
-        // 🔹 서로이웃 목록을 UI에 추가
-        const neighborListContainer = document.querySelector(".neighbor-list");
-        neighborListContainer.innerHTML = ""; // 기존 내용 초기화
+        console.log("🔹 로그인한 사용자:", loggedInUser);
 
-        if (data.neighbors.length === 0) {
-            neighborListContainer.innerHTML = "<p>아직 서로이웃이 없습니다.</p>";
-            return;
+        // 🔹 로그인한 사용자 이름으로 버튼 변경
+        if (loginButton) {
+            loginButton.textContent = loggedInUser; // 버튼 텍스트 변경
+            loginButton.href = "./profile.html"; // 클릭하면 프로필 페이지로 이동하도록 변경
         }
-
-        data.neighbors.forEach(neighbor => {
-    const neighborDiv = document.createElement("div");
-    neighborDiv.style.display = "inline-block";
-
-    const neighborImgDiv = document.createElement("div");
-    neighborImgDiv.classList.add("neighbor_img");
-    const img = document.createElement("img");
-
-    img.src = getFullMediaUrl(neighbor.user_pic);  // user_pic을 절대 경로로 변환
-    img.alt = "이웃 프로필";
-    neighborImgDiv.appendChild(img);
-
-    const neighborNickname = document.createElement("a");
-    neighborNickname.classList.add("neighbor_nickname");
-    neighborNickname.innerText = neighbor.urlname;
-    neighborNickname.href = `blog.html?user=${encodeURIComponent(neighbor.urlname)}`;
-
-    neighborDiv.appendChild(neighborImgDiv);
-    neighborDiv.appendChild(neighborNickname);
-    neighborListContainer.appendChild(neighborDiv);
-});
-
     } catch (error) {
-        console.error("❌ 서버 연결 오류:", error);
+        console.error("사용자 정보 가져오기 오류:", error);
+        updateLoginButtonUI(); // 로그인 버튼 UI 업데이트
+    }
+}
+
+
+// 🔹 로그인되지 않았을 때 버튼 상태 변경
+function updateLoginButtonUI() {
+    const loginButton = document.querySelector(".login_btn");
+
+    if (loginButton) {
+        loginButton.textContent = "로그인 필요"; // 버튼 텍스트 변경
+        loginButton.href = "./login.html"; // 로그인 페이지로 이동하도록 설정
+    }
+}
+
+// 🔹 페이지 로드 시 실행
+document.addEventListener("DOMContentLoaded", updateUserStatus);
+
+
+
+// 🔹 **블로그 UI 업데이트**
+function updateBlogUI(profileData) {
+    if (!profileData) {
+        document.getElementById("blog-title").innerText = "블로그 정보를 찾을 수 없습니다.";
+        document.getElementById("blog-intro").innerText = "사용자 정보를 불러올 수 없습니다.";
+        return;
+    }
+
+    document.querySelectorAll(".user-nickname").forEach(el => el.innerText = profileData.username || "익명");
+    document.querySelectorAll(".user-profilepicture").forEach(img => img.src = profileData.user_pic || "assets/profile.png");
+    document.querySelectorAll(".itemtitlefont").forEach(e2 => e2.innerText = profileData.blog_name || "블로그명");
+    document.querySelectorAll(".itemfont_col").forEach(e3 => e3.innerText = profileData.intro || "블로그 소개 정보가 없습니다.");
+}
+
+
+
+// 🔹 **서로이웃 목록 UI 업데이트**
+function updateNeighborUI(neighbors) {
+    const neighborListContainer = document.querySelector(".neighbor-list");
+    if (!neighborListContainer) return;
+
+    neighborListContainer.innerHTML = ""; // 기존 내용 초기화
+
+    if (!neighbors || !Array.isArray(neighbors.neighbors) || neighbors.neighbors.length === 0) {
+        neighborListContainer.innerHTML = "<p>서로이웃이 없습니다.</p>";
+        return;
+    }
+
+    neighbors.neighbors.forEach(neighbor => {
+        const neighborDiv = document.createElement("div");
+        neighborDiv.style.display = "inline-block";
+
+        const neighborImgDiv = document.createElement("div");
+        neighborImgDiv.classList.add("neighbor_img");
+        const img = document.createElement("img");
+        img.src = getFullMediaUrl(neighbor.user_pic);
+        img.alt = "이웃 프로필";
+        neighborImgDiv.appendChild(img);
+
+        const neighborNickname = document.createElement("a");
+        neighborNickname.classList.add("neighbor_nickname");
+        neighborNickname.innerText = neighbor.urlname;
+        neighborNickname.href = `blog.html?user=${encodeURIComponent(neighbor.urlname)}`;
+
+        neighborDiv.appendChild(neighborImgDiv);
+        neighborDiv.appendChild(neighborNickname);
+        neighborListContainer.appendChild(neighborDiv);
+    });
+}
+
+
+// 🔹 **블로그 링크 설정**
+function setupBlogLink(username) {
+    const BlogLink = document.getElementById("blog-link");
+    if (BlogLink) {
+        BlogLink.href = `blog.html?user=${encodeURIComponent(username)}`;
+    }
+}
+
+
+
+// 🔹 **블로그 홈 설정**
+function setupBlogHomeLink(username) {
+    const BlogHomeLink = document.getElementById("bloghome-link");
+    if (BlogHomeLink) {
+        BlogHomeLink.href = `main_login.html?user=${encodeURIComponent(username)}`;
+    }
+}
+
+
+// 🔹 **로그아웃 기능**
+async function logout() {
+    try {
+        const refreshToken = localStorage.getItem("refresh_token");
+
+        if (!refreshToken) {
+            console.error("❌ 로그아웃 실패: refresh_token 없음");
+            alert("로그인 상태가 아닙니다.");
+            return;
+        }
+
+        console.log("🔹 로그아웃 요청 전 refresh_token:", refreshToken);
+
+        const response = await fetch("http://127.0.0.1:8000/logout/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ refresh: refreshToken })
+        });
+
+        console.log("🔹 로그아웃 응답 상태 코드:", response.status);
+
+        if (response.status === 200) {
+            console.log("✅ 로그아웃 성공");
+
+            // 🔹 토큰 삭제
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("refresh_token");
+
+            alert("로그아웃 완료!");
+
+            // 🔹 로그인 버튼을 즉시 업데이트
+            updateLoginButtonUI();
+
+        } else {
+            console.error("❌ 로그아웃 요청 실패:", response.status);
+            const errorData = await response.json();
+            alert(`로그아웃 실패: ${errorData.message || "알 수 없는 오류"}`);
+        }
+    } catch (error) {
+        console.error("❌ 로그아웃 오류:", error);
+        alert("서버에 연결할 수 없습니다.");
+    }
+}
+
+
+
+function updateLoginButtonUI() {
+    const loginButton = document.querySelector(".login_btn");
+
+    if (loginButton) {
+        loginButton.textContent = "로그인 필요"; // 버튼 텍스트 변경
+        loginButton.href = "./login.html"; // 로그인 페이지로 이동하도록 설정
+    }
+}
+
+// 🔹 **프로필 이미지 URL 처리**
+function getFullMediaUrl(relativeUrl) {
+    return relativeUrl ? `http://127.0.0.1:8000${relativeUrl}` : "assets/default_profile.png";
+}
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", async function () {
+    const loginButton = document.querySelector(".top_menubar button");
+    const accessToken = localStorage.getItem("access_token");
+
+    if (accessToken) {
+        try {
+            // 🔹 로그인된 사용자 정보 가져오기
+            const response = await fetch("http://127.0.0.1:8000/profile/me/", {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`,
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const loggedInUser = data.username;
+
+                // 🔹 버튼을 사용자 이름으로 변경 & 프로필 페이지로 이동
+                loginButton.textContent = loggedInUser;
+                loginButton.onclick = () => location.href = `profile.html?user=${encodeURIComponent(loggedInUser)}`;
+            } else {
+                throw new Error("사용자 정보를 가져올 수 없습니다.");
+            }
+        } catch (error) {
+            console.error("❌ 사용자 정보 가져오기 오류:", error);
+            showLoginButton(); // 로그인 정보가 없거나 오류 발생 시 로그인 버튼 유지
+        }
+    } else {
+        showLoginButton(); // 로그인 정보가 없을 경우 기본 로그인 버튼 표시
+    }
+
+    function showLoginButton() {
+        loginButton.textContent = "로그인";
+        loginButton.onclick = () => location.href = "login.html";
     }
 });
+
+
 
 
 
@@ -435,3 +680,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 </body>
 </html>
+
+
+
+
+
+

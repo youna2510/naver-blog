@@ -505,6 +505,7 @@ function executeSearch() {
                 data.blogs.forEach(blog => {
                     const blogPost = document.createElement('div');
                     blogPost.classList.add('post');
+                    blogPost.style.cursor = "pointer";
         
                     blogPost.innerHTML = `
                     <div class="post-content">
@@ -512,18 +513,18 @@ function executeSearch() {
                                 <h3>${blog.blog_name}</h3>
                                 <p style="margin-bottom:15px;">${blog.intro}</p>
                             </div>
-                        </div>
-                    
+                    </div>
                     <div class="post-author">
-
                             <img src="http://127.0.0.1:8000${blog.user_pic}" alt="프로필" width="40" height="40">
                             <div class="author-name">${blog.urlname}</div>
-                        </div>
-
+                    </div>
                     `;
 
+// 🔹 클릭 시 `blog.html?user=username` 으로 이동
+        blogPost.addEventListener("click", () => {
+            window.location.href = `blog.html?user=${encodeURIComponent(blog.urlname)}`;
+        });
 
-        
                     resultContainer.appendChild(blogPost);
                 });
         
@@ -656,6 +657,45 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+
+document.addEventListener("DOMContentLoaded", async function () {
+    const loginButton = document.querySelector(".menu button");
+    const accessToken = localStorage.getItem("access_token");
+
+    if (accessToken) {
+        try {
+            // 🔹 로그인된 사용자 정보 가져오기
+            const response = await fetch("http://127.0.0.1:8000/profile/me/", {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`,
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const loggedInUser = data.username;
+
+                // 🔹 버튼을 사용자 이름으로 변경 & 프로필 페이지로 이동
+                loginButton.textContent = loggedInUser;
+                loginButton.onclick = () => location.href = `profile.html?user=${encodeURIComponent(loggedInUser)}`;
+            } else {
+                throw new Error("사용자 정보를 가져올 수 없습니다.");
+            }
+        } catch (error) {
+            console.error("❌ 사용자 정보 가져오기 오류:", error);
+            showLoginButton(); // 로그인 정보가 없거나 오류 발생 시 로그인 버튼 유지
+        }
+    } else {
+        showLoginButton(); // 로그인 정보가 없을 경우 기본 로그인 버튼 표시
+    }
+
+    function showLoginButton() {
+        loginButton.textContent = "로그인";
+        loginButton.onclick = () => location.href = "login.html";
+    }
+});
 
 
 

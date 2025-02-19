@@ -20,16 +20,9 @@
     
     <div id="top-area">
         <div class="top_menubar">
-            <a>내 블로그</a>
+            <a id="bloghome-link" href="#" style="color:black; text-decoration-line: none;">블로그 홈</a>
             <a style="color: gray;"> | </a>
-            <a>이웃 블로그</a>
-            <a style="color: gray;"> | </a>
-            <a style="color:black; text-decoration-line: none;" href="./main.html">블로그 홈</a>
-            <a style="color: gray;"> | </a>
-            <div class="user-info">
-                <span id="user-name">로그인 필요</span>
-                <button id="login-btn" href="./login.html">로그인</button>
-            </div>
+            <button id="login-btn" href="./login.html">로그인</button>
         </div>
  
               <div class="itemtitlefont" id="blogTitleName">블로그 제목입니당</div>
@@ -292,6 +285,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // 프롤로그 링크 설정
     setupPrologLink(username);
+    setupBlogHomeLink(username);
+
 });
 
 // 🔹 **API 호출 함수 (GET 요청)**
@@ -481,6 +476,17 @@ function setupPrologLink(username) {
     }
 }
 
+// 🔹 **블로그 홈 설정**
+function setupBlogHomeLink(username) {
+    const BlogHomeLink = document.getElementById("bloghome-link");
+    if (BlogHomeLink) {
+        BlogHomeLink.href = `main_login.html?user=${encodeURIComponent(username)}`;
+    }
+}
+
+
+
+
 // 🔹 **로그아웃 기능**
 async function logout() {
     try {
@@ -559,38 +565,45 @@ function getFullMediaUrl(relativeUrl) {
 
 
 
-async function login(username, password) {
-    try {
-        const response = await fetch("http://127.0.0.1:8000/auth/login/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ username, password })
-        });
 
-        if (!response.ok) {
-            throw new Error("로그인 실패");
+document.addEventListener("DOMContentLoaded", async function () {
+    const loginButton = document.querySelector(".top_menubar button");
+    const accessToken = localStorage.getItem("access_token");
+
+    if (accessToken) {
+        try {
+            // 🔹 로그인된 사용자 정보 가져오기
+            const response = await fetch("http://127.0.0.1:8000/profile/me/", {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`,
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const loggedInUser = data.username;
+
+                // 🔹 버튼을 사용자 이름으로 변경 & 프로필 페이지로 이동
+                loginButton.textContent = loggedInUser;
+                loginButton.onclick = () => location.href = `profile.html?user=${encodeURIComponent(loggedInUser)}`;
+            } else {
+                throw new Error("사용자 정보를 가져올 수 없습니다.");
+            }
+        } catch (error) {
+            console.error("❌ 사용자 정보 가져오기 오류:", error);
+            showLoginButton(); // 로그인 정보가 없거나 오류 발생 시 로그인 버튼 유지
         }
-
-        const data = await response.json();
-
-        // 🔹 access_token과 refresh_token 저장
-        localStorage.setItem("access_token", data.access);
-        localStorage.setItem("refresh_token", data.refresh);
-
-        console.log("✅ 로그인 성공:", username);
-
-        alert("로그인 성공!");
-
-        // 🔹 UI 업데이트 (새로고침 없이 로그인한 사용자 반영)
-        updateUserStatus();
-    } catch (error) {
-        console.error("❌ 로그인 오류:", error);
-        alert("로그인에 실패했습니다.");
+    } else {
+        showLoginButton(); // 로그인 정보가 없을 경우 기본 로그인 버튼 표시
     }
-}
 
+    function showLoginButton() {
+        loginButton.textContent = "로그인";
+        loginButton.onclick = () => location.href = "login.html";
+    }
+});
 
 
 
