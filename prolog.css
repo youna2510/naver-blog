@@ -199,7 +199,20 @@ li {
     font-weight:normal; 
 }
 
+.post-category{
+    font-size: 15px;
+    color: gray;
+    font-weight:normal; 
+}
+
 .post_title{
+    font-size: 30px;
+    color: #861f1c;
+    font-weight: normal; 
+    padding-top: 20px;
+}
+
+.post-title{
     font-size: 30px;
     color: #861f1c;
     font-weight: normal; 
@@ -260,6 +273,10 @@ li {
     margin-left: 30px;
     margin-right: 30px;
 }
+
+
+
+
 
 .post_list_contents_list{
     margin-left: 30px;

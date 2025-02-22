@@ -816,76 +816,90 @@ document.addEventListener("DOMContentLoaded", fetchUserProfile);
     const postsContainer = document.querySelector(".new-posts"); // 게시글이 추가될 컨테이너
 
     // 게시물 데이터를 가져오는 함수
-    async function fetchMutualPosts() {
-        try {
-            const response = await fetch(API_ENDPOINTS.mutualPosts, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${accessToken}`,
-                    "Content-Type": "application/json"
+async function fetchMutualPosts() {
+    try {
+        const response = await fetch(API_ENDPOINTS.mutualPosts, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${accessToken}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (response.status === 200) {
+            const data = await response.json();
+            console.log("📢 받은 데이터:", data);
+
+            // 기존 게시물 초기화
+            postsContainer.innerHTML = "";
+
+            // 데이터 순회하여 HTML 동적으로 생성
+            data.forEach(post => {
+                const { id, user_name, user_pic, title, content, total_likes, total_comments, created_at } = post;
+
+                // 🧹 HTML 태그 제거 및 불필요한 문구 삭제
+                let previewText = content
+                    .replace(/<[^>]*>/g, "") // 모든 HTML 태그 제거
+                    .replace(/대표사진 선택/g, "") // '대표 사진 선택' 제거
+                    .replace(/이미지 설명을 입력하세요\.\.\./g, "") // '이미지 설명을 입력하세요...' 제거
+                    .trim(); // 앞뒤 공백 제거
+
+                // ✨ 125글자까지만 표시하고 초과 시 '...' 추가
+                previewText = previewText.length > 125 ? previewText.substring(0, 125) + "..." : previewText;
+
+                // 🛠️ user_pic 경로 설정 (기본 사진 또는 사용자 사진)
+                let fullImageUrl = "";
+                if (user_pic && user_pic.startsWith("/media/")) {
+                    fullImageUrl = `http://127.0.0.1:8000${user_pic}`;
                 }
-            });
 
-            if (response.status === 200) {
-                const data = await response.json();
-                console.log("📢 받은 데이터:", data);
+                // 날짜 포맷
+                let dateObj = new Date(created_at);
+                let formattedDate = `${dateObj.getFullYear()}. ${dateObj.getMonth() + 1}. ${dateObj.getDate()} ${dateObj.getHours()}:${String(dateObj.getMinutes()).padStart(2, '0')}`;
 
-                // 기존 게시물 초기화
-                postsContainer.innerHTML = "";
-
-                // 데이터 순회하여 HTML 동적으로 생성
-                data.forEach(post => {
-                    const { user_name, user_pic, title, content, total_likes, total_comments, created_at } = post;
-
-                    // 🛠️ user_pic 경로 설정 (기본 사진 또는 사용자 사진)
-                    let fullImageUrl = "http://127.0.0.1:8000/media/default/user_default.jpg"; // 기본값 설정
-                    if (user_pic) {
-                        if (user_pic.startsWith("/media/")) {
-                            fullImageUrl = `http://127.0.0.1:8000${user_pic}`;
-                        }
-                    }
-
-                    console.log(`✅ ${user_name}의 이미지:`, fullImageUrl);
-
-                    // 날짜 포맷
-                    let dateObj = new Date(created_at);
-                    let formattedDate = `${dateObj.getFullYear()}. ${dateObj.getMonth() + 1}. ${dateObj.getDate()} ${dateObj.getHours()}:${String(dateObj.getMinutes()).padStart(2, '0')}`;
-
-                    // 게시글 HTML 생성
-                    const postHTML = `
-                        <div class="post">
-                            <div class="post-content">
-                                <div class="post-author">
-                                    <img src="${fullImageUrl}" alt="${user_name}" class="profile-pic">
-                                    <div class="author-info">
-                                        <span class="author-name">${user_name}</span>
-                                        <span class="time">${formattedDate}</span>
-                                    </div>
-                                </div>
-                                <div class="post-title">${title}</div>
-                                <div class="post-text">${content}</div>
-                                <div class="post-actions">
-                                    <span class="heart">🤍</span>
-                                    <span class="heart-count">${total_likes}</span>
-                                    <span>💬 ${total_comments}</span>
+                // 게시글 HTML 생성 (📌 클릭 가능하도록 div에 이벤트 추가)
+                const postHTML = `
+                    <div class="post" data-id="${id}">
+                        <div class="post-content">
+                            <div class="post-author">
+                                ${fullImageUrl ? `<img src="${fullImageUrl}" alt="${user_name}" class="profile-pic">` : ""}
+                                <div class="author-info">
+                                    <span class="author-name">${user_name}</span>
+                                    <span class="time">${formattedDate}</span>
                                 </div>
                             </div>
-                            <img src="assets/profile.png" alt="포스트 이미지">
+                            <div class="post-title">${title}</div>
+                            <div class="post-text">${previewText}</div> <!-- ✨ 미리보기 텍스트 -->
+                            <div class="post-actions">
+                                <span class="heart">🤍</span>
+                                <span class="heart-count">${total_likes}</span>
+                                <span>💬 ${total_comments}</span>
+                            </div>
                         </div>
-                    `;
+                    </div>
+                `;
 
-                    postsContainer.innerHTML += postHTML;
+                postsContainer.innerHTML += postHTML;
+            });
+
+            // 📌 모든 게시물에 클릭 이벤트 추가
+            document.querySelectorAll(".post").forEach(post => {
+                post.addEventListener("click", function () {
+                    const postId = this.getAttribute("data-id");
+                    window.location.href = `blog_detail.html?post_id=${postId}`;
                 });
+            });
 
-            } else {
-                alert("게시글을 불러올 수 없습니다.");
-                console.log(`❌ 응답 상태 코드:`, response.status);
-            }
-        } catch (error) {
-            console.error("❌ 서버 연결 오류:", error);
-            alert("서버 연결에 실패했습니다.");
+        } else {
+            alert("게시글을 불러올 수 없습니다.");
+            console.log(`❌ 응답 상태 코드:`, response.status);
         }
+    } catch (error) {
+        console.error("❌ 서버 연결 오류:", error);
+        alert("서버 연결에 실패했습니다.");
     }
+}
+
 
     // 기본적으로 "서로이웃 게시글"을 불러오기
     fetchMutualPosts();
@@ -916,8 +930,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             
                     if (response.status === 200) {
                         const data = await response.json();
-                        const nickname = data.username || "유나"; // 닉네임 가져오기
-                        const profilePic = data.user_pic || "assets/profile.png"; // 프로필 사진 가져오기
+                        const nickname = data.username; // 닉네임 가져오기
+                        const profilePic = data.user_pic; // 프로필 사진 가져오기
             
                         // 🔥 닉네임 변경
                         document.querySelectorAll(".user-nickname").forEach(el => {
@@ -968,6 +982,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         document.addEventListener("DOMContentLoaded", function () {
     executeSearch(); // 페이지가 로드되면 검색 실행
 });
+
+
+
 
 function executeSearch() {
     const urlParams = new URLSearchParams(window.location.search);

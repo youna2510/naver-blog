@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="prolog.css" />
+    <title>SG Blog</title>
+    <style>
+      .post-category {
+        margin-top:15px;
+        margin-left:13px;
+      }
+
+      .post-title {
+        margin-left : 13px;
+        margin-top:-7px;
+      }
+
+      .post-author {
+        margin-right:5px;
+        margin-left : 13px;
+        font-weight:600;
+        font-size:15px;
+        margin-bottom:15px;
+      }
+
+      .post-content {
+        margin-top: 35px;
+        margin-left:16px;
+        font-size:17px;
+      }
+
+      .post-date {
+        margin-right:10px;
+      }
+
+
+
+    </style>
+
+    <script>
+      function popup() {
+        var url = "./neighbor_request.html";
+        var name = "_blank";
+        var option =
+          "width = 480, height = 300, top = 100, left = 200, location = no";
+        window.open(url, name, option);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="top-area">
+      <div class="top_menubar">
+        <a
+          id="bloghome-link"
+          href="#"
+          style="color: black; text-decoration-line: none"
+          >블로그 홈</a
+        >
+        <a style="color: gray"> | </a>
+        <button id="login-btn" href="./login.html">로그인</button>
+      </div>
+
+      <div class="itemtitlefont" id="blogTitleName">블로그 제목입니당</div>
+
+      <div id="blog-menu">
+        <div class="border">
+          <table>
+            <tbody>
+              <tr>
+                <td nowrap="nowrap" class="menu1">
+                  <ul>
+                    <li>
+                      <a
+                        id="prolog-link"
+                        href="#"
+                        style="color: black; text-decoration-line: none"
+                        >프롤로그</a
+                      >
+                    </li>
+                    <li>|</li>
+                    <li>
+                      <a style="color: #861f1c; font-weight: bold">블로그</a>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <hr style="margin-left: 140px" />
+    </div>
+
+    <!--프로필-->
+    <div class="bg-body">
+      <div class="con">
+        <p class="image">
+          <a href="#">
+            <img
+              class="user-profilepicture"
+              style="width: 135px"
+              src="assets/profile.png"
+              alt="프로필 이미지"
+            />
+          </a>
+        </p>
+      </div>
+      <div class="name align">
+        <div class="user-nickname" style="font-size: 15px">
+          <strong class="itemfont col" id="nickNameArea">사용자이름</strong>
+          <br />
+          <span class="itemfont col">
+            <span class="blog_domain col"> </span>
+          </span>
+        </div>
+      </div>
+      <p class="caption align">
+        <span class="itemfont_col">프로필 소개</span>
+      </p>
+      <p class="more align"><span class="m1"></span></p>
+      <div class="btn_area" onclick="popup()">
+        <a>
+          <span class="blind">이웃추가</span>
+        </a>
+      </div>
+    </div>
+
+    <!--카테고리-->
+    <div class="bg-category">
+      <div>전체보기</div>
+      <ul id="categoryList" class="category-list">
+        게시판1
+      </ul>
+    </div>
+
+    <!--서로이웃-->
+    <div class="bg-neighbor">
+      <div class="neighbor-profile">
+        <div class="user-nickname" style="font-size: 15px">
+          <strong>사용자</strong>
+        </div>
+        <div>이웃 커넥트</div>
+        <hr style="width: 100%; border: 0.25px solid gray" />
+      </div>
+      <div class="neighbor-list">
+        <div style="display: none">
+          <a class="find_neighbor">내가 추가한</a
+          ><a class="find_neighbor">나를 추가한</a>
+        </div>
+        <div class="all_neighborhood">
+          <a>전체 이웃</a><a style="margin-left: 80px">57</a><a>명</a>
+        </div>
+        <div style="display: inline-block">
+          <div class="neighbor_img"><img /></div>
+          <a class="neighbor_nickname" style="color: black; font-size: 3px"
+            >이웃별명</a
+          >
+        </div>
+        <br />
+        <div>
+          <hr style="width: 80%; border: 0.25px solid gray" />
+          <a
+            class="user-nickname"
+            style="margin-left: 10px; font-size: 13px; color: gray"
+            ><strong>멘아</strong>님 이웃의 새글보기 ></a
+          >
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+      
+      <div class="pro_posts">
+        <div class="post_list">
+          <div class="post_list_title">
+
+                  <!-- 🔹 카테고리 표시 -->
+      <p class="post-category"></p>
+
+      <!-- 🔹 게시물 제목 -->
+      <h1 class="post-title"></h1>
+      <!-- 🔹 작성자 정보 -->
+          <span class="post-author"></span>
+          <span class="post-date"></span>
+          <span class="post-mutual"></span>
+
+      <!-- 🔹 서로이웃 버튼 -->
+      <button class="neighbor-btn"></button>
+      <hr class="post_hr">
+
+
+      <!-- 🔹 게시물 본문 -->
+      <div class="post-content"></div>
+      </div>
+      </div>
+      </div>
+
+
+    <script>
+      // 🔹 **API 호출 함수 (GET 요청)**
+async function fetchAPI(endpoint) {
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/${endpoint}`, {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+        });
+
+        if (!response.ok) {
+            console.error(`⚠️ API 요청 실패: ${endpoint} (상태 코드: ${response.status})`);
+            return null;
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error(`❌ 서버 연결 오류: ${endpoint}`, error);
+        return null;
+    }
+}
+
+
+document.addEventListener("DOMContentLoaded", async function () {
+    // ✅ `fetchAPI()`가 정의되어 있는지 확인
+    if (typeof fetchAPI !== "function") {
+        console.error("❌ fetchAPI가 정의되지 않았습니다. 함수가 로드되었는지 확인하세요.");
+        return;
+    }
+
+    const accessToken = localStorage.getItem("access_token");
+
+    if (!accessToken) {
+        console.warn("⚠️ 로그인 필요: access_token 없음");
+        updateUserStatus(null);
+        return;
+    }
+
+    // ✅ 1. 로그인한 사용자 정보 가져오기
+    const loggedInUser = await fetchUserInfo();
+
+    if (!loggedInUser) {
+        console.error("❌ 사용자 정보 가져오기 실패 (로그인 필요)");
+        updateUserStatus(null);
+        return;
+    }
+
+    console.log("✅ 로그인한 사용자:", loggedInUser.username);
+
+    updateUserStatus(loggedInUser);
+
+    // ✅ 2. 로그인한 사용자 urlname 가져오기
+    const loggedInUrlname = loggedInUser?.urlname;
+    if (!loggedInUrlname) {
+        console.error("❌ 로그인한 사용자 urlname이 없음");
+        return;
+    }
+    console.log("🔹 로그인한 사용자의 urlname:", loggedInUrlname);
+
+    // ✅ 3. 프로필 및 블로그 정보 가져오기
+    const profileData = await fetchAPI(`profile/${encodeURIComponent(loggedInUrlname)}/`);
+    if (profileData) {
+        updateBlogUI(profileData);
+    } else {
+        console.error("❌ 프로필 데이터를 불러올 수 없습니다.");
+    }
+
+    // ✅ 4. 카테고리 가져오기
+    const categories = await fetchAPI(`category/?urlname=${encodeURIComponent(loggedInUrlname)}`);
+    if (categories) {
+        updateCategoryUI(categories);
+    }
+
+    // ✅ 5. 서로이웃 목록 가져오기
+    const neighbors = await fetchAPI(`profile/${encodeURIComponent(loggedInUrlname)}/neighbors/`);
+    if (neighbors) {
+        updateNeighborUI(neighbors);
+    }
+
+    // ✅ 6. 프롤로그 링크 설정
+    setupPrologLink(loggedInUrlname);
+    setupBlogHomeLink(loggedInUrlname);
+
+    // ✅ 7. 게시물 가져오기
+    fetchPosts();
+});
+
+
+// 🔹 **사용자 정보 가져오기**
+async function fetchUserInfo() {
+    try {
+        const accessToken = localStorage.getItem("access_token");
+        if (!accessToken) return null;
+
+        const response = await fetch("http://127.0.0.1:8000/profile/me/", {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (!response.ok) {
+            console.warn("⚠️ 사용자 정보 요청 실패 (401 Unauthorized)");
+            return null;
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("❌ 사용자 정보 가져오기 오류:", error);
+        return null;
+    }
+}
+
+
+
+// 🔹 **로그인 상태 업데이트 함수**
+function updateUserStatus(user) {
+    const loginButton = document.querySelector(".login_btn");
+
+    if (!user || !user.username) {  // 🔥 user가 null이거나 username이 없을 경우 처리
+        console.warn("⚠️ 로그인된 사용자가 없음, 기본 UI 표시");
+        updateLoginButtonUI();
+        return;
+    }
+
+    console.log("✅ 로그인한 사용자 정보:", user); // 🔥 전체 객체를 출력 (username이 undefined일 경우 확인 가능)
+
+    if (loginButton) {
+        loginButton.textContent = user.username; // 버튼 텍스트 변경
+        loginButton.href = "./profile.html"; // 클릭하면 프로필 페이지로 이동
+    }
+}
+
+
+// 🔹 로그인되지 않았을 때 버튼 상태 변경
+function updateLoginButtonUI() {
+    const loginButton = document.querySelector(".login_btn");
+
+    if (loginButton) {
+        loginButton.textContent = "로그인 필요"; // 버튼 텍스트 변경
+        loginButton.href = "./login.html"; // 로그인 페이지로 이동하도록 설정
+    }
+}
+
+// 🔹 **블로그 UI 업데이트**
+function updateBlogUI(profileData) {
+    if (!profileData) {
+        console.error("❌ 블로그 데이터를 불러올 수 없습니다.");
+        return;
+    }
+
+    document.querySelector(".user-nickname").innerText = profileData.username || "익명";
+    document.querySelector(".user-profilepicture").src = profileData.user_pic || "assets/profile.png";
+    document.querySelector(".itemtitlefont").innerText = profileData.blog_name || "블로그명";
+    document.querySelector(".itemfont_col").innerText = profileData.intro || "블로그 소개 정보가 없습니다.";
+}
+
+// 🔹 **카테고리 UI 업데이트**
+function updateCategoryUI(categories) {
+    const list = document.getElementById("categoryList");
+    if (!list) return;
+
+    list.innerHTML = ""; // 기존 목록 초기화
+
+    if (!categories || !Array.isArray(categories) || categories.length === 0) {
+        list.innerHTML = "<li>카테고리가 없습니다.</li>";
+        return;
+    }
+
+    categories.forEach((category) => {
+        const li = document.createElement("li");
+        li.textContent = category.name || "이름 없음";
+        list.appendChild(li);
+    });
+}
+
+// 🔹 **서로이웃 목록 UI 업데이트**
+function updateNeighborUI(neighbors) {
+    const neighborListContainer = document.querySelector(".neighbor-list");
+    if (!neighborListContainer) return;
+
+    neighborListContainer.innerHTML = "";
+
+    if (!neighbors || !Array.isArray(neighbors.neighbors) || neighbors.neighbors.length === 0) {
+        neighborListContainer.innerHTML = "<p>아직 공개된 서로이웃이 없습니다.</p>";
+        return;
+    }
+
+    neighbors.neighbors.forEach((neighbor) => {
+        const neighborDiv = document.createElement("div");
+        neighborDiv.style.display = "inline-block";
+
+        const neighborImgDiv = document.createElement("div");
+        neighborImgDiv.classList.add("neighbor_img");
+        const img = document.createElement("img");
+        img.src = getFullMediaUrl(neighbor.user_pic);
+        img.alt = "이웃 프로필";
+        neighborImgDiv.appendChild(img);
+
+        const neighborNickname = document.createElement("a");
+        neighborNickname.classList.add("neighbor_nickname");
+        neighborNickname.innerText = neighbor.urlname;
+        neighborNickname.href = `blog.html?user=${encodeURIComponent(neighbor.urlname)}`;
+
+        neighborDiv.appendChild(neighborImgDiv);
+        neighborDiv.appendChild(neighborNickname);
+        neighborListContainer.appendChild(neighborDiv);
+    });
+}
+
+// 🔹 **프롤로그 링크 설정**
+function setupPrologLink(username) {
+    const prologLink = document.getElementById("prolog-link");
+    if (prologLink) {
+        prologLink.href = `prolog.html?user=${encodeURIComponent(username)}`;
+    }
+}
+
+// 🔹 **블로그 홈 설정**
+function setupBlogHomeLink(username) {
+    const BlogHomeLink = document.getElementById("bloghome-link");
+    if (BlogHomeLink) {
+        BlogHomeLink.href = `main_login.html?user=${encodeURIComponent(username)}`;
+    }
+}
+
+// 🔹 **프로필 이미지 URL 처리 (default와 media 경로 분리)**
+function getFullMediaUrl(userPic) {
+    if (!userPic || userPic.includes("default_profile.png")) {
+        return "assets/default_profile.png"; // 기본 프로필 이미지
+    }
+
+    // `userPic`이 `http://` 또는 `/media/`로 시작하는 경우 그대로 사용
+    if (userPic.startsWith("http") || userPic.startsWith("/media/")) {
+        return `http://127.0.0.1:8000${userPic}`;
+    }
+
+    // `userPic`이 main/media/user_pics/{id}/... 형태인 경우
+    if (userPic.includes("user_pics/")) {
+        return `http://127.0.0.1:8000/main/media/${userPic}`;
+    }
+
+    // 그 외의 경우 기본 URL 추가
+    return `http://127.0.0.1:8000${userPic}`;
+}
+
+
+
+      // 🔹 페이지 로드 시 실행
+      document.addEventListener("DOMContentLoaded", updateUserStatus);
+
+      // 🔹 **블로그 UI 업데이트**
+      function updateBlogUI(profileData) {
+        if (!profileData) {
+          document.getElementById("blog-title").innerText =
+            "블로그 정보를 찾을 수 없습니다.";
+          document.getElementById("blog-intro").innerText =
+            "사용자 정보를 불러올 수 없습니다.";
+          return;
+        }
+
+        document
+          .querySelectorAll(".user-nickname")
+          .forEach((el) => (el.innerText = profileData.username || "익명"));
+        document
+          .querySelectorAll(".user-profilepicture")
+          .forEach(
+            (img) => (img.src = profileData.user_pic || "assets/profile.png")
+          );
+        document
+          .querySelectorAll(".itemtitlefont")
+          .forEach(
+            (e2) => (e2.innerText = profileData.blog_name || "블로그명")
+          );
+        document
+          .querySelectorAll(".itemfont_col")
+          .forEach(
+            (e3) =>
+              (e3.innerText =
+                profileData.intro || "블로그 소개 정보가 없습니다.")
+          );
+      }
+
+      // 🔹 **카테고리 UI 업데이트**
+      function updateCategoryUI(categories) {
+        const list = document.getElementById("categoryList");
+        if (!list) return;
+
+        list.innerHTML = ""; // 기존 목록 초기화
+
+        // categories가 배열이 아닐 경우 처리
+        if (!categories || !Array.isArray(categories)) {
+          list.innerHTML = "<li>카테고리를 불러올 수 없습니다.</li>";
+          return;
+        }
+
+        // 카테고리 데이터가 비어있을 경우 처리
+        if (categories.length === 0) {
+          list.innerHTML = "<li>카테고리가 없습니다.</li>";
+          return;
+        }
+
+        categories.forEach((category) => {
+          const li = document.createElement("li");
+          li.textContent = category.name || "이름 없음"; // category.name이 없을 경우 기본값 설정
+          list.appendChild(li);
+        });
+      }
+
+      // 🔹 **서로이웃 목록 UI 업데이트**
+      function updateNeighborUI(neighbors) {
+        const neighborListContainer = document.querySelector(".neighbor-list");
+        if (!neighborListContainer) return;
+
+        neighborListContainer.innerHTML = ""; // 기존 내용 초기화
+
+        if (
+          !neighbors ||
+          !Array.isArray(neighbors.neighbors) ||
+          neighbors.neighbors.length === 0
+        ) {
+          neighborListContainer.innerHTML =
+            "<p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp아직 공개된<br>&nbsp&nbsp&nbsp서로이웃이 없습니다.</p>";
+          return;
+        }
+
+        neighbors.neighbors.forEach((neighbor) => {
+          const neighborDiv = document.createElement("div");
+          neighborDiv.style.display = "inline-block";
+
+          const neighborImgDiv = document.createElement("div");
+          neighborImgDiv.classList.add("neighbor_img");
+          const img = document.createElement("img");
+          img.src = getFullMediaUrl(neighbor.user_pic);
+          img.alt = "이웃 프로필";
+          neighborImgDiv.appendChild(img);
+
+          const neighborNickname = document.createElement("a");
+          neighborNickname.classList.add("neighbor_nickname");
+          neighborNickname.innerText = neighbor.urlname;
+          neighborNickname.href = `blog.html?user=${encodeURIComponent(
+            neighbor.urlname
+          )}`;
+
+          neighborDiv.appendChild(neighborImgDiv);
+          neighborDiv.appendChild(neighborNickname);
+          neighborListContainer.appendChild(neighborDiv);
+        });
+      }
+
+      // 🔹 **프롤로그 링크 설정**
+      function setupPrologLink(username) {
+        const prologLink = document.getElementById("prolog-link");
+        if (prologLink) {
+          prologLink.href = `prolog.html?user=${encodeURIComponent(username)}`;
+        }
+      }
+
+      // 🔹 **블로그 홈 설정**
+      function setupBlogHomeLink(username) {
+        const BlogHomeLink = document.getElementById("bloghome-link");
+        if (BlogHomeLink) {
+          BlogHomeLink.href = `main_login.html?user=${encodeURIComponent(
+            username
+          )}`;
+        }
+      }
+
+      // 🔹 **로그아웃 기능**
+      async function logout() {
+        try {
+          const refreshToken = localStorage.getItem("refresh_token");
+
+          if (!refreshToken) {
+            console.error("❌ 로그아웃 실패: refresh_token 없음");
+            alert("로그인 상태가 아닙니다.");
+            return;
+          }
+
+          console.log("🔹 로그아웃 요청 전 refresh_token:", refreshToken);
+
+          const response = await fetch("http://127.0.0.1:8000/logout/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ refresh: refreshToken }),
+          });
+
+          console.log("🔹 로그아웃 응답 상태 코드:", response.status);
+
+          if (response.status === 200) {
+            console.log("✅ 로그아웃 성공");
+
+            // 🔹 토큰 삭제
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("refresh_token");
+
+            alert("로그아웃 완료!");
+
+            // 🔹 로그인 버튼을 즉시 업데이트
+            updateLoginButtonUI();
+          } else {
+            console.error("❌ 로그아웃 요청 실패:", response.status);
+            const errorData = await response.json();
+            alert(`로그아웃 실패: ${errorData.message || "알 수 없는 오류"}`);
+          }
+        } catch (error) {
+          console.error("❌ 로그아웃 오류:", error);
+          alert("서버에 연결할 수 없습니다.");
+        }
+      }
+
+      function updateLoginButtonUI() {
+        const loginButton = document.querySelector(".login_btn");
+
+        if (loginButton) {
+          loginButton.textContent = "로그인 필요"; // 버튼 텍스트 변경
+          loginButton.href = "./login.html"; // 로그인 페이지로 이동하도록 설정
+        }
+      }
+
+      // 🔹 **프로필 이미지 URL 처리**
+      function getFullMediaUrl(relativeUrl) {
+        return relativeUrl
+          ? `http://127.0.0.1:8000${relativeUrl}`
+          : "assets/default_profile.png";
+      }
+
+      document.addEventListener("DOMContentLoaded", async function () {
+        const loginButton = document.querySelector(".top_menubar button");
+        const accessToken = localStorage.getItem("access_token");
+
+        if (accessToken) {
+          try {
+            // 🔹 로그인된 사용자 정보 가져오기
+            const response = await fetch("http://127.0.0.1:8000/profile/me/", {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "Content-Type": "application/json",
+              },
+            });
+
+            if (response.ok) {
+              const data = await response.json();
+              const loggedInUser = data.username;
+
+              // 🔹 버튼을 사용자 이름으로 변경 & 프로필 페이지로 이동
+              loginButton.textContent = loggedInUser;
+              loginButton.onclick = () =>
+                (location.href = `profile.html?user=${encodeURIComponent(
+                  loggedInUser
+                )}`);
+            } else {
+              throw new Error("사용자 정보를 가져올 수 없습니다.");
+            }
+          } catch (error) {
+            console.error("❌ 사용자 정보 가져오기 오류:", error);
+            showLoginButton(); // 로그인 정보가 없거나 오류 발생 시 로그인 버튼 유지
+          }
+        } else {
+          showLoginButton(); // 로그인 정보가 없을 경우 기본 로그인 버튼 표시
+        }
+
+        function showLoginButton() {
+          loginButton.textContent = "로그인";
+          loginButton.onclick = () => (location.href = "login.html");
+        }
+      });
+
+      
+
+     
+      async function fetchPosts() {
+    const loggedInUser = await fetchUserInfo();
+    const username = loggedInUser?.urlname;
+
+    if (!username) {
+        console.error("❌ 사용자명이 없습니다.");
+        return;
+    }
+
+    console.log("🔹 게시물 요청할 사용자명:", username);
+
+    const accessToken = localStorage.getItem("access_token");
+
+    try {
+        const response = await fetch(
+            `http://127.0.0.1:8000/posts/?urlname=${encodeURIComponent(username)}`,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    Accept: "application/json",
+                },
+            }
+        );
+
+        const data = await response.json();
+        console.log("📢 서버 응답 데이터:", data); // 🔥 백엔드에서 받은 데이터 확인
+
+        if (!response.ok) {
+            console.error("❌ 게시물 데이터를 불러오는 데 실패했습니다.");
+            return;
+        }
+
+        if (Array.isArray(data) && data.length > 0) {
+            console.log("✅ 게시물 데이터:", data);
+            renderPosts(data);
+        } else {
+            console.warn("⚠️ 게시물이 없습니다. (서버 응답: 빈 배열)");
+        }
+    } catch (error) {
+        console.error("📌 게시물 데이터 가져오기 오류:", error);
+    }
+}
+
+// 🔹 **올바른 이미지 URL 반환 함수 (5500 → 8000 변환)**
+function getValidImageUrl(image) {
+    if (!image || image === "null") {
+        return "assets/default_image.png"; // 기본 이미지
+    }
+
+    if (image.startsWith("/media/")) {
+        return `http://127.0.0.1:8000${image}`; // 🔥 상대 경로 → 절대 경로 변환
+    }
+
+    return image;
+}
+
+// 🔹 **본문 내 이미지 URL을 자동 변환하는 함수**
+function fixImageUrls(htmlContent) {
+    const baseUrl = "http://127.0.0.1:8000";
+
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = htmlContent;
+
+    tempDiv.querySelectorAll("img").forEach((img) => {
+        const imgSrc = img.getAttribute("src");
+
+        if (imgSrc && imgSrc.startsWith("/media/")) {
+            img.src = baseUrl + imgSrc;
+        }
+    });
+
+    return tempDiv.innerHTML;
+}
+
+// 🔹 **게시물 렌더링 함수**
+function renderPosts(posts) {
+    const postContainer = document.querySelector(".post_content");
+
+    if (!postContainer) {
+        console.error("❌ 'post_content' 클래스를 가진 요소가 존재하지 않습니다.");
+        return;
+    }
+
+    postContainer.innerHTML = ""; // 기존 내용 초기화
+
+    posts.forEach((post) => {
+        // 🔹 날짜 포맷 변환
+        const formattedDate = new Date(post.created_at)
+            .toLocaleString("ko-KR", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+            })
+            .replace(/\./g, "")
+            .replace(" ", ". ")
+            .replace("오전", "")
+            .replace("오후", "")
+            .trim();
+
+        // 🔹 본문 내용 정리
+        let cleanedContent = removeUnnecessaryButtons(post.content);
+        cleanedContent = fixImageUrls(cleanedContent); // 🔥 본문 내 이미지 URL 변환 적용
+
+        // 🔹 대표 이미지 가져오기 (없으면 첫 번째 이미지)
+        const imageUrl = getValidImageUrl(
+            post.images?.find(img => img.is_representative)?.image_url || post.images?.[0]?.image_url
+        );
+
+        // 🔹 이미지 중복 추가 방지 (본문 내 img 태그 확인)
+        if (post.images && post.images.length > 0 && !cleanedContent.includes(imageUrl)) {
+            const imageTag = `
+                <figure style="text-align: center; margin: 15px 0px;">
+                    <img src="${imageUrl}" class="editable-image"
+                        style="max-width: 100%; height: auto; margin-top: 10px; border-radius: 5px;">
+                    <figcaption style="font-size: 12px; color: gray; margin-top: 5px; text-align: center;">
+                        ${post.images[0].caption || ""}
+                    </figcaption>
+                </figure>
+            `;
+            cleanedContent += imageTag;
+        }
+
+        // 🔹 게시글 요소 생성
+        const postElement = document.createElement("div");
+        postElement.classList.add("post_item");
+
+        postElement.innerHTML = `
+            <h3>${post.title}</h3>
+            <p>${cleanedContent}</p>
+            <small>작성자: ${post.user_name} | 날짜: ${formattedDate}</small>
+        `;
+
+        postContainer.appendChild(postElement);
+    });
+}
+
+// 🔹 `DOMContentLoaded` 이벤트 후 fetchPosts() 실행 보장
+document.addEventListener("DOMContentLoaded", function () {
+    fetchPosts();
+});
+
+
+
+      function fixImageUrls(htmlContent) {
+        const baseUrl = "http://127.0.0.1:8000";
+
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = htmlContent;
+
+        tempDiv.querySelectorAll("img").forEach((img) => {
+          const imgSrc = img.getAttribute("src");
+
+          if (imgSrc && !imgSrc.startsWith("http")) {
+            img.src = baseUrl + imgSrc;
+          }
+        });
+
+        return tempDiv.innerHTML;
+      }
+
+      function fixSingleImageUrl(imageUrl) {
+        const baseUrl = "http://127.0.0.1:8000";
+        return imageUrl.startsWith("http") ? imageUrl : baseUrl + imageUrl;
+      }
+
+      function removeUnnecessaryButtons(htmlContent) {
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = htmlContent;
+
+        tempDiv.querySelectorAll("button").forEach((button) => {
+          if (button.textContent.trim() === "대표사진 선택") {
+            button.remove();
+          }
+        });
+
+        return tempDiv.innerHTML;
+      }
+    </script>
+    <script>
+     document.addEventListener("DOMContentLoaded", async function () {
+    // ✅ URL에서 `post_id` 가져오기
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get("post_id");
+
+    if (!postId) {
+        alert("잘못된 접근입니다.");
+        window.history.back();
+        return;
+    }
+
+    try {
+        // ✅ 1. 로그인한 사용자 정보 가져오기
+        const userResponse = await fetch("http://127.0.0.1:8000/profile/me/", {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!userResponse.ok) {
+            throw new Error("로그인한 사용자 정보를 가져올 수 없습니다.");
+        }
+
+        const loggedInUser = await userResponse.json();
+        console.log("🔹 로그인한 사용자 정보:", loggedInUser);
+
+        // ✅ 로그인한 사용자의 `username` 및 `urlname` 가져오기
+        const loggedInUsername = loggedInUser.username || "익명";  // 🔥 username 없을 경우 대비
+        const loggedInUrlname = loggedInUser.urlname;
+        console.log("🔹 로그인한 사용자의 username:", loggedInUsername);
+        console.log("🔹 로그인한 사용자의 urlname:", loggedInUrlname);
+
+        // ✅ 2. 로그인한 사용자의 서로이웃 목록 가져오기
+        const neighborResponse = await fetch(`http://127.0.0.1:8000/profile/${loggedInUrlname}/neighbors/`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        let neighborUsernames = [];
+        if (neighborResponse.ok) {
+            const neighborData = await neighborResponse.json();
+            neighborUsernames = neighborData.neighbors.map(n => n.urlname);
+        }
+
+        console.log("🔹 로그인한 사용자의 서로이웃 목록 (urlname 기준):", neighborUsernames);
+
+        // ✅ 3. 게시물 상세 정보 가져오기
+        const postResponse = await fetch(`http://127.0.0.1:8000/posts/${postId}/`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!postResponse.ok) {
+            alert("게시글을 불러올 수 없습니다.");
+            window.history.back();
+            return;
+        }
+
+        const postData = await postResponse.json();
+        console.log("📢 게시물 상세 데이터:", postData);
+
+        // ✅ 4. UI 업데이트 (username 문제 해결)
+        updateBlogUI(loggedInUser);
+        updatePostDetailUI(postData, neighborUsernames);
+
+    } catch (error) {
+        console.error("❌ 서버 연결 오류:", error);
+        alert("서버 연결에 실패했습니다.");
+    }
+});
+
+// ✅ 블로그 UI 업데이트 함수 (username 오류 해결)
+function updateBlogUI(loggedInUser) {
+    const nicknameElement = document.querySelector(".user-nickname");
+    if (nicknameElement) {
+        nicknameElement.innerText = loggedInUser.username || "익명"; // 🔥 username이 없을 경우 대비
+    } else {
+        console.error("❌ 닉네임을 표시할 요소를 찾을 수 없습니다.");
+    }
+}
+
+// ✅ 게시물 상세 UI 업데이트 함수
+function updatePostDetailUI(postData, neighborUsernames) {
+    document.querySelector(".post-category").textContent = postData.category_name || "카테고리 없음";
+    document.querySelector(".post-title").textContent = postData.title;
+    document.querySelector(".post-author").textContent = postData.user_name;
+    document.querySelector(".post-date").textContent = formatDate(postData.created_at);
+
+    // ✅ 서로이웃 버튼 업데이트 (🔥 `user_urlname` 사용)
+    const neighborButton = document.querySelector(".neighbor-btn");
+    if (neighborButton) {
+        const postUserUrlname = postData.user_urlname || postData.user_name; // `user_urlname`이 없으면 `user_name` 사용
+        console.log("📢 게시물 작성자의 urlname:", postUserUrlname);
+
+        if (neighborUsernames.includes(postUserUrlname)) {
+            neighborButton.textContent = "서로이웃";
+        } else {
+            neighborButton.textContent = "전체";
+        }
+    }
+
+    // ✅ 본문 표시
+    document.querySelector(".post-content").innerHTML = cleanContent(postData.content);
+}
+
+// ✅ 날짜 포맷 변환 함수
+function formatDate(dateString) {
+    const dateObj = new Date(dateString);
+    return `${dateObj.getFullYear()}. ${dateObj.getMonth() + 1}. ${dateObj.getDate()} ${dateObj.getHours()}:${String(dateObj.getMinutes()).padStart(2, '0')}`;
+}
+
+// ✅ 불필요한 HTML 태그 제거 함수
+function cleanContent(content) {
+    return content
+        .replace(/대표사진 선택/g, "") // '대표 사진 선택' 제거
+        .replace(/이미지 설명을 입력하세요\.\.\./g, "") // '이미지 설명을 입력하세요...' 제거
+        .trim();
+}
+    </script>
+  </body>
+</html>
