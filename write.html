@@ -26,7 +26,7 @@
     <div class="header">
       <div class="logo">SG Blog</div>
       <div class="buttons">
-        <button onclick="popup()">임시 저장</button>
+        <button onclick="popup()">임시 저장 글 불러오기</button>
         <button onclick="openWriteSavePopup()">발행</button>
       </div>
     </div>
@@ -403,7 +403,16 @@
       }
 
       // ✅ 부모 창에서 자식 창 메시지 수신
-      window.addEventListener("message", handlePublish);
+
+      window.addEventListener("message", async function (event) {
+        if (event.data.type === "SAVE_DATA") {
+          await handlePublish(event.data.payload);
+        } else if (event.data.type === "TEMP_SAVE_DATA") {
+          await handleTempSave(event.data.payload);
+        } else {
+          console.log("⚠️ 알 수 없는 메시지 수신:", event.data);
+        }
+      });
 
       async function handlePublish(eventData) {
         if (event.data.type === "SAVE_DATA") {
@@ -433,6 +442,83 @@
           formData.append("subject", event.data.payload.subject);
           formData.append("visibility", event.data.payload.open);
           formData.append("status", "published");
+          formData.append("captions", JSON.stringify(captionsArray));
+          formData.append(
+            "is_representative",
+            JSON.stringify(isRepresentativeArray)
+          );
+
+          // ✅ Base64를 변환한 이미지들을 FormData에 추가
+          images.forEach((image, index) => {
+            formData.append(`images`, image);
+          });
+
+          const accessToken = localStorage.getItem("access_token");
+
+          // 3. 백엔드 전송
+          console.log("📌 FormData 확인");
+          console.log("▶ 제목:", formData.get("title"));
+          console.log("▶ 본문:", formData.get("content"));
+          console.log("▶ 카테고리:", formData.get("category_name"));
+          console.log("▶ 주제:", formData.get("subject"));
+          console.log("▶ 공개 설정:", formData.get("visibility"));
+          console.log("▶ 상태:", formData.get("status"));
+          console.log("▶ 캡션 리스트:", formData.get("captions"));
+          console.log("▶ 대표사진 여부:", formData.get("is_representative"));
+
+          try {
+            const response = await fetch(
+              "http://127.0.0.1:8000/posts/me/create/",
+              {
+                method: "POST",
+                headers: { Authorization: `Bearer ${accessToken}` },
+                body: formData,
+              }
+            );
+
+            if (response.ok) {
+              alert("✅ 게시물이 성공적으로 등록되었습니다!");
+              window.location.href = "/myblog.html";
+            } else {
+              alert("⚠️ 게시물 등록 실패");
+            }
+          } catch (error) {
+            console.error("❌ 게시물 전송 중 오류:", error);
+            alert("서버와 연결할 수 없습니다.");
+          }
+        } else {
+          console.log("⚠️ 알 수 없는 메시지 수신:", event.data);
+        }
+      }
+
+      async function handleTempSave(eventData) {
+        if (event.data.type === "TEMP_SAVE_DATA") {
+          console.log("🚀 [부모 창] 자식 창으로부터 데이터 수신 성공!");
+          console.log("📦 전달된 데이터:", event.data.payload);
+
+          // 1. 제목과 본문, 사진 캡션, 대표사진 여부 추출
+          const title = document
+            .getElementById("titleField")
+            .textContent.trim();
+          const contentHTML = document.getElementById("contentField").innerHTML;
+          const captionsArray = extractCaptions();
+
+          const { images, isRepresentativeArray } = extractBase64Images();
+
+          if (captionsArray.length !== images.length) {
+            console.error("🚨 captions 배열과 images 배열 개수가 다릅니다!");
+            console.log("▶ captions:", captionsArray);
+            console.log("▶ images:", images);
+          }
+
+          // 2. FormData 생성
+          const formData = new FormData();
+          formData.append("title", title);
+          formData.append("content", contentHTML);
+          formData.append("category_name", event.data.payload.category);
+          formData.append("subject", event.data.payload.subject);
+          formData.append("visibility", event.data.payload.open);
+          formData.append("status", "draft");
           formData.append("captions", JSON.stringify(captionsArray));
           formData.append(
             "is_representative",
