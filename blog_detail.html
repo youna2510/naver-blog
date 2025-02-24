@@ -9,7 +9,29 @@
       .post-category {
         margin-top:15px;
         margin-left:13px;
+        display: inline-block;
+        font-weight: bold;
       }
+
+      /* 공개 범위 박스 스타일 */
+.post-range {
+    display: inline-block;
+    padding: 5px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    background-color: white; /* 기본 흰색 배경 */
+    color: #333;
+    text-align: center;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 공개 범위별 색상 */
+.post-range.everyone { background-color: #f1f1f1; } /* 전체 */
+.post-range.mutual { background-color: #d1e7dd; color: #155724; } /* 서로이웃 */
+.post-range.me { background-color: #f8d7da; color: #721c24; } /* 나만 보기 */
+
 
       .post-title {
         margin-left : 13px;
@@ -34,6 +56,33 @@
         margin-right:10px;
       }
 
+      .post-mutual {
+    display: inline-block;
+    padding: 5px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white; /* 흰색 배경 */
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+      .neighbor-btn {
+      display: inline-block;
+      margin-left: auto; /* 오른쪽 정렬 */
+      padding: 5px 10px;
+      font-size: 12px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      }
+
+      .neighbor-btn:hover {
+      background-color: #0056b3;
+      }
 
 
     </style>
@@ -61,7 +110,6 @@
         <button id="login-btn" href="./login.html">로그인</button>
       </div>
 
-      <div class="itemtitlefont" id="blogTitleName">블로그 제목입니당</div>
 
       <div id="blog-menu">
         <div class="border">
@@ -92,113 +140,75 @@
       <hr style="margin-left: 140px" />
     </div>
 
-    <!--프로필-->
-    <div class="bg-body">
-      <div class="con">
-        <p class="image">
-          <a href="#">
-            <img
-              class="user-profilepicture"
-              style="width: 135px"
-              src="assets/profile.png"
-              alt="프로필 이미지"
-            />
-          </a>
-        </p>
-      </div>
-      <div class="name align">
-        <div class="user-nickname" style="font-size: 15px">
-          <strong class="itemfont col" id="nickNameArea">사용자이름</strong>
-          <br />
-          <span class="itemfont col">
-            <span class="blog_domain col"> </span>
-          </span>
-        </div>
-      </div>
-      <p class="caption align">
-        <span class="itemfont_col">프로필 소개</span>
-      </p>
-      <p class="more align"><span class="m1"></span></p>
-      <div class="btn_area" onclick="popup()">
-        <a>
-          <span class="blind">이웃추가</span>
-        </a>
-      </div>
+    <!--프로필 (글 작성자의 프로필로 변경)-->
+<div class="bg-body">
+  <div class="con">
+    <p class="image">
+      <a href="#">
+        <img
+          class="user-profilepicture"
+          style="width: 135px"
+          src="assets/profile.png"
+          alt="프로필 이미지"
+        />
+      </a>
+    </p>
+  </div>
+  <div class="name align">
+    <div class="user-nickname" style="font-size: 15px">
+      <strong class="itemfont col" id="nickNameArea">사용자이름</strong>
     </div>
+  </div>
+  <p class="caption align">
+    <span class="itemfont_col" id="profile-intro">프로필 소개</span>
+  </p>
+</div>
 
-    <!--카테고리-->
-    <div class="bg-category">
-      <div>전체보기</div>
-      <ul id="categoryList" class="category-list">
-        게시판1
-      </ul>
+<!--카테고리 (글 작성자의 데이터로 변경)-->
+<div class="bg-category">
+  <div>전체보기</div>
+  <ul id="categoryList" class="category-list"></ul> <!-- 기존 내용 제거 -->
+</div>
+
+<!--서로이웃 (글 작성자의 서로이웃으로 변경)-->
+<div class="bg-neighbor">
+  <div class="neighbor-profile">
+    <div class="user-nickname" style="font-size: 15px">
+      <strong>이웃 목록</strong>
     </div>
-
-    <!--서로이웃-->
-    <div class="bg-neighbor">
-      <div class="neighbor-profile">
-        <div class="user-nickname" style="font-size: 15px">
-          <strong>사용자</strong>
-        </div>
-        <div>이웃 커넥트</div>
-        <hr style="width: 100%; border: 0.25px solid gray" />
-      </div>
-      <div class="neighbor-list">
-        <div style="display: none">
-          <a class="find_neighbor">내가 추가한</a
-          ><a class="find_neighbor">나를 추가한</a>
-        </div>
-        <div class="all_neighborhood">
-          <a>전체 이웃</a><a style="margin-left: 80px">57</a><a>명</a>
-        </div>
-        <div style="display: inline-block">
-          <div class="neighbor_img"><img /></div>
-          <a class="neighbor_nickname" style="color: black; font-size: 3px"
-            >이웃별명</a
-          >
-        </div>
-        <br />
-        <div>
-          <hr style="width: 80%; border: 0.25px solid gray" />
-          <a
-            class="user-nickname"
-            style="margin-left: 10px; font-size: 13px; color: gray"
-            ><strong>멘아</strong>님 이웃의 새글보기 ></a
-          >
-        </div>
-      </div>
-    </div>
-
-
-
-
-
-
+    <hr style="width: 100%; border: 0.25px solid gray" />
+  </div>
+  <div class="neighbor-list"></div> <!-- 기존 내용 제거 -->
+</div>
       
-      <div class="pro_posts">
-        <div class="post_list">
+    <div class="pro_posts">
+      <div class="post_list">
           <div class="post_list_title">
-
-                  <!-- 🔹 카테고리 표시 -->
-      <p class="post-category"></p>
-
-      <!-- 🔹 게시물 제목 -->
-      <h1 class="post-title"></h1>
-      <!-- 🔹 작성자 정보 -->
-          <span class="post-author"></span>
-          <span class="post-date"></span>
-          <span class="post-mutual"></span>
-
-      <!-- 🔹 서로이웃 버튼 -->
-      <button class="neighbor-btn"></button>
-      <hr class="post_hr">
-
-
-      <!-- 🔹 게시물 본문 -->
-      <div class="post-content"></div>
+  
+              <!-- 🔹 게시물 제목 -->
+              <h1 class="post-title"></h1>
+  
+              <!-- 🔹 작성자 정보 -->
+              <span class="post-author"></span>
+              <span class="post-date"></span>
+  
+              <!-- 🔹 카테고리 + 서로이웃 상태를 한 줄로 정렬 -->
+              <div class="post-meta" style="display: flex; align-items: center; justify-content: space-between;">
+                  <div>
+                      <span class="post-category"></span> <!-- 카테고리 -->
+                      <span class="post-range"></span> <!-- 공개 범위 -->
+                  </div>
+                  <span class="post-mutual">서로이웃</span> <!-- 서로이웃 표시 -->
+              </div>
+  
+              <hr class="post_hr">
+  
+              <!-- 🔹 게시물 본문 -->
+              <div class="post-content"></div>
+  
+          </div>
       </div>
-      </div>
-      </div>
+  </div>
 
 
     <script>
@@ -361,24 +371,29 @@ function updateBlogUI(profileData) {
     document.querySelector(".itemfont_col").innerText = profileData.intro || "블로그 소개 정보가 없습니다.";
 }
 
-// 🔹 **카테고리 UI 업데이트**
 function updateCategoryUI(categories) {
-    const list = document.getElementById("categoryList");
-    if (!list) return;
+    const categoryListContainer = document.getElementById("categoryList");
 
-    list.innerHTML = ""; // 기존 목록 초기화
-
-    if (!categories || !Array.isArray(categories) || categories.length === 0) {
-        list.innerHTML = "<li>카테고리가 없습니다.</li>";
+    if (!categoryListContainer) {
+        console.error("❌ 'categoryList' 요소를 찾을 수 없습니다.");
         return;
     }
 
-    categories.forEach((category) => {
+    categoryListContainer.innerHTML = ""; // 기존 목록 초기화
+
+    if (!categories || categories.length === 0) {
+        categoryListContainer.innerHTML = "<li>카테고리가 없습니다.</li>";
+        return;
+    }
+
+    categories.forEach(category => {
         const li = document.createElement("li");
-        li.textContent = category.name || "이름 없음";
-        list.appendChild(li);
+        li.textContent = category.name;
+        li.style.display = "block";  // 한 항목씩 새로운 줄에 표시되도록 설정
+        categoryListContainer.appendChild(li);
     });
 }
+
 
 // 🔹 **서로이웃 목록 UI 업데이트**
 function updateNeighborUI(neighbors) {
@@ -817,50 +832,31 @@ function renderPosts(posts) {
     });
 }
 
-// 🔹 `DOMContentLoaded` 이벤트 후 fetchPosts() 실행 보장
-document.addEventListener("DOMContentLoaded", function () {
-    fetchPosts();
-});
-
-
-
-      function fixImageUrls(htmlContent) {
-        const baseUrl = "http://127.0.0.1:8000";
-
-        const tempDiv = document.createElement("div");
-        tempDiv.innerHTML = htmlContent;
-
-        tempDiv.querySelectorAll("img").forEach((img) => {
-          const imgSrc = img.getAttribute("src");
-
-          if (imgSrc && !imgSrc.startsWith("http")) {
-            img.src = baseUrl + imgSrc;
-          }
+async function fetchCategories(urlname) {
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/category/?urlname=${encodeURIComponent(urlname)}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+                "Content-Type": "application/json"
+            }
         });
 
-        return tempDiv.innerHTML;
-      }
+        if (!response.ok) {
+            console.error(`❌ 카테고리 데이터를 불러오는 데 실패했습니다. (상태 코드: ${response.status})`);
+            return;
+        }
 
-      function fixSingleImageUrl(imageUrl) {
-        const baseUrl = "http://127.0.0.1:8000";
-        return imageUrl.startsWith("http") ? imageUrl : baseUrl + imageUrl;
-      }
+        const categories = await response.json();
+        console.log("📢 카테고리 목록 데이터:", categories);
 
-      function removeUnnecessaryButtons(htmlContent) {
-        const tempDiv = document.createElement("div");
-        tempDiv.innerHTML = htmlContent;
-
-        tempDiv.querySelectorAll("button").forEach((button) => {
-          if (button.textContent.trim() === "대표사진 선택") {
-            button.remove();
-          }
-        });
-
-        return tempDiv.innerHTML;
-      }
-    </script>
-    <script>
-     document.addEventListener("DOMContentLoaded", async function () {
+        // ✅ UI 업데이트
+        updateCategoryUI(categories);
+    } catch (error) {
+        console.error("❌ 카테고리 데이터를 가져오는 중 오류 발생:", error);
+    }
+}
+document.addEventListener("DOMContentLoaded", async function () {
     // ✅ URL에서 `post_id` 가져오기
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("post_id");
@@ -872,46 +868,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     try {
-        // ✅ 1. 로그인한 사용자 정보 가져오기
-        const userResponse = await fetch("http://127.0.0.1:8000/profile/me/", {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
-                "Content-Type": "application/json"
-            }
-        });
-
-        if (!userResponse.ok) {
-            throw new Error("로그인한 사용자 정보를 가져올 수 없습니다.");
-        }
-
-        const loggedInUser = await userResponse.json();
-        console.log("🔹 로그인한 사용자 정보:", loggedInUser);
-
-        // ✅ 로그인한 사용자의 `username` 및 `urlname` 가져오기
-        const loggedInUsername = loggedInUser.username || "익명";  // 🔥 username 없을 경우 대비
-        const loggedInUrlname = loggedInUser.urlname;
-        console.log("🔹 로그인한 사용자의 username:", loggedInUsername);
-        console.log("🔹 로그인한 사용자의 urlname:", loggedInUrlname);
-
-        // ✅ 2. 로그인한 사용자의 서로이웃 목록 가져오기
-        const neighborResponse = await fetch(`http://127.0.0.1:8000/profile/${loggedInUrlname}/neighbors/`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
-                "Content-Type": "application/json"
-            }
-        });
-
-        let neighborUsernames = [];
-        if (neighborResponse.ok) {
-            const neighborData = await neighborResponse.json();
-            neighborUsernames = neighborData.neighbors.map(n => n.urlname);
-        }
-
-        console.log("🔹 로그인한 사용자의 서로이웃 목록 (urlname 기준):", neighborUsernames);
-
-        // ✅ 3. 게시물 상세 정보 가져오기
+        // ✅ 1. 게시물 상세 정보 가져오기
         const postResponse = await fetch(`http://127.0.0.1:8000/posts/${postId}/`, {
             method: "GET",
             headers: {
@@ -929,8 +886,61 @@ document.addEventListener("DOMContentLoaded", function () {
         const postData = await postResponse.json();
         console.log("📢 게시물 상세 데이터:", postData);
 
-        // ✅ 4. UI 업데이트 (username 문제 해결)
-        updateBlogUI(loggedInUser);
+        // ✅ 2. `url_name` 사용하여 프로필 가져오기
+        const postAuthorUrlname = postData.url_name;  // 🔥 백엔드에서 받은 url_name을 사용
+        console.log("🔹 게시물 작성자의 URL Name:", postAuthorUrlname);
+
+        if (!postAuthorUrlname) {
+            console.error("❌ 게시물 작성자의 url_name이 없습니다.");
+            alert("게시물 작성자의 정보가 없습니다.");
+            return;
+        }
+
+        // ✅ 3. 글쓴이의 프로필 가져오기
+        const profileData = await fetchAPI(`profile/${encodeURIComponent(postAuthorUrlname)}/`);
+        if (!profileData) {
+            console.error("❌ 게시물 작성자의 프로필을 가져올 수 없습니다.");
+        }
+
+        // ✅ 4. 글쓴이의 서로이웃 목록 가져오기
+        const neighborResponse = await fetch(`http://127.0.0.1:8000/profile/${encodeURIComponent(postAuthorUrlname)}/neighbors/`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        let neighborUsernames = [];
+        if (neighborResponse.ok) {
+            const neighborData = await neighborResponse.json();
+            neighborUsernames = neighborData.neighbors.map(n => n.urlname);
+        }
+
+        console.log("🔹 글쓴이의 서로이웃 목록 (urlname 기준):", neighborUsernames);
+
+        // ✅ 5. 글쓴이의 카테고리 목록 가져오기
+        const categoryResponse = await fetch(`http://127.0.0.1:8000/category/?urlname=${encodeURIComponent(postAuthorUrlname)}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        let categories = [];
+        if (categoryResponse.ok) {
+            categories = await categoryResponse.json();
+            console.log("📢 카테고리 목록:", categories);
+        } else {
+            console.error("❌ 카테고리 데이터를 불러올 수 없습니다.");
+        }
+
+        // ✅ 6. 카테고리 UI 업데이트
+        updateCategoryUI(categories);
+
+        // ✅ 7. UI 업데이트 (🔹 글쓴이의 정보로 업데이트!)
+        updateBlogUI(profileData);
         updatePostDetailUI(postData, neighborUsernames);
 
     } catch (error) {
@@ -939,39 +949,122 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// ✅ 블로그 UI 업데이트 함수 (username 오류 해결)
-function updateBlogUI(loggedInUser) {
+// ✅ 카테고리 UI 업데이트 함수
+function updateCategoryUI(categories) {
+    const categoryListContainer = document.getElementById("categoryList");
+
+    if (!categoryListContainer) {
+        console.error("❌ 'categoryList' 요소를 찾을 수 없습니다.");
+        return;
+    }
+
+    categoryListContainer.innerHTML = ""; // 기존 목록 초기화
+
+    if (!categories || categories.length === 0) {
+        categoryListContainer.innerHTML = "<li>카테고리가 없습니다.</li>";
+        return;
+    }
+
+    categories.forEach(category => {
+        const li = document.createElement("li");
+        li.textContent = category.name;  // 각 카테고리 이름을 한 줄씩 표시
+        li.style.display = "block";  // 스타일을 block으로 지정해서 한 줄씩 나오도록 설정
+        categoryListContainer.appendChild(li);  // 리스트 항목을 추가
+    });
+}
+
+
+
+
+
+
+// ✅ 블로그 UI 업데이트 함수 (글쓴이 기준으로 변경)
+function updateBlogUI(profileData) {
+    if (!profileData) {
+        console.error("❌ 블로그 정보를 불러올 수 없습니다.");
+        return;
+    }
+
     const nicknameElement = document.querySelector(".user-nickname");
+    const profileImageElement = document.querySelector(".user-profilepicture");
+    const blogIntroElement = document.querySelector(".itemfont_col");
+
     if (nicknameElement) {
-        nicknameElement.innerText = loggedInUser.username || "익명"; // 🔥 username이 없을 경우 대비
+        nicknameElement.innerText = profileData.username;
     } else {
         console.error("❌ 닉네임을 표시할 요소를 찾을 수 없습니다.");
     }
-}
 
-// ✅ 게시물 상세 UI 업데이트 함수
-function updatePostDetailUI(postData, neighborUsernames) {
-    document.querySelector(".post-category").textContent = postData.category_name || "카테고리 없음";
-    document.querySelector(".post-title").textContent = postData.title;
-    document.querySelector(".post-author").textContent = postData.user_name;
-    document.querySelector(".post-date").textContent = formatDate(postData.created_at);
-
-    // ✅ 서로이웃 버튼 업데이트 (🔥 `user_urlname` 사용)
-    const neighborButton = document.querySelector(".neighbor-btn");
-    if (neighborButton) {
-        const postUserUrlname = postData.user_urlname || postData.user_name; // `user_urlname`이 없으면 `user_name` 사용
-        console.log("📢 게시물 작성자의 urlname:", postUserUrlname);
-
-        if (neighborUsernames.includes(postUserUrlname)) {
-            neighborButton.textContent = "서로이웃";
-        } else {
-            neighborButton.textContent = "전체";
-        }
+    if (profileImageElement) {
+        profileImageElement.src = profileData.user_pic;
     }
 
-    // ✅ 본문 표시
-    document.querySelector(".post-content").innerHTML = cleanContent(postData.content);
+    if (blogIntroElement) {
+        blogIntroElement.innerText = profileData.intro || "";
+    }
 }
+
+
+
+// 글쓴 사람의 프로필을 업데이트하는 함수
+async function updateProfileUI(postUserUrlname) {
+    const profileData = await fetchAPI(`profile/${encodeURIComponent(postUserUrlname)}/`);
+
+    if (profileData) {
+        // 프로필 업데이트
+        document.querySelector(".user-nickname").innerText = profileData.username || "익명";
+        document.querySelector(".user-profilepicture").src = profileData.user_pic || "assets/profile.png";
+        document.querySelector(".itemfont_col").innerText = profileData.intro || "블로그 소개 정보가 없습니다.";
+    } else {
+        console.error("❌ 글쓴 사람의 프로필을 불러올 수 없습니다.");
+    }
+}
+
+
+// ✅ 게시물 상세 UI 업데이트 함수 (본문 & 프로필 업데이트 포함)
+async function updatePostDetailUI(postData) {
+    const postCategoryElement = document.querySelector(".post-category");  
+    const postTitleElement = document.querySelector(".post-title");  
+    const postAuthorElement = document.querySelector(".post-author");  
+    const postDateElement = document.querySelector(".post-date");  
+    const postMutualElement = document.querySelector(".post-mutual");  
+    const postRangeElement = document.querySelector(".post-range"); // 🔹 공개 범위 (박스)
+    const postContentElement = document.querySelector(".post-content"); // 🔹 본문 영역
+
+    // ✅ 게시물 데이터 업데이트
+    postTitleElement.textContent = postData.title;
+    postAuthorElement.textContent = postData.user_name;  
+    postDateElement.textContent = formatDate(postData.created_at);
+    postCategoryElement.textContent = postData.category_name; // 카테고리는 그대로 텍스트만 표시
+
+    // ✅ 게시글 작성자의 프로필 업데이트
+    const postUserUrlname = postData.user_urlname || postData.user_name;
+    await updateProfileUI(postUserUrlname);  // 🔥 글쓴 사람의 프로필 불러와서 업데이트
+
+    // ✅ 게시물 공개 범위 설정 (visibility) 박스로 표시
+    let visibilityText = "";
+    let visibilityClass = "";
+    if (postData.visibility === "everyone") {
+        visibilityText = "전체";
+        visibilityClass = "post-range everyone";
+    } else if (postData.visibility === "mutual") {
+        visibilityText = "서로이웃";
+        visibilityClass = "post-range mutual";
+    } else if (postData.visibility === "me") {
+        visibilityText = "나만 보기";
+        visibilityClass = "post-range me";
+    }
+    postRangeElement.textContent = visibilityText;
+    postRangeElement.className = visibilityClass; // 클래스 적용해서 스타일 반영
+
+    // ✅ 게시물 본문 표시 오류 해결
+    if (!postData.content || postData.content.trim() === "") {
+        postContentElement.innerHTML = "<p style='color: gray;'>내용이 없습니다.</p>";  // 기본 메시지 제공
+    } else {
+        postContentElement.innerHTML = cleanContent(postData.content);  // 본문 표시
+    }
+}
+
 
 // ✅ 날짜 포맷 변환 함수
 function formatDate(dateString) {
