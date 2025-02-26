@@ -215,6 +215,10 @@
                 <input type="text" id="nickname" placeholder="사용자 닉네임">
             </div>
             <div class="form-group">
+                <label>블로그 주소 (URL Name)</label>
+                <input type="text" id="urlname" placeholder="블로그 URL 이름">
+            </div>
+            <div class="form-group">
                 <label>소개글</label>
                 <textarea id="description" placeholder="블로그 프로필 영역의 프로필 이미지 아래에 표시됩니다."></textarea>
             </div>
@@ -270,7 +274,6 @@ function previewImage(inputId, previewId) {
 previewImage("profileImageInput", "profilePreview");
 previewImage("mobileCoverInput", "mobileCoverPreview");
 
-// ✅ 페이지 로드 시 프로필 정보 불러오기
 document.addEventListener("DOMContentLoaded", async function () {
     const accessToken = localStorage.getItem("access_token");
     if (!accessToken) {
@@ -280,7 +283,16 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     try {
-        const response = await fetch("http://127.0.0.1:8000/profile/me/", {
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlname = urlParams.get('urlname');
+
+        if (!urlname) {
+            alert("블로그 URL 이름이 필요합니다.");
+            window.location.href = "login.html";
+            return;
+        }
+
+        const response = await fetch(`http://127.0.0.1:8000/profile/${urlname}/`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${accessToken}`,
@@ -294,10 +306,11 @@ document.addEventListener("DOMContentLoaded", async function () {
             document.getElementById("nickname").value = data.username || "";
             document.getElementById("description").value = data.intro || "";
 
-            // 🔥 서로이웃 공개 여부 설정 (백엔드에서 받은 값 반영)
+            // 여기에 urlname 추가
+            document.getElementById("urlname").value = data.urlname || ""; // URL Name 필드 업데이트
+
             document.getElementById("neighborVisibility").value = data.neighbor_visibility ? "true" : "false";
 
-            // 🔥 프로필 이미지 & 모바일 커버 이미지 미리보기
             if (data.user_pic) {
                 document.getElementById("profilePreview").src = data.user_pic;
                 document.getElementById("profilePreview").style.display = "block";
@@ -314,6 +327,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         alert("서버 연결에 실패했습니다.");
     }
 });
+
+
 
 // ✅ 프로필 업데이트 (PATCH 요청)
 async function updateProfile() {
@@ -333,7 +348,9 @@ async function updateProfile() {
     formData.append("blog_name", document.getElementById("blogName").value.trim());
     formData.append("username", document.getElementById("nickname").value.trim());
     formData.append("intro", document.getElementById("description").value.trim());
+    formData.append("urlname", document.getElementById("urlname").value.trim());
 
+   
     // 🔥 boolean 값 변환
     const neighborVisibility = document.getElementById("neighborVisibility").value === "true";
     formData.append("neighbor_visibility", neighborVisibility);
@@ -388,6 +405,27 @@ async function updateProfile() {
                 document.getElementById("mobileCoverPreview").src = data.blog_pic;
                 document.getElementById("mobileCoverPreview").style.display = "block";
             }
+             // 🔥 URL Name (urlname) 변경 처리 (한 번만 가능)
+             const newUrlName = document.getElementById("urlname").value.trim();
+            if (newUrlName && newUrlName !== data.urlname) {
+                console.log("✅ URL Name 변경 요청 시작...");
+                const urlNameResponse = await fetch("http://127.0.0.1:8000/profile/urlname/", {
+                    method: "PATCH",
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ urlname: newUrlName })
+                });
+
+                if (urlNameResponse.status === 200) {
+                    console.log("✅ URL Name 변경 성공!");
+                } else if (urlNameResponse.status === 400) {
+                    alert("❌ URL 이름 변경은 한 번만 가능합니다.");
+                } else {
+                    alert("❌ URL 이름 변경 실패! 응답 코드: " + urlNameResponse.status);
+                }
+            }
         } else {
             alert("❌ 프로필 업데이트에 실패했습니다. 응답 코드: " + response.status);
         }
@@ -400,5 +438,6 @@ async function updateProfile() {
 
 
     </script>
+    
 </body>
 </html>

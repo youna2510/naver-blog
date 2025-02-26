@@ -1,0 +1,146 @@
+.user-profilepicture {
+  width: 135px;
+  margin-top: -5px;
+}
+
+.buttons {
+  padding-top: 20px;
+}
+#neighbor-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 한 줄에 3명 */
+  gap: 5px; /* 간격 조정 */
+  padding: 5px;
+}
+
+.neighbor-item {
+  text-align: center;
+  width: 50px; /* 너비 고정 */
+}
+
+.neighbor-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  border: 1px solid gray;
+  overflow: hidden;
+}
+
+.neighbor-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 이미지 꽉 차게 */
+  display: block;
+}
+
+.neighbor-nickname {
+  display: block;
+  font-size: 10px; /* 글자 크기 줄이기 */
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ✅ '공감한 사람' 버튼 스타일 */
+.show-likers-btn {
+  background-color: #f0f0f0;
+  border: none;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+
+.show-likers-btn:hover {
+  background-color: #e0e0e0;
+}
+
+/* ✅ '공감한 사람' 목록 스타일 */
+.likers-list {
+  display: none; /* 기본적으로 숨김 */
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 5px;
+  max-width: 300px;
+  position: absolute;
+  z-index: 10;
+}
+
+/* ✅ 목록 활성화 시 표시 */
+.likers-list:not(.hidden) {
+  display: block;
+}
+
+/* ✅ 개별 유저 항목 */
+.liker-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+/* ✅ 프로필 이미지 스타일 */
+.liker-img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.heart-button {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.heart-button:hover {
+  background-color: #ffeded;
+}
+
+.heart-button.liked {
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+}
+
+.show-likers-btn {
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  color: #555;
+  text-decoration: underline;
+}
+
+.likers-list {
+  display: none;
+  background: #f9f9f9;
+  padding: 8px;
+  border-radius: 5px;
+  margin-top: 5px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.likers-list.hidden {
+  display: none;
+}
+
+.liker-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.liker-img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 8px;
+}

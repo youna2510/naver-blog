@@ -452,3 +452,41 @@ li {
     height: 100%;
     object-fit: cover; /* 이미지가 꽉 차도록 설정 (비율 유지) */
 }
+
+
+
+#neighbor-container {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 5px !important;
+    padding: 5px !important;
+}
+
+.neighbor-item {
+    text-align: center !important;
+    width: 50px !important;
+}
+
+.neighbor-img {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 5px !important;
+    border: 1px solid gray !important;
+    overflow: hidden !important;
+}
+
+.neighbor-img img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+}
+
+.neighbor-nickname {
+    display: block !important;
+    font-size: 10px !important;
+    margin-top: 3px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}

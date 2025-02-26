@@ -74,168 +74,52 @@
 </div>
 
 
+
+
+
+
 <!--서로이웃-->
 <div class="bg-neighbor"> 
     <div class="neighbor-profile">
-        <div class="user-nickname" style = "font-size: 15px;"><strong>사용자</strong></div>
+        <div class="user-nickname" style="font-size: 15px;"><strong></strong></div>
         <div>이웃 커넥트</div>
-        <hr style="width:100%; border: 0.25px solid gray;">
     </div>
-    <div class="neighbor-list"> 
-        <div style="display: none;">
-            <a class="find_neighbor">내가 추가한</a><a class="find_neighbor">나를 추가한</a>
-        </div>
+    <div class="neighbor-list">
         <div class="all_neighborhood">
-            <a>전체 이웃</a><a style="margin-left: 80px;">57</a><a>명</a>
-        </div>   
-        <div style="display:inline-block;">
-            <div class="neighbor_img"><img></div>
-            <a class="neighbor_nickname">이웃별명</a>
+            <span>전체 이웃</span>
+            <span id="neighbor-count" style="margin-left: 10px; color: green;">0</span><span>명</span>
+            <hr style="width:95%; border: 0.25px solid gray;">
         </div>
-        <div style="display:inline-block;">
-            <div class="neighbor_img"><img></div>
-            <a class="neighbor_nickname">이웃별명</a>
+        <div id="neighbor-container" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px;"></div>
+
+        <!-- 페이지네이션 -->
+        <div id="pagination" style="text-align: center; margin-top: 10px;">
+            <span id="page-indicator">1 / 1</span>
+            <button id="prev-page" style="background: none; border: none; cursor: pointer;">◀</button>
+            <button id="next-page" style="background: none; border: none; cursor: pointer;">▶</button>
         </div>
-        <div style="display:inline-block;">
-            <div class="neighbor_img"><img></div>
-            <a class="neighbor_nickname">이웃별명</a>
-        </div>
-        <br>     
-        <div>
-            <hr style="width:80%; border: 0.25px solid gray;">
-            <a class="user-nickname" style="margin-left:10px; font-size: 13px; color:gray"><strong>멘아</strong>님 이웃의 새글보기 ></a>
-        </div>
-    </div> 
+
+        <hr style="width:80%; border: 0.25px solid gray;">
+        <a id="neighbor-new-posts" href="main_login.html" style="margin-left:10px; font-size: 13px; color:gray;"></a>
+    </div>
 </div>
+
 
 
 
 <div class="pro_posts">
-    <!--글1 -->
-
-    <div class="pro_sy1">
-        <p class="p_img">            
-            <a href="https://blog.naver.com/PostView.naver?blogId=men_mena&amp;logNo=223724607681&amp;redirect=Dlog">
-                <img src="https://blogthumb.pstatic.net/MjAyNDA3MzFfMjk3/MDAxNzIyNDEwNDQwNDIx.m_AaNJZuA2mOl3Rvw8Rj8ZcwgsF6AXJJR8Icfgvs_M8g.TOWdhE3DcF4SP6m9dUq24BMgt-f_YwpvUw5V_FeOnLEg.JPEG/20240730%25A3%25DF075525.jpg?type=s2" width="183" height="185" title="[CampOn] 2024 삼시세끼 in 가평 멘토 참여 후기" alt="[CampOn] 2024 삼시세끼 in 가평 멘토 참여 후기" onerror="this.onerror=null;this.src='https://blogimgs.pstatic.net/nblog/prologue/thumb_183_185.gif'">
-            </a>
-        </p>
-        <ul>
-            <li class="p_title">
-                <a class="p_title_t">[CampOn] 2024 삼...</a>
-                <span class="num_comments">[2]</span>
-            </li>
-            <li class="p_con">
-                <a class="pcol_contents">
-                안녕하세요, 멘아입니다! 이번에는 올해 방학 때 다녀온 2024 삼시세끼 in 가평 참여 후기를 써볼까해요~! 동아리원들과 제대로...
-                </a>
-            </li>
-            <li class="p_date">
-                <span class="pcol2 itemfont fil5">2025. 1. 13.</span>
-                
-            </li>
-        </ul>
-    </div>
-
-    <!--글2 -->
-    <div class="pro_sy1">
-        <p class="p_img">            
-            <a href="https://blog.naver.com/PostView.naver?blogId=men_mena&amp;logNo=223724607681&amp;redirect=Dlog">
-                <img src="https://blogthumb.pstatic.net/MjAyNDA3MzFfMjk3/MDAxNzIyNDEwNDQwNDIx.m_AaNJZuA2mOl3Rvw8Rj8ZcwgsF6AXJJR8Icfgvs_M8g.TOWdhE3DcF4SP6m9dUq24BMgt-f_YwpvUw5V_FeOnLEg.JPEG/20240730%25A3%25DF075525.jpg?type=s2" width="183" height="185">
-
-            </a>
-        </p>
-        <ul>
-            <li class="p_title">
-                <a class="p_title_t">[CampOn] 2024 삼...</a>
-                <span class="num_comments">[2]</span>
-            </li>
-            <li class="p_con">
-                <a class="pcol_contents">
-                안녕하세요, 멘아입니다! 이번에는 올해 방학 때 다녀온 2024 삼시세끼 in 가평 참여 후기를 써볼까해요~! 동아리원들과 제대로...
-                </a>
-            </li>
-            <li class="p_date">
-                <span class="pcol2 itemfont fil5">2025. 1. 13.</span>
-                
-            </li>
-        </ul>
-    </div>
-
-    <div class="pro_sy2">
-        <div class="clear">
-                <p class="p_img2">
-                    <a href="https://blog.naver.com/PostView.naver?blogId=men_mena&amp;logNo=223705422469&amp;redirect=Dlog"><img src="https://blogthumb.pstatic.net/MjAyNDA5MjNfMTA2/MDAxNzI3MDUxOTA5OTk5.rWhn4IGQ_zkYWYScdKu4yUzwkissZCDMjvyK7zmggkIg.l3_biO24DMNqb-UosVsDsbobMJLetRGBLbrgg3xdHRgg.JPEG/20240921%25A3%25DF230958.jpg?type=s1" width="90" height="90" title="[일상] 다시 개강한 대학생의 9월기" alt="[일상] 다시 개강한 대학생의 9월기" onerror="this.onerror=null;this.src='https://blogimgs.pstatic.net/nblog/prologue/thumb_90_90.jpg'">                    
-                    </a>
-                </p>
-            <ul>
-                <li class="p_title">
-                    <a class="p_title_t">[CampOn] 2024 삼...</a>
-                    <span class="num_comments">[2]</span>
-                </li>
-                <li class="p_con">
-                    <a class="pcol_contents">
-                    안녕하세요, 멘아입니다! 이번에는 올해 방학 때 다녀온 2024 삼시세끼 in 가평 참여 후기를 써볼까해요~! 동아리원들과 제대로...
-                    </a>
-                </li>
-                <li class="p_date">
-                    <span class="pcol2 itemfont fil5">2025. 1. 13.</span>
-                    
-                </li>
-            </ul>
-        </div>
-
-        <div class="clear">
-            <p class="p_img2">
-                <a href="https://blog.naver.com/PostView.naver?blogId=men_mena&amp;logNo=223705422469&amp;redirect=Dlog"><img src="https://blogthumb.pstatic.net/MjAyNDA5MjNfMTA2/MDAxNzI3MDUxOTA5OTk5.rWhn4IGQ_zkYWYScdKu4yUzwkissZCDMjvyK7zmggkIg.l3_biO24DMNqb-UosVsDsbobMJLetRGBLbrgg3xdHRgg.JPEG/20240921%25A3%25DF230958.jpg?type=s1" width="90" height="90" title="[일상] 다시 개강한 대학생의 9월기" alt="[일상] 다시 개강한 대학생의 9월기" onerror="this.onerror=null;this.src='https://blogimgs.pstatic.net/nblog/prologue/thumb_90_90.jpg'">                    
-                </a>
-            </p>
-        <ul>
-            <li class="p_title">
-                <a class="p_title_t">[CampOn] 2024 삼...</a>
-                <span class="num_comments">[2]</span>
-            </li>
-            <li class="p_con">
-                <a class="pcol_contents">
-                안녕하세요, 멘아입니다! 이번에는 올해 방학 때 다녀온 2024 삼시세끼 in 가평 참여 후기를 써볼까해요~! 동아리원들과 제대로...
-                </a>
-            </li>
-            <li class="p_date">
-                <span class="pcol2 itemfont fil5">2025. 1. 13.</span>
-                
-            </li>
-        </ul>
-        </div>
-
-        <div class="clear">
-            <p class="p_img2">
-                <a href="https://blog.naver.com/PostView.naver?blogId=men_mena&amp;logNo=223705422469&amp;redirect=Dlog"><img src="https://blogthumb.pstatic.net/MjAyNDA5MjNfMTA2/MDAxNzI3MDUxOTA5OTk5.rWhn4IGQ_zkYWYScdKu4yUzwkissZCDMjvyK7zmggkIg.l3_biO24DMNqb-UosVsDsbobMJLetRGBLbrgg3xdHRgg.JPEG/20240921%25A3%25DF230958.jpg?type=s1" width="90" height="90" title="[일상] 다시 개강한 대학생의 9월기" alt="[일상] 다시 개강한 대학생의 9월기" onerror="this.onerror=null;this.src='https://blogimgs.pstatic.net/nblog/prologue/thumb_90_90.jpg'">                    
-                </a>
-            </p>
-        <ul>
-            <li class="p_title">
-                <a class="p_title_t">[CampOn] 2024 삼...</a>
-                <span class="num_comments">[2]</span>
-            </li>
-            <li class="p_con">
-                <a class="pcol_contents">
-                안녕하세요, 멘아입니다! 이번에는 올해 방학 때 다녀온 2024 삼시세끼 in 가평 참여 후기를 써볼까해요~! 동아리원들과 제대로...
-                </a>
-            </li>
-            <li class="p_date">
-                <span class="pcol2 itemfont fil5">2025. 1. 13.</span>
-                
-            </li>
-        </ul>
-        </div>        
-
-    </div>    
+    <!-- ✅ JS가 동적으로 게시물을 삽입할 예정 -->
 </div>
 
+
+
+
+
+
 <script>
-//현재 서로이웃인지의 여부에 따라 '이웃 추가' 버튼을 다르게 구현현
 document.addEventListener("DOMContentLoaded", async function () {
     const neighborButton = document.getElementById("neighbor-btn");
-    
+
     if (!neighborButton) {
         console.error("❌ 오류: 이웃 추가 버튼을 찾을 수 없음");
         return;
@@ -249,18 +133,18 @@ document.addEventListener("DOMContentLoaded", async function () {
         return; // 로그인하지 않은 경우 버튼 비활성화
     }
 
-    // 🔹 URL에서 블로그 주인의 username 가져오기
+    // 🔹 URL에서 블로그 주인의 urlname 가져오기
     const urlParams = new URLSearchParams(window.location.search);
-    const toUrlname = urlParams.get("user");
+    const toUrlname = urlParams.get("user"); // 쿼리 파라미터에서 `user` 값 가져오기 (ex: hssu)
 
     if (!toUrlname) {
-        console.error("❌ 오류: 블로그 주인의 username이 없음");
+        console.error("❌ 오류: 블로그 주인의 urlname이 없음");
         return;
     }
 
     try {
-        // 🔹 서로이웃 여부 확인 API 요청
-        const response = await fetch(`http://127.0.0.1:8000/neighbors/${encodeURIComponent(toUrlname)}/status/`, {
+        // ✅ 현재 로그인된 사용자의 프로필 정보 가져오기
+        const profileResponse = await fetch("http://127.0.0.1:8000/profile/me/", {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${accessToken}`,
@@ -268,26 +152,45 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
         });
 
-        if (!response.ok) {
-            console.error("❌ 서로이웃 상태 확인 실패:", response.status);
+        if (!profileResponse.ok) {
+            console.error("❌ 로그인된 사용자 정보 가져오기 실패:", profileResponse.status);
             return;
         }
 
-        const data = await response.json();
-        console.log("🔹 서로이웃 상태 응답:", data);
+        const profileData = await profileResponse.json();
+        const myUrlname = profileData.urlname; // ✅ 현재 로그인된 사용자의 urlname (예: chsm7288)
 
-        // ✅ 서로이웃이면 버튼을 '서로 이웃'으로 변경 후 클릭 비활성화
-        if (data.is_neighbor) {
+        console.log(`🔹 현재 로그인된 사용자: ${myUrlname}`);
+        console.log(`🔹 타인의 블로그: ${toUrlname}`);
+
+        // ✅ 타인의 이웃 목록 가져오기
+        const neighborsResponse = await fetch(`http://127.0.0.1:8000/profile/${toUrlname}/neighbors/`);
+        if (!neighborsResponse.ok) {
+            console.error("❌ 타인의 이웃 목록 불러오기 실패:", neighborsResponse.status);
+            return;
+        }
+
+        const neighborsData = await neighborsResponse.json();
+        const neighbors = neighborsData.neighbors.map(n => n.urlname); // ✅ 이웃들의 urlname 리스트
+
+        console.log("🔹 타인의 이웃 목록:", neighbors);
+
+        // ✅ 현재 로그인된 사용자가 타인의 이웃 목록에 있는지 확인
+        if (neighbors.includes(myUrlname)) {
+            console.log("✅ 서로 이웃입니다.");
             neighborText.innerText = "서로 이웃"; // 🔥 버튼 텍스트 변경
             neighborButton.style.cursor = "default"; // 클릭 불가능하도록 설정
             neighborButton.style.pointerEvents = "none"; // 클릭 방지
             return;
         }
+
+        console.log("❌ 서로 이웃이 아님.");
+        
     } catch (error) {
         console.error("❌ 서버 오류:", error);
     }
 
-    // 🔹 서로이웃 신청 이벤트 리스너 추가 (서로이웃이 아닐 때만 실행)
+    // 🔹 서로 이웃 신청 이벤트 리스너 추가 (서로 이웃이 아닐 때만 실행)
     neighborButton.addEventListener("click", async function () {
         console.log("🔹 이웃 추가 버튼 클릭됨");
 
@@ -326,24 +229,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //로그인된 사용자의 정보를 통해 왼쪽 배너의 프로필 렌더링
-    document.addEventListener("DOMContentLoaded", async function () {
+document.addEventListener("DOMContentLoaded", async function () {
     const urlParams = new URLSearchParams(window.location.search);
     const username = urlParams.get("user");
     const accessToken = localStorage.getItem("access_token");    
@@ -376,6 +263,53 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 });
 
+
+
+// 🔹 **API 호출 함수 (GET 요청)**
+async function fetchAPI(endpoint) {
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/${endpoint}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
+        });
+
+        if (!response.ok) {
+            console.error(`⚠️ API 요청 실패: ${endpoint} (상태 코드: ${response.status})`);
+            return null;
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error(`❌ 서버 연결 오류: ${endpoint}`, error);
+        return null;
+    }
+}
+
+// 🔹 **사용자 정보 가져오기**
+async function fetchUserInfo() {
+    try {
+        const accessToken = localStorage.getItem("access_token");
+        if (!accessToken) return null;
+
+        const response = await fetch("http://127.0.0.1:8000/profile/me/", {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${accessToken}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (response.status !== 200) {
+            console.warn("⚠️ 사용자 정보 요청 실패 (401 Unauthorized)");
+            return null;
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("❌ 사용자 정보 가져오기 오류:", error);
+        return null;
+    }
+}
 
 
 // 🔹 **API 호출 함수 (GET 요청)**
@@ -507,40 +441,6 @@ function updateBlogUI(profileData) {
 
 
 
-// 🔹 **서로이웃 목록 UI 업데이트**
-function updateNeighborUI(neighbors) {
-    const neighborListContainer = document.querySelector(".neighbor-list");
-    if (!neighborListContainer) return;
-
-    neighborListContainer.innerHTML = ""; // 기존 내용 초기화
-
-    if (!neighbors || !Array.isArray(neighbors.neighbors) || neighbors.neighbors.length === 0) {
-        neighborListContainer.innerHTML = "<p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp아직 공개된<br>&nbsp&nbsp&nbsp서로이웃이 없습니다.</p>";
-        return;
-    }
-
-    neighbors.neighbors.forEach(neighbor => {
-        const neighborDiv = document.createElement("div");
-        neighborDiv.style.display = "inline-block";
-
-        const neighborImgDiv = document.createElement("div");
-        neighborImgDiv.classList.add("neighbor_img");
-        const img = document.createElement("img");
-        img.src = getFullMediaUrl(neighbor.user_pic);
-        img.alt = "이웃 프로필";
-        neighborImgDiv.appendChild(img);
-
-        const neighborNickname = document.createElement("a");
-        neighborNickname.classList.add("neighbor_nickname");
-        neighborNickname.innerText = neighbor.urlname;
-        neighborNickname.href = `blog.html?user=${encodeURIComponent(neighbor.urlname)}`;
-
-        neighborDiv.appendChild(neighborImgDiv);
-        neighborDiv.appendChild(neighborNickname);
-        neighborListContainer.appendChild(neighborDiv);
-    });
-}
-
 
 // 🔹 **블로그 링크 설정**
 function setupBlogLink(username) {
@@ -624,9 +524,6 @@ function getFullMediaUrl(relativeUrl) {
 }
 
 
-
-
-
 document.addEventListener("DOMContentLoaded", async function () {
     const loginButton = document.querySelector(".top_menubar button");
     const accessToken = localStorage.getItem("access_token");
@@ -666,23 +563,237 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 });
 
+// ✅ 쿼리 파라미터에서 `user` 값을 가져오는 함수
+function getUrlParameter(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+
+async function fetchPosts() {
+            try {
+                const urlname = getUrlParameter("user"); // ✅ URL에서 `user` 값 가져오기
+
+                if (!urlname) {
+                    console.error("❌ urlname을 찾을 수 없음.");
+                    return;
+                }
+
+                const apiUrl = `http://127.0.0.1:8000/posts/${urlname}/current/`;
+
+                // ✅ 게시물 가져오기
+                const response = await fetch(apiUrl, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+
+                if (!response.ok) {
+                    console.error("❌ 데이터 불러오기 실패:", response.status);
+                    return;
+                }
+
+                const posts = await response.json();
+                const postContainer = document.querySelector(".pro_posts"); // ✅ 게시물을 담을 컨테이너
+                postContainer.innerHTML = ""; // 기존 내용 비우기
+
+                if (posts.length === 0) {
+                    postContainer.innerHTML = "<p>게시물이 없습니다.</p>";
+                    return;
+                }
+
+                let postHtml = "";
+
+                // ✅ 1, 2번 (왼쪽 큰 공간)
+                if (posts.length >= 1) {
+                    postHtml += createBigPost(posts[0]); // 첫 번째 게시물
+                }
+                if (posts.length >= 2) {
+                    postHtml += createBigPost(posts[1]); // 두 번째 게시물
+                }
+
+                // ✅ 3, 4, 5번 (오른쪽 작은 공간)
+                if (posts.length > 2) {
+                    postHtml += `<div class="pro_sy2">`;
+                    for (let i = 2; i < posts.length; i++) {
+                        postHtml += createSmallPost(posts[i]);
+                    }
+                    postHtml += `</div>`;
+                }
+
+                postContainer.innerHTML = postHtml;
+
+                // ✅ 게시물 클릭 시 상세 페이지 이동 이벤트 추가 (이벤트 위임 방식 사용)
+                document.querySelector(".pro_posts").addEventListener("click", function (event) {
+                    let postElement = event.target.closest(".pro_sy1, .clear");
+                    if (postElement) {
+                        const postId = postElement.dataset.postId; // ✅ dataset에서 post_id 추출
+                        if (postId) {
+                            window.location.href = `http://127.0.0.1:5500/blog_detail.html?post_id=${postId}`;
+                        }
+                    }
+                });
+
+            } catch (error) {
+                console.error("❌ 서버 연결 오류:", error);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", fetchPosts);
+
+        // ✅ 왼쪽 큰 공간(1, 2번) 게시물 HTML 생성 함수
+function createBigPost(post) {
+    const { id, title, content, created_at, images } = post;
+    
+    // ✅ 대표 이미지 선택 (is_representative이 true인 이미지)
+    const representativeImage = images.find(img => img.is_representative) || images[0];
+    const imageUrl = representativeImage ? representativeImage.image_url : "https://via.placeholder.com/183x185?text=No+Image";
+
+    return `
+        <div class="pro_sy1" data-post-id="${id}"> <!-- ✅ 게시물 ID 추가 -->
+            <p class="p_img">            
+                <img src="${imageUrl}" width="183" height="185" alt="${title}">
+            </p>
+            <ul>
+                <li class="p_title">${title}</li>
+                <li class="p_con">${content.replace(/<\/?[^>]+(>|$)/g, "").substring(0, 50)}...</li>
+                <li class="p_date">${new Date(created_at).toLocaleDateString()}</li>
+            </ul>
+        </div>
+    `;
+}
+
+// ✅ 오른쪽 작은 공간(3, 4, 5번) 게시물 HTML 생성 함수
+function createSmallPost(post) {
+    const { id, title, content, created_at, images } = post;
+
+    // ✅ 대표 이미지 선택 (is_representative이 true인 이미지)
+    const representativeImage = images.find(img => img.is_representative) || images[0];
+    const imageUrl = representativeImage ? representativeImage.image_url : "https://via.placeholder.com/90x90?text=No+Image";
+
+    return `
+        <div class="clear" data-post-id="${id}"> <!-- ✅ 게시물 ID 추가 -->
+            <p class="p_img2">
+                <img src="${imageUrl}" width="90" height="90" alt="${title}">
+            </p>
+            <ul>
+                <li class="p_title">${title}</li>
+                <li class="p_con">${content.replace(/<\/?[^>]+(>|$)/g, "").substring(0, 50)}...</li>
+                <li class="p_date">${new Date(created_at).toLocaleDateString()}</li>
+            </ul>
+        </div>
+    `;
+}
 
 
+document.addEventListener("DOMContentLoaded", async function () {
+    try {
+        const urlname = getUrlParameter("user"); // ✅ URL에서 `user` 값 가져오기 (ex: "shs")
 
+        if (!urlname) {
+            console.error("❌ urlname을 찾을 수 없음.");
+            return;
+        }
+        // ✅ 프로필 정보 가져와서 username 표시
+        const profileResponse = await fetch(`http://127.0.0.1:8000/profile/${urlname}/`);
+        if (!profileResponse.ok) {
+            console.error("❌ 프로필 정보 가져오기 실패:", profileResponse.status);
+            return;
+        }
+        const profileData = await profileResponse.json();
+        const username = profileData.username; // ✅ username 가져오기
 
+        // ✅ username을 HTML에 삽입
+        const usernameElement = document.querySelector(".neighbor-profile .user-nickname strong");
+        if (usernameElement) {
+            usernameElement.innerText = username;
+        }
 
+        // ✅ 이웃 목록 가져오기
+        const neighborsResponse = await fetch(`http://127.0.0.1:8000/profile/${urlname}/neighbors/`);
+        if (!neighborsResponse.ok) {
+            console.error("❌ 이웃 목록 불러오기 실패:", neighborsResponse.status);
+            return;
+        }
+        const neighborsData = await neighborsResponse.json();
+        const neighbors = neighborsData.neighbors;
 
+        // ✅ 전체 이웃 수 가져오기
+        const countResponse = await fetch(`http://127.0.0.1:8000/neighbors/count/${urlname}/`);
+        if (!countResponse.ok) {
+            console.error("❌ 이웃 수 불러오기 실패:", countResponse.status);
+            return;
+        }
+        const countData = await countResponse.json();
+        const neighborCount = countData.neighbor_count;
 
+        document.getElementById("neighbor-count").innerText = neighborCount;
 
+        // ✅ 이웃 리스트 페이지네이션 적용
+        const neighborContainer = document.getElementById("neighbor-container");
+        const pageIndicator = document.getElementById("page-indicator");
+        const prevPageBtn = document.getElementById("prev-page");
+        const nextPageBtn = document.getElementById("next-page");
 
+        let currentPage = 1;
+        const itemsPerPage = 12; // ✅ 한 페이지당 3명 x 4줄 = 12명
+        const totalPages = Math.ceil(neighbors.length / itemsPerPage);
 
+        async function renderNeighbors(page) {
+    neighborContainer.innerHTML = "";
+    const start = (page - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const pageNeighbors = neighbors.slice(start, end);
 
+    // ✅ 현재 로그인된 사용자 정보 가져오기
+    const loggedInUser = await fetchUserInfo();
+    const loggedInUrlname = loggedInUser ? loggedInUser.urlname : null;
 
+    pageNeighbors.forEach(neighbor => {
+        const { urlname, username, user_pic } = neighbor;
+        const imageUrl = user_pic.startsWith("/media") ? `http://127.0.0.1:8000${user_pic}` : user_pic;
 
+        // ✅ 로그인된 사용자와 urlname이 같으면 myblog.html로, 아니면 blog.html로 이동
+        const targetPage = (loggedInUrlname === urlname) ? "myblog.html" : `blog.html?urlname=${encodeURIComponent(urlname)}`;
 
+        const neighborHtml = `
+            <div class="neighbor-item" style="text-align: center;">
+                <a href="${targetPage}">
+                    <div class="neighbor-img">
+                        <img src="${imageUrl}" alt="${username}" style="cursor: pointer;">
+                    </div>
+                </a>
+                <a href="${targetPage}" style="text-decoration: none; color: inherit;">
+                    <span class="neighbor-nickname" style="cursor: pointer;">${username}</span>
+                </a>
+            </div>
+        `;
+        neighborContainer.innerHTML += neighborHtml;
+    });
 
+    pageIndicator.innerText = `${currentPage} / ${totalPages}`;
+}
 
+        prevPageBtn.addEventListener("click", () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderNeighbors(currentPage);
+            }
+        });
 
+        nextPageBtn.addEventListener("click", () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderNeighbors(currentPage);
+            }
+        });
+
+        renderNeighbors(currentPage);
+
+    } catch (error) {
+        console.error("❌ 서버 연결 오류:", error);
+    }
+});
 
 
 

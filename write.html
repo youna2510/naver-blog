@@ -448,11 +448,6 @@
             JSON.stringify(isRepresentativeArray)
           );
 
-          // ✅ Base64를 변환한 이미지들을 FormData에 추가
-          images.forEach((image, index) => {
-            formData.append(`images`, image);
-          });
-
           const accessToken = localStorage.getItem("access_token");
 
           // 3. 백엔드 전송
@@ -524,11 +519,6 @@
             "is_representative",
             JSON.stringify(isRepresentativeArray)
           );
-
-          // ✅ Base64를 변환한 이미지들을 FormData에 추가
-          images.forEach((image, index) => {
-            formData.append(`images`, image);
-          });
 
           const accessToken = localStorage.getItem("access_token");
 

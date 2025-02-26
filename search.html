@@ -451,52 +451,70 @@ function executeSearch() {
         
         // 🟢 검색 결과 렌더링 함수
         function renderSearchResults(searchType, data) {
-            const resultContainer = document.querySelector('.post-list');
-            resultContainer.innerHTML = ''; // 이전 검색 결과 지우기
-        
-            if ((searchType === "geul" && data.posts.length === 0) ||
-                (searchType === "blog" && data.blogs.length === 0) ||
-                (searchType === "id" && data.users.length === 0)) {
-                resultContainer.innerHTML = '<p>검색 결과가 없습니다.</p>';
-                return;
-            }
-        
-            if (searchType === "geul") {
-                const posts = data.posts || [];
+    const resultContainer = document.querySelector('.post-list');
+    resultContainer.innerHTML = ''; // 이전 검색 결과 지우기
 
-                if (posts.length === 0) {
-        resultContainer.innerHTML = "<p>검색 결과가 없습니다.</p>";
+    console.log("🔍 API 응답 데이터:", data);
+
+    if ((searchType === "geul" && (!data.posts || data.posts.length === 0)) ||
+        (searchType === "blog" && (!data.blogs || data.blogs.length === 0)) ||
+        (searchType === "id" && (!data.users || data.users.length === 0))) {
+        console.log("❌ 검색 결과가 없습니다.");
+        resultContainer.innerHTML = '<p>검색 결과가 없습니다.</p>';
         return;
     }
 
-    // 🔹 "everyone"인 게시글만 필터링
-    const filteredPosts = data.posts.filter(post => post.visibility === "everyone");
+    if (searchType === "geul") {
+        const posts = data.posts || [];
 
-    // 🔹 검색 결과가 없으면 메시지 표시
-    if (filteredPosts.length === 0) {
-        resultContainer.innerHTML = "<p>검색 결과가 없습니다.</p>";
-        return;
-    }
+        console.log("📌 검색된 게시글:", posts);
 
-    // 🔹 필터링된 게시글을 렌더링
-    filteredPosts.forEach(post => {
-        const postElement = document.createElement('div');
-        postElement.classList.add('post');
+        if (posts.length === 0) {
+            console.log("❌ posts 배열이 비어 있음.");
+            resultContainer.innerHTML = "<p>검색 결과가 없습니다.</p>";
+            return;
+        }
 
-        postElement.innerHTML = `
-            <div class="post-content">
-                <div class="post-text">
-                    <h3>${post.title}</h3>
-                    <p>${post.content || "내용 미리보기가 없습니다."}</p>
-                    <div class="post-meta">
-                        <span>작성자: ${post.username}</span> · <span>게시일: ${post.created_at}</span>
+        // 🔹 "everyone"인 게시글만 필터링
+        const filteredPosts = posts.filter(post => post.visibility === "everyone");
+
+        console.log("📌 필터링된 게시글:", filteredPosts);
+
+        // 🔹 검색 결과가 없으면 메시지 표시
+        if (filteredPosts.length === 0) {
+            console.log("❌ 필터링된 게시글이 없음.");
+            resultContainer.innerHTML = "<p>검색 결과가 없습니다.</p>";
+            return;
+        }
+
+        // 🔹 HTML 엔티티 디코딩 함수 (예: `&gt;` → `>`)
+        function decodeHTMLEntities(text) {
+            const textArea = document.createElement("textarea");
+            textArea.innerHTML = text;
+            return textArea.value;
+        }
+
+        // 🔹 필터링된 게시글을 렌더링
+        filteredPosts.forEach(post => {
+            console.log(`📌 ${post.title}의 excerpt:`, post.excerpt);  // ✅ excerpt가 정상적으로 들어오는지 확인
+
+            const postElement = document.createElement('div');
+            postElement.classList.add('post');
+
+            postElement.innerHTML = `
+                <div class="post-content">
+                    <div class="post-text">
+                        <h3>${post.title}</h3>
+                        <p>${decodeHTMLEntities(post.excerpt) || "내용 미리보기가 없습니다."}</p> <!-- ✅ HTML 엔티티 변환 추가 -->
+                        <div class="post-meta">
+                            <span>작성자: ${post.username}</span> · <span>게시일: ${post.created_at}</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        `;
+            `;
 
-        resultContainer.appendChild(postElement);
-    });
+            resultContainer.appendChild(postElement);
+        });
 
 
         
@@ -516,7 +534,7 @@ function executeSearch() {
                     </div>
                     <div class="post-author">
                             <img src="http://127.0.0.1:8000${blog.user_pic}" alt="프로필" width="40" height="40">
-                            <div class="author-name">${blog.urlname}</div>
+                            <div class="author-name">${blog.username}</div>
                     </div>
                     `;
 
@@ -540,7 +558,6 @@ function executeSearch() {
                 <img src="http://127.0.0.1:8000${user.user_pic}" alt="프로필" width="40" height="40">
                 <div>
                     <div class="author-name">${user.username}</div>
-                    <div class="time">사용자 ID: ${user.urlname}</div>
                 </div>
             </div>
             <div class="post-content">
@@ -696,13 +713,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         loginButton.onclick = () => location.href = "login.html";
     }
 });
-
-
-
-
-
-
-
         </script>
         
 </body>

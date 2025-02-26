@@ -68,21 +68,41 @@
     text-align: center;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
-      .neighbor-btn {
-      display: inline-block;
-      margin-left: auto; /* 오른쪽 정렬 */
-      padding: 5px 10px;
-      font-size: 12px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      }
+#neighbor-container {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 5px !important;
+    padding: 5px !important;
+}
 
-      .neighbor-btn:hover {
-      background-color: #0056b3;
-      }
+.neighbor-item {
+    text-align: center !important;
+    width: 50px !important;
+}
+
+.neighbor-img {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 5px !important;
+    border: 1px solid gray !important;
+    overflow: hidden !important;
+}
+
+.neighbor-img img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+}
+
+.neighbor-nickname {
+    display: block !important;
+    font-size: 10px !important;
+    margin-top: 3px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
 
 
     </style>
@@ -140,47 +160,70 @@
       <hr style="margin-left: 140px" />
     </div>
 
-    <!--프로필 (글 작성자의 프로필로 변경)-->
-<div class="bg-body">
-  <div class="con">
-    <p class="image">
-      <a href="#">
-        <img
-          class="user-profilepicture"
-          style="width: 135px"
-          src="assets/profile.png"
-          alt="프로필 이미지"
-        />
-      </a>
+   <!-- 🔹 프로필 -->
+<div class="bg-body"> 
+    <div class="con"> 
+        <p class="image"> 
+            <a href="#" >
+                <img class="user-profilepicture" style="width:135px;" src="assets/profile.png" alt="프로필 이미지">
+            </a> 
+        </p> 
+    </div> 
+    <div class="name align"> 
+        <div class="user-nickname" style="font-size: 15px;">
+            <strong class="itemfont col" id="nickNameArea">사용자이름</strong>
+            <br> <span class="itemfont col">
+                <span class="blog_domain col"></span>
+            </span> 
+        </div> 
+    </div> 
+    <p class="caption align"> 
+        <span class="itemfont_col">프로필 소개</span>
     </p>
-  </div>
-  <div class="name align">
-    <div class="user-nickname" style="font-size: 15px">
-      <strong class="itemfont col" id="nickNameArea">사용자이름</strong>
+    <p class="more align"> <span class="m1"></span> </p>
+  
+    <!-- 🔹 이웃 추가 버튼 -->
+    <div class="btn_area" id="neighbor-btn">
+        <span class="blind">이웃추가</span>
     </div>
   </div>
-  <p class="caption align">
-    <span class="itemfont_col" id="profile-intro">프로필 소개</span>
-  </p>
-</div>
+  
 
-<!--카테고리 (글 작성자의 데이터로 변경)-->
+<!-- ✅ 카테고리 리스트 UI -->
 <div class="bg-category">
-  <div>전체보기</div>
-  <ul id="categoryList" class="category-list"></ul> <!-- 기존 내용 제거 -->
-</div>
-
-<!--서로이웃 (글 작성자의 서로이웃으로 변경)-->
-<div class="bg-neighbor">
-  <div class="neighbor-profile">
-    <div class="user-nickname" style="font-size: 15px">
-      <strong>이웃 목록</strong>
-    </div>
-    <hr style="width: 100%; border: 0.25px solid gray" />
+    <ul id="categoryList">
+      <!-- JavaScript가 동적으로 카테고리를 추가할 공간 -->
+    </ul>
   </div>
-  <div class="neighbor-list"></div> <!-- 기존 내용 제거 -->
-</div>
-      
+  
+
+<!--서로이웃-->
+<div class="bg-neighbor"> 
+    <div class="neighbor-profile">
+        <div class="user-nickname" style="font-size: 15px;"><strong></strong></div>
+        <div>이웃 커넥트</div>
+    </div>
+    <div class="neighbor-list">
+        <div class="all_neighborhood">
+            <span>전체 이웃</span>
+            <span id="neighbor-count" style="margin-left: 10px; color: green;">0</span><span>명</span>
+            <hr style="width:95%; border: 0.25px solid gray;">
+        </div>
+        <div id="neighbor-container" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px;"></div>
+  
+        <!-- 페이지네이션 -->
+        <div id="pagination" style="text-align: center; margin-top: 10px;">
+            <span id="page-indicator">1 / 1</span>
+            <button id="prev-page" style="background: none; border: none; cursor: pointer;">◀</button>
+            <button id="next-page" style="background: none; border: none; cursor: pointer;">▶</button>
+        </div>
+  
+        <hr style="width:80%; border: 0.25px solid gray;">
+        <a id="neighbor-new-posts" href="main_login.html" style="margin-left:10px; font-size: 13px; color:gray;"></a>
+    </div>
+  </div>
+  
+        
     <div class="pro_posts">
       <div class="post_list">
           <div class="post_list_title">
@@ -212,34 +255,214 @@
 
 
     <script>
-      // 🔹 **API 호출 함수 (GET 요청)**
-async function fetchAPI(endpoint) {
+    // 🔹 현재 페이지의 URL에서 post_id와 urlname 값을 가져오기
+function getQueryParams() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const post_id = urlParams.get("post_id"); // post_id 추출
+    const urlname = urlParams.get("urlname"); // urlname 추출
+
+    if (!post_id || !urlname) {
+        console.error("❌ 필수 파라미터 누락: post_id 또는 urlname이 없습니다.");
+        alert("잘못된 접근입니다.");
+        window.location.href = "index.html"; // 메인 페이지로 리디렉트
+        return null;
+    }
+
+    // ✅ post_id가 숫자인지 확인
+    if (isNaN(post_id)) {
+        console.error("❌ 잘못된 post_id 값:", post_id);
+        alert("잘못된 접근입니다.");
+        window.location.href = "index.html";
+        return null;
+    }
+
+    return { post_id: Number(post_id), urlname };
+}
+
+// 🔹 **백엔드에서 게시글 데이터 가져오기 (GET 요청)**
+async function fetchPostData(post_id, urlname) {
     try {
-        const response = await fetch(`http://127.0.0.1:8000/${endpoint}`, {
+        // ✅ 백엔드 요청 URL 생성
+        const endpoint = `posts/${post_id}/`;
+        const params = { urlname }; // 쿼리 파라미터
+
+        // ✅ 백엔드 요청 보내기
+        const postData = await fetchDataFromBackend(endpoint, params);
+
+        if (!postData) {
+            console.error("❌ 게시글 데이터를 불러올 수 없습니다.");
+            alert("게시글을 찾을 수 없습니다.");
+            return null;
+        }
+
+        console.log("✅ 게시글 데이터:", postData);
+        return postData;
+    } catch (error) {
+        console.error(`❌ 서버 연결 오류: ${error.message}`);
+        return null;
+    }
+}
+
+// 🔹 **새로운 백엔드 API 요청 함수 (GET 요청)**
+async function fetchDataFromBackend(endpoint, params = {}) {
+    try {
+        const queryString = new URLSearchParams(params).toString();
+        const backendURL = `http://127.0.0.1:8000/${endpoint}${queryString ? "?" + queryString : ""}`;
+
+        console.log(`📌 API 요청: ${backendURL}`);  // 요청 URL 로그 확인
+
+        const accessToken = localStorage.getItem("access_token");
+        if (!accessToken) {
+            console.warn("⚠️ 액세스 토큰이 없습니다. 로그인 여부를 확인하세요.");
+            return null;
+        }
+
+        const response = await fetch(backendURL, {
             method: "GET",
             headers: {
-                Accept: "application/json",
-                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                "Accept": "application/json",
+                "Authorization": `Bearer ${accessToken}`,
             },
         });
 
         if (!response.ok) {
-            console.error(`⚠️ API 요청 실패: ${endpoint} (상태 코드: ${response.status})`);
+            console.error(`⚠️ API 요청 실패: ${backendURL} (상태 코드: ${response.status})`);
+            const errorText = await response.text();
+            console.error(`⚠️ 오류 메시지: ${errorText}`);
             return null;
         }
 
         return await response.json();
     } catch (error) {
-        console.error(`❌ 서버 연결 오류: ${endpoint}`, error);
+        console.error(`❌ 서버 연결 오류: ${error.message}`);
         return null;
     }
 }
 
+// 🔹 **페이지 로드 시 실행**
+document.addEventListener("DOMContentLoaded", async function () {
+    const queryParams = getQueryParams();
+    if (!queryParams) return; // 필수 파라미터 없으면 종료
+
+    const { post_id, urlname } = queryParams;
+    const postData = await fetchPostData(post_id, urlname);
+
+    if (postData) {
+        console.log("✅ 게시글 데이터를 성공적으로 가져왔습니다.");
+        // 여기에 UI 업데이트 코드 추가 가능
+    } else {
+        alert("게시글을 불러올 수 없습니다.");
+    }
+});
 
 document.addEventListener("DOMContentLoaded", async function () {
-    // ✅ `fetchAPI()`가 정의되어 있는지 확인
-    if (typeof fetchAPI !== "function") {
-        console.error("❌ fetchAPI가 정의되지 않았습니다. 함수가 로드되었는지 확인하세요.");
+    const neighborButton = document.getElementById("neighbor-btn");
+
+    if (!neighborButton) {
+        console.error("❌ 오류: 이웃 추가 버튼을 찾을 수 없음");
+        return;
+    }
+
+    const neighborText = neighborButton.querySelector(".blind");
+    const accessToken = localStorage.getItem("access_token");
+
+    if (!accessToken) {
+        console.log("🔹 로그인되지 않은 사용자 (이웃 버튼 비활성화)");
+        return; // 로그인하지 않은 경우 버튼 비활성화
+    }
+
+    // ✅ URL에서 `post_id`와 `urlname` 가져오기
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get("post_id");  // 🔥 현재 게시글 ID 가져오기
+    const toUrlname = urlParams.get("urlname"); // ✅ 변경된 부분 (게시글 작성자의 urlname)
+
+    if (!toUrlname || !postId) {
+        console.error("❌ 오류: 게시글의 post_id 또는 작성자의 urlname이 없음");
+        return;
+    }
+
+    try {
+        // ✅ 현재 로그인된 사용자의 프로필 정보 가져오기
+        const profileData = await fetchDataFromBackend("profile/me/");
+        if (!profileData) {
+            console.error("❌ 로그인된 사용자 정보 가져오기 실패");
+            return;
+        }
+
+        const myUrlname = profileData.urlname; // ✅ 현재 로그인된 사용자의 urlname
+
+        console.log(`🔹 현재 로그인된 사용자: ${myUrlname}`);
+        console.log(`🔹 게시글 작성자: ${toUrlname}`);
+
+        // ✅ 게시글 작성자의 이웃 목록 가져오기
+        const neighborsData = await fetchDataFromBackend(`profile/${toUrlname}/neighbors/`);
+        if (!neighborsData) {
+            console.error("❌ 게시글 작성자의 이웃 목록 불러오기 실패");
+            return;
+        }
+
+        const neighbors = neighborsData.neighbors.map(n => n.urlname); // ✅ 이웃들의 urlname 리스트
+        console.log("🔹 게시글 작성자의 이웃 목록:", neighbors);
+
+        // ✅ 현재 로그인된 사용자가 게시글 작성자의 이웃 목록에 있는지 확인
+        if (neighbors.includes(myUrlname)) {
+            console.log("✅ 서로 이웃입니다.");
+            neighborText.innerText = "서로 이웃"; // 🔥 버튼 텍스트 변경
+            neighborButton.style.cursor = "default"; // 클릭 불가능하도록 설정
+            neighborButton.style.pointerEvents = "none"; // 클릭 방지
+            return;
+        }
+
+        console.log("❌ 서로 이웃이 아님.");
+        
+    } catch (error) {
+        console.error("❌ 서버 오류:", error);
+    }
+
+    // 🔹 서로 이웃 신청 이벤트 리스너 추가 (서로 이웃이 아닐 때만 실행)
+    neighborButton.addEventListener("click", async function () {
+        console.log("🔹 이웃 추가 버튼 클릭됨");
+
+        const requestMessage = prompt("이웃 신청 메시지를 입력하세요:", "친하게 지내고 싶어요!");
+
+        if (!requestMessage) {
+            alert("이웃 신청이 취소되었습니다.");
+            return;
+        }
+
+        try {
+            const requestResponse = await fetch(`http://127.0.0.1:8000/neighbors/${encodeURIComponent(toUrlname)}/`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    request_message: requestMessage
+                })
+            });
+
+            if (requestResponse.status === 201) {
+                alert("✅ 이웃 신청이 성공적으로 전송되었습니다.");
+                neighborText.innerText = "서로 이웃"; // 🔥 버튼 텍스트 변경
+                neighborButton.style.cursor = "default"; // 클릭 불가능하도록 설정
+                neighborButton.style.pointerEvents = "none"; // 클릭 방지
+            } else {
+                console.error("❌ 이웃 신청 실패:", requestResponse.status);
+                alert("이웃 신청에 실패했습니다.");
+            }
+        } catch (error) {
+            console.error("❌ 서버 연결 오류:", error);
+            alert("서버에 연결할 수 없습니다.");
+        }
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", async function () {
+    // ✅ `fetchDataFromBackend()`가 정의되어 있는지 확인
+    if (typeof fetchDataFromBackend !== "function") {
+        console.error("❌ fetchDataFromBackend가 정의되지 않았습니다. 함수가 로드되었는지 확인하세요.");
         return;
     }
 
@@ -253,7 +476,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // ✅ 1. 로그인한 사용자 정보 가져오기
     const loggedInUser = await fetchUserInfo();
-
     if (!loggedInUser) {
         console.error("❌ 사용자 정보 가져오기 실패 (로그인 필요)");
         updateUserStatus(null);
@@ -261,7 +483,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     console.log("✅ 로그인한 사용자:", loggedInUser.username);
-
     updateUserStatus(loggedInUser);
 
     // ✅ 2. 로그인한 사용자 urlname 가져오기
@@ -273,80 +494,107 @@ document.addEventListener("DOMContentLoaded", async function () {
     console.log("🔹 로그인한 사용자의 urlname:", loggedInUrlname);
 
     // ✅ 3. 프로필 및 블로그 정보 가져오기
-    const profileData = await fetchAPI(`profile/${encodeURIComponent(loggedInUrlname)}/`);
-    if (profileData) {
-        updateBlogUI(profileData);
-    } else {
+    const profileData = await fetchDataFromBackend(`profile/${loggedInUrlname}/`);
+    if (!profileData) {
         console.error("❌ 프로필 데이터를 불러올 수 없습니다.");
+        return;
     }
+    updateBlogUI(profileData);
 
     // ✅ 4. 카테고리 가져오기
-    const categories = await fetchAPI(`category/?urlname=${encodeURIComponent(loggedInUrlname)}`);
-    if (categories) {
+    const categories = await fetchDataFromBackend(`category/`);
+    if (!categories) {
+        console.warn("⚠️ 카테고리를 불러올 수 없습니다.");
+    } else {
         updateCategoryUI(categories);
     }
 
-    // ✅ 5. 서로이웃 목록 가져오기
-    const neighbors = await fetchAPI(`profile/${encodeURIComponent(loggedInUrlname)}/neighbors/`);
-    if (neighbors) {
-        updateNeighborUI(neighbors);
-    }
-
-    // ✅ 6. 프롤로그 링크 설정
+    // ✅ 5. 프롤로그 링크 설정
     setupPrologLink(loggedInUrlname);
     setupBlogHomeLink(loggedInUrlname);
 
-    // ✅ 7. 게시물 가져오기
-    fetchPosts();
+    // ✅ 6. 게시물 가져오기
+    fetchPosts(loggedInUrlname);
 });
 
-
-// 🔹 **사용자 정보 가져오기**
+// 🔹 **사용자 정보 가져오기 (`fetchDataFromBackend()` 사용)**
 async function fetchUserInfo() {
     try {
         const accessToken = localStorage.getItem("access_token");
         if (!accessToken) return null;
 
-        const response = await fetch("http://127.0.0.1:8000/profile/me/", {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-                "Content-Type": "application/json",
-            },
-        });
-
-        if (!response.ok) {
-            console.warn("⚠️ 사용자 정보 요청 실패 (401 Unauthorized)");
+        const userData = await fetchDataFromBackend(`profile/me/`);
+        if (!userData) {
+            console.warn("⚠️ 사용자 정보를 불러올 수 없습니다.");
             return null;
         }
 
-        return await response.json();
+        return userData;
     } catch (error) {
         console.error("❌ 사용자 정보 가져오기 오류:", error);
         return null;
     }
 }
 
+// 🔹 **백엔드 API 요청 함수 (GET 요청)**
+async function fetchDataFromBackend(endpoint, params = {}) {
+    try {
+        const queryString = new URLSearchParams(params).toString();
+        const backendURL = `http://127.0.0.1:8000/${endpoint}${queryString ? "?" + queryString : ""}`;
 
+        console.log(`📌 API 요청: ${backendURL}`);  // 요청 URL 로그 확인
 
-// 🔹 **로그인 상태 업데이트 함수**
-function updateUserStatus(user) {
-    const loginButton = document.querySelector(".login_btn");
+        const accessToken = localStorage.getItem("access_token");
+        if (!accessToken) {
+            console.warn("⚠️ 액세스 토큰이 없습니다. 로그인 여부를 확인하세요.");
+            return null;
+        }
 
-    if (!user || !user.username) {  // 🔥 user가 null이거나 username이 없을 경우 처리
-        console.warn("⚠️ 로그인된 사용자가 없음, 기본 UI 표시");
-        updateLoginButtonUI();
-        return;
-    }
+        const response = await fetch(backendURL, {
+            method: "GET",
+            headers: {
+                "Accept": "application/json",
+                "Authorization": `Bearer ${accessToken}`,
+            },
+        });
 
-    console.log("✅ 로그인한 사용자 정보:", user); // 🔥 전체 객체를 출력 (username이 undefined일 경우 확인 가능)
+        if (!response.ok) {
+            console.error(`⚠️ API 요청 실패: ${backendURL} (상태 코드: ${response.status})`);
+            const errorText = await response.text();
+            console.error(`⚠️ 오류 메시지: ${errorText}`);
+            return null;
+        }
 
-    if (loginButton) {
-        loginButton.textContent = user.username; // 버튼 텍스트 변경
-        loginButton.href = "./profile.html"; // 클릭하면 프로필 페이지로 이동
+        return await response.json();
+    } catch (error) {
+        console.error(`❌ 서버 연결 오류: ${error.message}`);
+        return null;
     }
 }
 
+function updateUserStatus(user) {
+    const loginButton = document.querySelector("#login-btn"); // 🔹 ID 기반으로 선택
+
+    if (!loginButton) {
+        console.error("❌ 로그인 버튼(#login-btn) 요소를 찾을 수 없습니다.");
+        return;
+    }
+
+    if (!user || !user.username) {  
+        console.warn("⚠️ 로그인된 사용자가 없음, 기본 UI로 변경");
+        loginButton.textContent = "로그인"; // 버튼 텍스트를 '로그인'으로 변경
+        loginButton.onclick = () => window.location.href = "./login.html"; // 클릭 시 로그인 페이지로 이동
+        
+        return;
+    }
+
+    console.log("✅ 로그인한 사용자 정보:", user); 
+
+    // ✅ 로그인된 사용자 이름으로 버튼 변경
+    loginButton.textContent = user.username;  
+    loginButton.onclick = () => window.location.href = `./profile.html?urlname=${encodeURIComponent(user.urlname)}`; // 클릭 시 프로필 페이지로 이동
+    
+}
 
 // 🔹 로그인되지 않았을 때 버튼 상태 변경
 function updateLoginButtonUI() {
@@ -358,92 +606,6 @@ function updateLoginButtonUI() {
     }
 }
 
-// 🔹 **블로그 UI 업데이트**
-function updateBlogUI(profileData) {
-    if (!profileData) {
-        console.error("❌ 블로그 데이터를 불러올 수 없습니다.");
-        return;
-    }
-
-    document.querySelector(".user-nickname").innerText = profileData.username || "익명";
-    document.querySelector(".user-profilepicture").src = profileData.user_pic || "assets/profile.png";
-    document.querySelector(".itemtitlefont").innerText = profileData.blog_name || "블로그명";
-    document.querySelector(".itemfont_col").innerText = profileData.intro || "블로그 소개 정보가 없습니다.";
-}
-
-function updateCategoryUI(categories) {
-    const categoryListContainer = document.getElementById("categoryList");
-
-    if (!categoryListContainer) {
-        console.error("❌ 'categoryList' 요소를 찾을 수 없습니다.");
-        return;
-    }
-
-    categoryListContainer.innerHTML = ""; // 기존 목록 초기화
-
-    if (!categories || categories.length === 0) {
-        categoryListContainer.innerHTML = "<li>카테고리가 없습니다.</li>";
-        return;
-    }
-
-    categories.forEach(category => {
-        const li = document.createElement("li");
-        li.textContent = category.name;
-        li.style.display = "block";  // 한 항목씩 새로운 줄에 표시되도록 설정
-        categoryListContainer.appendChild(li);
-    });
-}
-
-
-// 🔹 **서로이웃 목록 UI 업데이트**
-function updateNeighborUI(neighbors) {
-    const neighborListContainer = document.querySelector(".neighbor-list");
-    if (!neighborListContainer) return;
-
-    neighborListContainer.innerHTML = "";
-
-    if (!neighbors || !Array.isArray(neighbors.neighbors) || neighbors.neighbors.length === 0) {
-        neighborListContainer.innerHTML = "<p>아직 공개된 서로이웃이 없습니다.</p>";
-        return;
-    }
-
-    neighbors.neighbors.forEach((neighbor) => {
-        const neighborDiv = document.createElement("div");
-        neighborDiv.style.display = "inline-block";
-
-        const neighborImgDiv = document.createElement("div");
-        neighborImgDiv.classList.add("neighbor_img");
-        const img = document.createElement("img");
-        img.src = getFullMediaUrl(neighbor.user_pic);
-        img.alt = "이웃 프로필";
-        neighborImgDiv.appendChild(img);
-
-        const neighborNickname = document.createElement("a");
-        neighborNickname.classList.add("neighbor_nickname");
-        neighborNickname.innerText = neighbor.urlname;
-        neighborNickname.href = `blog.html?user=${encodeURIComponent(neighbor.urlname)}`;
-
-        neighborDiv.appendChild(neighborImgDiv);
-        neighborDiv.appendChild(neighborNickname);
-        neighborListContainer.appendChild(neighborDiv);
-    });
-}
-
-// 🔹 **프롤로그 링크 설정**
-function setupPrologLink(username) {
-    const prologLink = document.getElementById("prolog-link");
-    if (prologLink) {
-        prologLink.href = `prolog.html?user=${encodeURIComponent(username)}`;
-    }
-}
-
-// 🔹 **블로그 홈 설정**
-function setupBlogHomeLink(username) {
-    const BlogHomeLink = document.getElementById("bloghome-link");
-    if (BlogHomeLink) {
-        BlogHomeLink.href = `main_login.html?user=${encodeURIComponent(username)}`;
-    }
-}
 
 // 🔹 **프로필 이미지 URL 처리 (default와 media 경로 분리)**
 function getFullMediaUrl(userPic) {
@@ -470,105 +632,8 @@ function getFullMediaUrl(userPic) {
       // 🔹 페이지 로드 시 실행
       document.addEventListener("DOMContentLoaded", updateUserStatus);
 
-      // 🔹 **블로그 UI 업데이트**
-      function updateBlogUI(profileData) {
-        if (!profileData) {
-          document.getElementById("blog-title").innerText =
-            "블로그 정보를 찾을 수 없습니다.";
-          document.getElementById("blog-intro").innerText =
-            "사용자 정보를 불러올 수 없습니다.";
-          return;
-        }
 
-        document
-          .querySelectorAll(".user-nickname")
-          .forEach((el) => (el.innerText = profileData.username || "익명"));
-        document
-          .querySelectorAll(".user-profilepicture")
-          .forEach(
-            (img) => (img.src = profileData.user_pic || "assets/profile.png")
-          );
-        document
-          .querySelectorAll(".itemtitlefont")
-          .forEach(
-            (e2) => (e2.innerText = profileData.blog_name || "블로그명")
-          );
-        document
-          .querySelectorAll(".itemfont_col")
-          .forEach(
-            (e3) =>
-              (e3.innerText =
-                profileData.intro || "블로그 소개 정보가 없습니다.")
-          );
-      }
-
-      // 🔹 **카테고리 UI 업데이트**
-      function updateCategoryUI(categories) {
-        const list = document.getElementById("categoryList");
-        if (!list) return;
-
-        list.innerHTML = ""; // 기존 목록 초기화
-
-        // categories가 배열이 아닐 경우 처리
-        if (!categories || !Array.isArray(categories)) {
-          list.innerHTML = "<li>카테고리를 불러올 수 없습니다.</li>";
-          return;
-        }
-
-        // 카테고리 데이터가 비어있을 경우 처리
-        if (categories.length === 0) {
-          list.innerHTML = "<li>카테고리가 없습니다.</li>";
-          return;
-        }
-
-        categories.forEach((category) => {
-          const li = document.createElement("li");
-          li.textContent = category.name || "이름 없음"; // category.name이 없을 경우 기본값 설정
-          list.appendChild(li);
-        });
-      }
-
-      // 🔹 **서로이웃 목록 UI 업데이트**
-      function updateNeighborUI(neighbors) {
-        const neighborListContainer = document.querySelector(".neighbor-list");
-        if (!neighborListContainer) return;
-
-        neighborListContainer.innerHTML = ""; // 기존 내용 초기화
-
-        if (
-          !neighbors ||
-          !Array.isArray(neighbors.neighbors) ||
-          neighbors.neighbors.length === 0
-        ) {
-          neighborListContainer.innerHTML =
-            "<p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp아직 공개된<br>&nbsp&nbsp&nbsp서로이웃이 없습니다.</p>";
-          return;
-        }
-
-        neighbors.neighbors.forEach((neighbor) => {
-          const neighborDiv = document.createElement("div");
-          neighborDiv.style.display = "inline-block";
-
-          const neighborImgDiv = document.createElement("div");
-          neighborImgDiv.classList.add("neighbor_img");
-          const img = document.createElement("img");
-          img.src = getFullMediaUrl(neighbor.user_pic);
-          img.alt = "이웃 프로필";
-          neighborImgDiv.appendChild(img);
-
-          const neighborNickname = document.createElement("a");
-          neighborNickname.classList.add("neighbor_nickname");
-          neighborNickname.innerText = neighbor.urlname;
-          neighborNickname.href = `blog.html?user=${encodeURIComponent(
-            neighbor.urlname
-          )}`;
-
-          neighborDiv.appendChild(neighborImgDiv);
-          neighborDiv.appendChild(neighborNickname);
-          neighborListContainer.appendChild(neighborDiv);
-        });
-      }
-
+            
       // 🔹 **프롤로그 링크 설정**
       function setupPrologLink(username) {
         const prologLink = document.getElementById("prolog-link");
@@ -693,83 +758,37 @@ function getFullMediaUrl(userPic) {
       
 
      
-      async function fetchPosts() {
-    const loggedInUser = await fetchUserInfo();
-    const username = loggedInUser?.urlname;
-
-    if (!username) {
-        console.error("❌ 사용자명이 없습니다.");
+      // 🔹 **게시물 가져오기 (특정 post_id)**
+async function fetchPost(post_id, urlname) {
+    if (!post_id || !urlname) {
+        console.error("❌ 필수 파라미터 누락: post_id 또는 urlname이 없습니다.");
         return;
     }
 
-    console.log("🔹 게시물 요청할 사용자명:", username);
-
-    const accessToken = localStorage.getItem("access_token");
+    console.log(`🔹 게시물 요청: post_id=${post_id}, urlname=${urlname}`);
 
     try {
-        const response = await fetch(
-            `http://127.0.0.1:8000/posts/?urlname=${encodeURIComponent(username)}`,
-            {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    Accept: "application/json",
-                },
-            }
-        );
+        // ✅ 백엔드 엔드포인트 변경
+        const endpoint = `posts/${post_id}/`;
+        const params = { urlname }; // 쿼리 스트링
 
-        const data = await response.json();
-        console.log("📢 서버 응답 데이터:", data); // 🔥 백엔드에서 받은 데이터 확인
+        const postData = await fetchDataFromBackend(endpoint, params);
 
-        if (!response.ok) {
-            console.error("❌ 게시물 데이터를 불러오는 데 실패했습니다.");
+        if (!postData) {
+            console.error("❌ 게시물을 불러오는 데 실패했습니다.");
+            alert("게시글을 찾을 수 없습니다.");
             return;
         }
 
-        if (Array.isArray(data) && data.length > 0) {
-            console.log("✅ 게시물 데이터:", data);
-            renderPosts(data);
-        } else {
-            console.warn("⚠️ 게시물이 없습니다. (서버 응답: 빈 배열)");
-        }
+        console.log("✅ 게시물 데이터:", postData);
+        renderPost(postData);
     } catch (error) {
         console.error("📌 게시물 데이터 가져오기 오류:", error);
     }
 }
 
-// 🔹 **올바른 이미지 URL 반환 함수 (5500 → 8000 변환)**
-function getValidImageUrl(image) {
-    if (!image || image === "null") {
-        return "assets/default_image.png"; // 기본 이미지
-    }
-
-    if (image.startsWith("/media/")) {
-        return `http://127.0.0.1:8000${image}`; // 🔥 상대 경로 → 절대 경로 변환
-    }
-
-    return image;
-}
-
-// 🔹 **본문 내 이미지 URL을 자동 변환하는 함수**
-function fixImageUrls(htmlContent) {
-    const baseUrl = "http://127.0.0.1:8000";
-
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = htmlContent;
-
-    tempDiv.querySelectorAll("img").forEach((img) => {
-        const imgSrc = img.getAttribute("src");
-
-        if (imgSrc && imgSrc.startsWith("/media/")) {
-            img.src = baseUrl + imgSrc;
-        }
-    });
-
-    return tempDiv.innerHTML;
-}
-
-// 🔹 **게시물 렌더링 함수**
-function renderPosts(posts) {
+// 🔹 **게시글 렌더링 함수**
+function renderPost(post) {
     const postContainer = document.querySelector(".post_content");
 
     if (!postContainer) {
@@ -779,177 +798,225 @@ function renderPosts(posts) {
 
     postContainer.innerHTML = ""; // 기존 내용 초기화
 
-    posts.forEach((post) => {
-        // 🔹 날짜 포맷 변환
-        const formattedDate = new Date(post.created_at)
-            .toLocaleString("ko-KR", {
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
-                hour: "2-digit",
-                minute: "2-digit",
-            })
-            .replace(/\./g, "")
-            .replace(" ", ". ")
-            .replace("오전", "")
-            .replace("오후", "")
-            .trim();
+    // 🔹 날짜 포맷 변환
+    const formattedDate = new Date(post.created_at)
+        .toLocaleString("ko-KR", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+        })
+        .replace(/\./g, "")
+        .replace(" ", ". ")
+        .replace("오전", "")
+        .replace("오후", "")
+        .trim();
 
-        // 🔹 본문 내용 정리
-        let cleanedContent = removeUnnecessaryButtons(post.content);
-        cleanedContent = fixImageUrls(cleanedContent); // 🔥 본문 내 이미지 URL 변환 적용
+    // 🔹 본문 내용 정리 및 이미지 URL 변환
+    let cleanedContent = fixImageUrls(post.content);
 
-        // 🔹 대표 이미지 가져오기 (없으면 첫 번째 이미지)
-        const imageUrl = getValidImageUrl(
-            post.images?.find(img => img.is_representative)?.image_url || post.images?.[0]?.image_url
-        );
+    // 🔹 대표 이미지 가져오기
+    const imageUrl = getValidImageUrl(
+        post.images?.find(img => img.is_representative)?.image_url || post.images?.[0]?.image_url
+    );
 
-        // 🔹 이미지 중복 추가 방지 (본문 내 img 태그 확인)
-        if (post.images && post.images.length > 0 && !cleanedContent.includes(imageUrl)) {
-            const imageTag = `
-                <figure style="text-align: center; margin: 15px 0px;">
-                    <img src="${imageUrl}" class="editable-image"
-                        style="max-width: 100%; height: auto; margin-top: 10px; border-radius: 5px;">
-                    <figcaption style="font-size: 12px; color: gray; margin-top: 5px; text-align: center;">
-                        ${post.images[0].caption || ""}
-                    </figcaption>
-                </figure>
-            `;
-            cleanedContent += imageTag;
-        }
-
-        // 🔹 게시글 요소 생성
-        const postElement = document.createElement("div");
-        postElement.classList.add("post_item");
-
-        postElement.innerHTML = `
-            <h3>${post.title}</h3>
-            <p>${cleanedContent}</p>
-            <small>작성자: ${post.user_name} | 날짜: ${formattedDate}</small>
+    // 🔹 이미지 중복 추가 방지
+    if (post.images && post.images.length > 0 && !cleanedContent.includes(imageUrl)) {
+        const imageTag = `
+            <figure style="text-align: center; margin: 15px 0px;">
+                <img src="${imageUrl}" class="editable-image"
+                    style="max-width: 100%; height: auto; margin-top: 10px; border-radius: 5px;">
+                <figcaption style="font-size: 12px; color: gray; margin-top: 5px; text-align: center;">
+                    ${post.images[0].caption || ""}
+                </figcaption>
+            </figure>
         `;
+        cleanedContent += imageTag;
+    }
 
-        postContainer.appendChild(postElement);
-    });
+    // 🔹 게시글 요소 생성
+    const postElement = document.createElement("div");
+    postElement.classList.add("post_item");
+
+    postElement.innerHTML = `
+        <h3>${post.title}</h3>
+        <p>${cleanedContent}</p>
+        <small>작성자: ${post.user_name} | 날짜: ${formattedDate}</small>
+    `;
+
+    postContainer.appendChild(postElement);
 }
 
-async function fetchCategories(urlname) {
+// 🔹 **백엔드 API 요청 함수**
+async function fetchDataFromBackend(endpoint, params = {}) {
     try {
-        const response = await fetch(`http://127.0.0.1:8000/category/?urlname=${encodeURIComponent(urlname)}`, {
+        const queryString = new URLSearchParams(params).toString();
+        const backendURL = `http://127.0.0.1:8000/${endpoint}${queryString ? "?" + queryString : ""}`;
+
+        console.log(`📌 API 요청: ${backendURL}`);  // 요청 URL 로그 확인
+
+        const accessToken = localStorage.getItem("access_token");
+        if (!accessToken) {
+            console.warn("⚠️ 액세스 토큰이 없습니다. 로그인 여부를 확인하세요.");
+            return null;
+        }
+
+        const response = await fetch(backendURL, {
             method: "GET",
             headers: {
-                "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
-                "Content-Type": "application/json"
-            }
+                "Accept": "application/json",
+                "Authorization": `Bearer ${accessToken}`,
+            },
         });
 
         if (!response.ok) {
-            console.error(`❌ 카테고리 데이터를 불러오는 데 실패했습니다. (상태 코드: ${response.status})`);
+            console.error(`⚠️ API 요청 실패: ${backendURL} (상태 코드: ${response.status})`);
+            const errorText = await response.text();
+            console.error(`⚠️ 오류 메시지: ${errorText}`);
+            return null;
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error(`❌ 서버 연결 오류: ${error.message}`);
+        return null;
+    }
+}
+
+// 🔹 **페이지 로드 시 실행**
+document.addEventListener("DOMContentLoaded", async function () {
+    const queryParams = getQueryParams();
+    if (!queryParams) return; // 필수 파라미터 없으면 종료
+
+    const { post_id, urlname } = queryParams;
+    fetchPost(post_id, urlname);
+});
+
+// 🔹 **현재 URL에서 post_id와 urlname 가져오기**
+function getQueryParams() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const post_id = urlParams.get("post_id");
+    const urlname = urlParams.get("urlname");
+
+    if (!post_id || !urlname) {
+        console.error("❌ 필수 파라미터 누락: post_id 또는 urlname이 없습니다.");
+        alert("잘못된 접근입니다.");
+        window.location.href = "index.html";
+        return null;
+    }
+
+    return { post_id, urlname };
+}
+
+
+// ✅ **백엔드 API 요청 함수 (재사용 가능)**
+async function fetchDataFromBackend(endpoint, params = {}) {
+    try {
+        const queryString = new URLSearchParams(params).toString();
+        const backendURL = `http://127.0.0.1:8000/${endpoint}${queryString ? "?" + queryString : ""}`;
+
+        console.log(`📌 API 요청: ${backendURL}`);  // 요청 URL 로그 확인
+
+        const accessToken = localStorage.getItem("access_token");
+        if (!accessToken) {
+            console.warn("⚠️ 액세스 토큰이 없습니다. 로그인 여부를 확인하세요.");
+            return null;
+        }
+
+        const response = await fetch(backendURL, {
+            method: "GET",
+            headers: {
+                "Accept": "application/json",
+                "Authorization": `Bearer ${accessToken}`,
+            },
+        });
+
+        if (!response.ok) {
+            console.error(`⚠️ API 요청 실패: ${backendURL} (상태 코드: ${response.status})`);
+            return null;
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error(`❌ 서버 연결 오류: ${error.message}`);
+        return null;
+    }
+}
+
+// ✅ **게시물 상세 정보 가져오기**
+async function fetchPostDetails(post_id, urlname) {
+    if (!post_id || !urlname) {
+        console.error("❌ 필수 파라미터 누락: post_id 또는 urlname이 없습니다.");
+        return;
+    }
+
+    console.log(`🔹 게시물 요청: post_id=${post_id}, urlname=${urlname}`);
+
+    try {
+        const endpoint = `posts/${post_id}/`;
+        const params = { urlname };
+
+        const postData = await fetchDataFromBackend(endpoint, params);
+
+        if (!postData) {
+            console.error("❌ 게시물을 불러오는 데 실패했습니다.");
+            alert("게시글을 찾을 수 없습니다.");
             return;
         }
 
-        const categories = await response.json();
-        console.log("📢 카테고리 목록 데이터:", categories);
+        console.log("✅ 게시물 데이터:", postData);
+        updatePostDetailUI(postData);
 
-        // ✅ UI 업데이트
-        updateCategoryUI(categories);
+        return postData;
     } catch (error) {
-        console.error("❌ 카테고리 데이터를 가져오는 중 오류 발생:", error);
+        console.error("📌 게시물 데이터 가져오기 오류:", error);
     }
 }
-document.addEventListener("DOMContentLoaded", async function () {
-    // ✅ URL에서 `post_id` 가져오기
-    const urlParams = new URLSearchParams(window.location.search);
-    const postId = urlParams.get("post_id");
 
-    if (!postId) {
-        alert("잘못된 접근입니다.");
-        window.history.back();
+// ✅ URL에서 `urlname` 값 가져오는 함수
+function getUrlParameter(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name) ? decodeURIComponent(urlParams.get(name)) : null;
+}
+
+// ✅ 특정 사용자의 카테고리 가져오기
+async function fetchCategories(urlname) {
+    if (!urlname) {
+        console.error("❌ 오류: `urlname`이 없습니다. 카테고리 요청을 중단합니다.");
         return;
     }
 
     try {
-        // ✅ 1. 게시물 상세 정보 가져오기
-        const postResponse = await fetch(`http://127.0.0.1:8000/posts/${postId}/`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
-                "Content-Type": "application/json"
+        const response = await fetch(
+            `http://127.0.0.1:8000/category/?urlname=${encodeURIComponent(urlname)}`,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                    "Content-Type": "application/json",
+                },
             }
-        });
+        );
 
-        if (!postResponse.ok) {
-            alert("게시글을 불러올 수 없습니다.");
-            window.history.back();
+        if (!response.ok) {
+            console.error(
+                `❌ 카테고리 데이터를 불러오는 데 실패했습니다. (상태 코드: ${response.status})`
+            );
             return;
         }
 
-        const postData = await postResponse.json();
-        console.log("📢 게시물 상세 데이터:", postData);
+        const data = await response.json();
+        console.log("📢 카테고리 목록 데이터:", data);
 
-        // ✅ 2. `url_name` 사용하여 프로필 가져오기
-        const postAuthorUrlname = postData.url_name;  // 🔥 백엔드에서 받은 url_name을 사용
-        console.log("🔹 게시물 작성자의 URL Name:", postAuthorUrlname);
-
-        if (!postAuthorUrlname) {
-            console.error("❌ 게시물 작성자의 url_name이 없습니다.");
-            alert("게시물 작성자의 정보가 없습니다.");
-            return;
-        }
-
-        // ✅ 3. 글쓴이의 프로필 가져오기
-        const profileData = await fetchAPI(`profile/${encodeURIComponent(postAuthorUrlname)}/`);
-        if (!profileData) {
-            console.error("❌ 게시물 작성자의 프로필을 가져올 수 없습니다.");
-        }
-
-        // ✅ 4. 글쓴이의 서로이웃 목록 가져오기
-        const neighborResponse = await fetch(`http://127.0.0.1:8000/profile/${encodeURIComponent(postAuthorUrlname)}/neighbors/`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
-                "Content-Type": "application/json"
-            }
-        });
-
-        let neighborUsernames = [];
-        if (neighborResponse.ok) {
-            const neighborData = await neighborResponse.json();
-            neighborUsernames = neighborData.neighbors.map(n => n.urlname);
-        }
-
-        console.log("🔹 글쓴이의 서로이웃 목록 (urlname 기준):", neighborUsernames);
-
-        // ✅ 5. 글쓴이의 카테고리 목록 가져오기
-        const categoryResponse = await fetch(`http://127.0.0.1:8000/category/?urlname=${encodeURIComponent(postAuthorUrlname)}`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
-                "Content-Type": "application/json"
-            }
-        });
-
-        let categories = [];
-        if (categoryResponse.ok) {
-            categories = await categoryResponse.json();
-            console.log("📢 카테고리 목록:", categories);
-        } else {
-            console.error("❌ 카테고리 데이터를 불러올 수 없습니다.");
-        }
-
-        // ✅ 6. 카테고리 UI 업데이트
-        updateCategoryUI(categories);
-
-        // ✅ 7. UI 업데이트 (🔹 글쓴이의 정보로 업데이트!)
-        updateBlogUI(profileData);
-        updatePostDetailUI(postData, neighborUsernames);
-
+        // ✅ 카테고리 UI 업데이트
+        updateCategoryUI(data);
     } catch (error) {
-        console.error("❌ 서버 연결 오류:", error);
-        alert("서버 연결에 실패했습니다.");
+        console.error("❌ 카테고리 데이터를 가져오는 중 오류 발생:", error);
     }
-});
+}
 
-// ✅ 카테고리 UI 업데이트 함수
+// ✅ UI 업데이트 함수 (기존 방식 반영)
 function updateCategoryUI(categories) {
     const categoryListContainer = document.getElementById("categoryList");
 
@@ -965,120 +1032,274 @@ function updateCategoryUI(categories) {
         return;
     }
 
-    categories.forEach(category => {
+    // ✅ "전체보기"와 "게시판" 먼저 추가
+    const sortedCategories = ["전체보기", "게시판"];
+
+    // ✅ "게시판" 제외하고 id순 정렬 후 추가
+    categories
+        .sort((a, b) => a.id - b.id)
+        .forEach((category) => {
+            if (category.name !== "게시판") {
+                sortedCategories.push(category.name);
+            }
+        });
+
+    // ✅ 정렬된 카테고리 리스트를 UI에 추가
+    sortedCategories.forEach((name) => {
         const li = document.createElement("li");
-        li.textContent = category.name;  // 각 카테고리 이름을 한 줄씩 표시
-        li.style.display = "block";  // 스타일을 block으로 지정해서 한 줄씩 나오도록 설정
-        categoryListContainer.appendChild(li);  // 리스트 항목을 추가
+        li.textContent = name;
+        li.style.display = "block"; // 한 줄씩 나오도록 설정
+        categoryListContainer.appendChild(li);
     });
 }
 
-
-
-
-
-
-// ✅ 블로그 UI 업데이트 함수 (글쓴이 기준으로 변경)
-function updateBlogUI(profileData) {
-    if (!profileData) {
-        console.error("❌ 블로그 정보를 불러올 수 없습니다.");
+// ✅ 페이지 로드 시 실행
+document.addEventListener("DOMContentLoaded", async function () {
+    const urlname = getUrlParameter("urlname");  // 🔥 현재 블로그의 `urlname` 가져오기
+    if (!urlname) {
+        console.error("❌ URL에서 `urlname`을 찾을 수 없습니다.");
         return;
     }
 
-    const nicknameElement = document.querySelector(".user-nickname");
-    const profileImageElement = document.querySelector(".user-profilepicture");
-    const blogIntroElement = document.querySelector(".itemfont_col");
+    console.log(`📌 현재 블로그 주인 urlname: ${urlname}`);
 
-    if (nicknameElement) {
-        nicknameElement.innerText = profileData.username;
-    } else {
-        console.error("❌ 닉네임을 표시할 요소를 찾을 수 없습니다.");
+    // ✅ 카테고리 가져오기
+    await fetchCategories(urlname);
+});
+
+document.addEventListener("DOMContentLoaded", async function () {
+    try {
+        const urlname = getUrlParameter("urlname"); // ✅ URL에서 `urlname` 값 가져오기
+
+        if (!urlname) {
+            console.error("❌ urlname을 찾을 수 없음.");
+            return;
+        }
+
+        console.log(`📌 현재 페이지 글쓴이 URL Name: ${urlname}`);
+
+        // ✅ 게시글 유지하면서 글쓴이 프로필 정보 가져오기
+        const profileData = await fetchDataFromBackend(`profile/${urlname}/`);
+        if (!profileData) {
+            console.error("❌ 프로필 정보 가져오기 실패.");
+            return;
+        }
+
+        // ✅ 프로필 UI 업데이트 (이웃 커넥트 부분)
+        document.querySelector(".neighbor-profile .user-nickname strong").innerText = profileData.username;
+
+        // ✅ 이웃 목록 가져오기
+        const neighborsData = await fetchDataFromBackend(`profile/${urlname}/neighbors/`);
+        if (!neighborsData) {
+            console.error("❌ 이웃 목록 불러오기 실패.");
+            return;
+        }
+
+        // ✅ 이웃 수 가져오기
+        const neighborCountData = await fetchDataFromBackend(`neighbors/count/${urlname}/`);
+        if (!neighborCountData) {
+            console.error("❌ 이웃 수 불러오기 실패.");
+            return;
+        }
+
+        document.getElementById("neighbor-count").innerText = neighborCountData.neighbor_count;
+
+        // ✅ 이웃 목록 페이지네이션 적용
+        const neighborContainer = document.getElementById("neighbor-container");
+        if (!neighborContainer) {
+            console.error("❌ neighbor-container 요소를 찾을 수 없음.");
+            return;
+        }
+
+        const pageIndicator = document.getElementById("page-indicator");
+        const prevPageBtn = document.getElementById("prev-page");
+        const nextPageBtn = document.getElementById("next-page");
+
+        let currentPage = 1;
+        const itemsPerPage = 12;
+        const totalPages = Math.ceil(neighborsData.neighbors.length / itemsPerPage);
+
+        async function renderNeighbors(page) {
+            neighborContainer.innerHTML = "";  // ✅ 기존 이웃 목록 초기화
+
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageNeighbors = neighborsData.neighbors.slice(start, end);
+
+            // ✅ 현재 로그인된 사용자 정보 가져오기
+            const loggedInUser = await fetchUserInfo();
+            const loggedInUrlname = loggedInUser ? loggedInUser.urlname : null;
+
+            pageNeighbors.forEach(neighbor => {
+                const { urlname, username, user_pic } = neighbor;
+                const imageUrl = user_pic.startsWith("/media") ? `http://127.0.0.1:8000${user_pic}` : user_pic;
+                const targetPage = (loggedInUrlname === urlname)
+                    ? "myblog.html"
+                    : `blog_detail.html?post_id=${getUrlParameter("post_id")}&urlname=${encodeURIComponent(urlname)}`;
+
+                const neighborHtml = `
+                    <div class="neighbor-item" style="text-align: center;">
+                        <a href="${targetPage}">
+                            <div class="neighbor-img">
+                                <img src="${imageUrl}" alt="${username}" style="cursor: pointer;">
+                            </div>
+                        </a>
+                        <a href="${targetPage}" style="text-decoration: none; color: inherit;">
+                            <span class="neighbor-nickname" style="cursor: pointer;">${username}</span>
+                        </a>
+                    </div>
+                `;
+                neighborContainer.innerHTML += neighborHtml;
+            });
+
+            pageIndicator.innerText = `${currentPage} / ${totalPages}`;
+        }
+
+        prevPageBtn.addEventListener("click", () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderNeighbors(currentPage);
+            }
+        });
+
+        nextPageBtn.addEventListener("click", () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderNeighbors(currentPage);
+            }
+        });
+
+        renderNeighbors(currentPage);
+
+    } catch (error) {
+        console.error("❌ 서버 연결 오류:", error);
+    }
+});
+
+
+// ✅ **페이지 로드 시 실행**
+document.addEventListener("DOMContentLoaded", async function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const post_id = urlParams.get("post_id");
+    const urlname = urlParams.get("urlname");
+
+    console.log("📌 post_id:", post_id);
+    console.log("📌 urlname:", urlname);
+
+    if (!post_id || !urlname) {
+        alert("잘못된 접근입니다.");
+        window.history.back();
+        return;
     }
 
-    if (profileImageElement) {
-        profileImageElement.src = profileData.user_pic;
+    try {
+        // ✅ 1. 게시물 상세 정보 가져오기
+        const postData = await fetchPostDetails(post_id, urlname);
+        if (!postData) return;
+
+        // ✅ 2. 작성자의 프로필 가져오기
+        const profileData = await fetchDataFromBackend(`profile/${urlname}/`);
+        updateBlogUI(profileData);
+
+        // ✅ 3. 카테고리 가져오기
+        await fetchCategories(urlname);
+
+        // ✅ 4. 이웃 목록 가져오기
+        await updateNeighborList(urlname);
+    } catch (error) {
+        console.error("❌ 서버 연결 오류:", error);
+        alert("서버 연결에 실패했습니다.");
+    }
+});
+
+// ✅ **카테고리 UI 업데이트**
+function updateCategoryUI(categories) {
+    const categoryListContainer = document.getElementById("categoryList");
+
+    if (!categoryListContainer) {
+        console.error("❌ 'categoryList' 요소를 찾을 수 없습니다.");
+        return;
     }
 
-    if (blogIntroElement) {
-        blogIntroElement.innerText = profileData.intro || "";
-    }
+    categoryListContainer.innerHTML = categories?.length
+        ? categories.map(category => `<li>${category.name}</li>`).join("")
+        : "<li>카테고리가 없습니다.</li>";
 }
 
+// ✅ **블로그 UI 업데이트**
+function updateBlogUI(profileData) {
+    if (!profileData) return;
 
-
-// 글쓴 사람의 프로필을 업데이트하는 함수
-async function updateProfileUI(postUserUrlname) {
-    const profileData = await fetchAPI(`profile/${encodeURIComponent(postUserUrlname)}/`);
-
-    if (profileData) {
-        // 프로필 업데이트
-        document.querySelector(".user-nickname").innerText = profileData.username || "익명";
-        document.querySelector(".user-profilepicture").src = profileData.user_pic || "assets/profile.png";
-        document.querySelector(".itemfont_col").innerText = profileData.intro || "블로그 소개 정보가 없습니다.";
-    } else {
-        console.error("❌ 글쓴 사람의 프로필을 불러올 수 없습니다.");
-    }
+    document.querySelector(".user-nickname").innerText = profileData.username || "익명";
+    document.querySelector(".user-profilepicture").src = profileData.user_pic || "assets/profile.png";
+    document.querySelector(".itemfont_col").innerText = profileData.intro || "블로그 소개 정보가 없습니다.";
 }
 
-
-// ✅ 게시물 상세 UI 업데이트 함수 (본문 & 프로필 업데이트 포함)
+// ✅ **게시물 UI 업데이트**
 async function updatePostDetailUI(postData) {
-    const postCategoryElement = document.querySelector(".post-category");  
-    const postTitleElement = document.querySelector(".post-title");  
-    const postAuthorElement = document.querySelector(".post-author");  
-    const postDateElement = document.querySelector(".post-date");  
-    const postMutualElement = document.querySelector(".post-mutual");  
-    const postRangeElement = document.querySelector(".post-range"); // 🔹 공개 범위 (박스)
-    const postContentElement = document.querySelector(".post-content"); // 🔹 본문 영역
+    if (!postData) return;
 
-    // ✅ 게시물 데이터 업데이트
-    postTitleElement.textContent = postData.title;
-    postAuthorElement.textContent = postData.user_name;  
-    postDateElement.textContent = formatDate(postData.created_at);
-    postCategoryElement.textContent = postData.category_name; // 카테고리는 그대로 텍스트만 표시
+    document.querySelector(".post-title").textContent = postData.title || "제목 없음";
+    document.querySelector(".post-author").textContent = postData.user_name || "작성자 없음";
+    document.querySelector(".post-date").textContent = formatDate(postData.created_at);
+    document.querySelector(".post-category").textContent = postData.category_name || "카테고리 없음";
+    document.querySelector(".post-range").textContent = getVisibilityText(postData.visibility);
 
-    // ✅ 게시글 작성자의 프로필 업데이트
-    const postUserUrlname = postData.user_urlname || postData.user_name;
-    await updateProfileUI(postUserUrlname);  // 🔥 글쓴 사람의 프로필 불러와서 업데이트
+    const postContentElement = document.querySelector(".post-content");
+    postContentElement.innerHTML = postData.content?.trim()
+        ? cleanContent(postData.content)
+        : "<p style='color: gray;'>내용이 없습니다.</p>";
 
-    // ✅ 게시물 공개 범위 설정 (visibility) 박스로 표시
-    let visibilityText = "";
-    let visibilityClass = "";
-    if (postData.visibility === "everyone") {
-        visibilityText = "전체";
-        visibilityClass = "post-range everyone";
-    } else if (postData.visibility === "mutual") {
-        visibilityText = "서로이웃";
-        visibilityClass = "post-range mutual";
-    } else if (postData.visibility === "me") {
-        visibilityText = "나만 보기";
-        visibilityClass = "post-range me";
-    }
-    postRangeElement.textContent = visibilityText;
-    postRangeElement.className = visibilityClass; // 클래스 적용해서 스타일 반영
-
-    // ✅ 게시물 본문 표시 오류 해결
-    if (!postData.content || postData.content.trim() === "") {
-        postContentElement.innerHTML = "<p style='color: gray;'>내용이 없습니다.</p>";  // 기본 메시지 제공
-    } else {
-        postContentElement.innerHTML = cleanContent(postData.content);  // 본문 표시
-    }
+    await updateProfileUI(postData.user_urlname || postData.user_name);
 }
 
 
-// ✅ 날짜 포맷 변환 함수
+// ✅ **게시물 작성자의 프로필 UI 업데이트**
+async function updateProfileUI() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const authorUrlname = urlParams.get("urlname"); // 🔥 URL에서 글쓴이의 urlname 가져오기
+
+    if (!authorUrlname) {
+        console.error("❌ 게시물 작성자의 urlname이 없습니다.");
+        return;
+    }
+
+    console.log(`📌 글쓴이의 프로필 요청: ${authorUrlname}`);
+
+    const profileData = await fetchDataFromBackend(`profile/${authorUrlname}/`);
+    if (!profileData) {
+        console.error("❌ 글쓴이의 프로필 데이터를 불러올 수 없습니다.");
+        return;
+    }
+
+    // ✅ UI 업데이트
+    document.querySelector(".user-nickname").innerText = profileData.username || "익명";
+    document.querySelector(".user-profilepicture").src = profileData.user_pic || "assets/profile.png";
+    document.querySelector(".itemfont_col").innerText = profileData.intro || "블로그 소개 정보가 없습니다.";
+}
+
+// ✅ **페이지 로드 시 글쓴이의 프로필 업데이트 실행**
+document.addEventListener("DOMContentLoaded", async function () {
+    await updateProfileUI(); // 🔥 이제 자동으로 글쓴이의 프로필을 가져옴!
+});
+
+
+// ✅ **게시물 공개 범위 변환**
+function getVisibilityText(visibility) {
+    return { everyone: "전체", mutual: "서로이웃", me: "나만 보기" }[visibility] || "알 수 없음";
+}
+
+// ✅ **날짜 포맷 변환**
 function formatDate(dateString) {
     const dateObj = new Date(dateString);
     return `${dateObj.getFullYear()}. ${dateObj.getMonth() + 1}. ${dateObj.getDate()} ${dateObj.getHours()}:${String(dateObj.getMinutes()).padStart(2, '0')}`;
 }
 
-// ✅ 불필요한 HTML 태그 제거 함수
+// ✅ **본문 정리**
 function cleanContent(content) {
-    return content
-        .replace(/대표사진 선택/g, "") // '대표 사진 선택' 제거
-        .replace(/이미지 설명을 입력하세요\.\.\./g, "") // '이미지 설명을 입력하세요...' 제거
-        .trim();
+    return content.replace(/대표사진 선택/g, "").replace(/이미지 설명을 입력하세요\.\.\./g, "").trim();
 }
+
     </script>
   </body>
 </html>
