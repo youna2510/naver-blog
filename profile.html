@@ -194,8 +194,7 @@
             <h3>기본 설정</h3>
             <ul>
                
-                <a style="text-decoration-line: none;" href="./profile.html" style="color:#861f1c"><li>프로필 관리</li></a>
-
+                <a style="text-decoration-line: none;" id="profileLink"><li>프로필 관리</li></a>
                 <a style="text-decoration-line: none;" href="./neighborhood.html"><li>이웃 관리</li></a>
                 <a style="text-decoration-line: none;" href="./category.html"><li>카테고리 관리</li></a>
                 <a style="text-decoration-line: none;" href="./password_update.html"><li>비밀번호 변경</li></a>
@@ -252,7 +251,69 @@
             
         </section>
     </div>
-
+    <script>
+        let loggedInUserUrlname = null; // 로그인한 사용자의 URLname 저장
+        
+        // ✅ 서버에서 로그인한 사용자 URLname 가져오기
+        async function getUserUrlname() {
+            const accessToken = localStorage.getItem("access_token");
+        
+            if (!accessToken) {
+                console.error("❌ 토큰이 없습니다. 로그인 필요.");
+                return;
+            }
+        
+            try {
+                const response = await fetch("http://127.0.0.1:8000/profile/me/", {  // ✅ /profile/me로 변경
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`,
+                        "Content-Type": "application/json"
+                    }
+                });
+        
+                if (!response.ok) {
+                    console.error("❌ 사용자 정보를 가져오는 데 실패했습니다. 상태 코드:", response.status);
+                    return;
+                }
+        
+                const data = await response.json();
+                loggedInUserUrlname = data.urlname || null;
+        
+                console.log("✅ 로그인한 사용자 URLname:", loggedInUserUrlname);
+            } catch (error) {
+                console.error("❌ 사용자 정보 요청 중 오류 발생:", error);
+            }
+        }
+        
+        // ✅ 프로필 관리 버튼 클릭 시 URLname 포함한 페이지로 이동
+        async function redirectToProfile(event) {
+            event.preventDefault(); // 기본 링크 이동 방지
+        
+            if (!loggedInUserUrlname) {
+                await getUserUrlname(); // URLname을 가져올 때까지 기다림
+            }
+        
+            if (loggedInUserUrlname) {
+                const profileUrl = `profile.html?urlname=${encodeURIComponent(loggedInUserUrlname)}`;
+                console.log("🔗 이동할 URL:", profileUrl);
+                window.location.href = profileUrl;
+            } else {
+                alert("❌ 로그인한 사용자의 URL을 가져올 수 없습니다.");
+            }
+        }
+        
+        // ✅ 페이지 로딩 후 실행
+        document.addEventListener("DOMContentLoaded", async function () {
+            await getUserUrlname(); // 로그인된 사용자 URLname 가져오기
+        
+            // ✅ 프로필 관리 버튼 클릭 시 리디렉션 설정
+            const profileLink = document.getElementById("profileLink");
+            if (profileLink) {
+                profileLink.addEventListener("click", redirectToProfile);
+            }
+        });
+        </script>
     <script>
     // ✅ 이미지 미리보기 기능
 function previewImage(inputId, previewId) {
@@ -438,6 +499,5 @@ async function updateProfile() {
 
 
     </script>
-    
 </body>
 </html>
